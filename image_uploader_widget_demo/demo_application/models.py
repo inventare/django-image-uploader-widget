@@ -9,3 +9,7 @@ class ExampleModel(models.Model):
     class Meta:
         verbose_name = 'Example Model'
         verbose_name_plural = 'Example Models'
+
+class ExampleModelImage(models.Model):
+    example = models.ForeignKey(ExampleModel, on_delete = models.CASCADE)
+    image = models.ImageField('Image')

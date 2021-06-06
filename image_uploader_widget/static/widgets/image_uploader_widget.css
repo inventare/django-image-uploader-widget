@@ -3,9 +3,10 @@ body {
     --iuw-color: #FFF;
     --iuw-border-color: #CCC;
     --iuw-item-background-color: #CCC;
+    --iuw-item-foreground-color: #121212;
 }
-.iuw-root {
-    display: inline-block;
+.iuw-root,
+.iuw-inline-root {
     min-width: 300px;
     height: 200px;
 
@@ -25,11 +26,24 @@ body {
     flex-direction: row;
     align-items: stretch;
 }
+
+.iuw-inline-root > div {
+    height: 100%;
+    width: auto;
+
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+}
+
 .iuw-root input[type=file],
-.iuw-root input[type=checkbox] {
+.iuw-root input[type=checkbox],
+.iuw-inline-root input[type=file],
+.iuw-inline-root input[type=checkbox] {
     display: none;
 }
-.iuw-root .iuw-empty {
+.iuw-root .iuw-empty,
+.iuw-inline-root .iuw-empty {
     position: absolute;
     left: 0;
     right: 0;
@@ -44,14 +58,19 @@ body {
 
     display: none;
 }
-.iuw-root:not([data-raw]) input[type=file]:not(.non-empty) ~ .iuw-empty {
+.iuw-root:not([data-raw]) input[type=file]:not(.non-empty) ~ .iuw-empty,
+.iuw-inline-root:not(.non-empty) .iuw-empty {
     display: flex;
 }
 
-.iuw-root .iuw-image-preview {
+.iuw-root .iuw-image-preview,
+.iuw-inline-root .inline-related {
     display: flex;
     align-items: center;
     justify-content: center;
+
+    width: 160px;
+    margin: 0 5px;
 
     border-radius: 5px;
     padding: 5px;
@@ -63,12 +82,48 @@ body {
     position: relative;
 }
 
-.iuw-root .iuw-image-preview img {
+.iuw-root .iuw-image-preview img,
+.iuw-inline-root .inline-related img {
     max-width: 100%;
     max-height: 100%;
 }
 
-.iuw-root .iuw-delete-icon {
+.iuw-inline-root .inline-related.deleted {
+    display: none;
+}
+
+.iuw-inline-root .iuw-add-image-btn {
+    width: 160px;
+    background: var(--iuw-item-background-color);
+    color: var(--iuw-item-foreground-color);
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 5px;
+    padding: 5px;
+
+    cursor: pointer;
+
+    display: none;
+}
+.iuw-inline-root .iuw-add-image-btn svg {
+    fill: var(--iuw-item-foreground-color);
+}
+.iuw-inline-root.non-empty .iuw-add-image-btn.visible-by-number {
+    display: flex;
+}
+.iuw-inline-root.non-empty .iuw-add-image-btn:not(.visible-by-number) {
+    display: none;
+}
+.iuw-inline-root:not(.non-empty) .iuw-add-image-btn {
+    display: none;
+}
+
+.iuw-root .iuw-delete-icon,
+.iuw-inline-root .iuw-delete-icon {
     width: 32px;
     height: 32px;
     background-color: rgba(0, 0, 0, 0.3);
@@ -83,3 +138,18 @@ body {
     align-items: center;
     justify-content: center;
 }
+
+
+.iuw-inline-root .inline-related.empty-form {
+    display: none;
+}
+
+/*
+.iuw-inline-root .inline-related label {
+    display: none;
+}
+.iuw-inline-root .inline-related .file-upload {
+    margin: 0;
+    padding: 0;
+}
+*/
