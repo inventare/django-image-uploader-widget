@@ -1,6 +1,6 @@
 include README.md
 include LICENSE
+recursive-exclude image_uploader_widget_demo *
 recursive-include image_uploader_widget *
 recursive-include image_uploader_widget/static *
 recursive-include image_uploader_widget/templates *
-recursive-exclude image_uploader_widget_demo *

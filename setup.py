@@ -7,8 +7,8 @@ readme = f.read()
 f.close()
 
 setup(
-    name='image_uploader_widget',
-    version='0.0.1',
+    name='django-image-uploader-widget',
+    version='0.0.2',
     description='Simple Image Uploader Widget for Django-Admin',
     long_description=readme,
     author='Eduardo Oliveira',
@@ -16,7 +16,7 @@ setup(
     url='https://github.com/EduardoJM/django-image-uploader-widget',
     license='MIT',
     packages=find_packages(
-        exclude = ('image_uploader_widget_demo',)
+        exclude = ("image_uploader_widget_demo.*", "image_uploader_widget_demo", )
     ),
     include_package_data=True,
     zip_safe=False,
