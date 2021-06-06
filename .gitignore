@@ -2,3 +2,6 @@ env
 __pycache__
 *.sqlite3
 media/
+dist
+build
+*.egg-info
