@@ -1,0 +1,85 @@
+body {
+    --iuw-background: #121212;
+    --iuw-color: #FFF;
+    --iuw-border-color: #CCC;
+    --iuw-item-background-color: #CCC;
+}
+.iuw-root {
+    display: inline-block;
+    min-width: 300px;
+    height: 200px;
+
+    border-radius: 5px;
+    padding: 5px;
+
+    background-color: var(--iuw-background);
+    border: 1px solid var(--iuw-border-color);
+    color: var(--iuw-color);
+
+    position: relative;
+
+    overflow-y: hidden;
+    overflow-x: auto;
+
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+}
+.iuw-root input[type=file],
+.iuw-root input[type=checkbox] {
+    display: none;
+}
+.iuw-root .iuw-empty {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+
+    display: none;
+}
+.iuw-root:not([data-raw]) input[type=file]:not(.non-empty) ~ .iuw-empty {
+    display: flex;
+}
+
+.iuw-root .iuw-image-preview {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 5px;
+    padding: 5px;
+
+    background: var(--iuw-item-background-color);
+
+    cursor: pointer;
+
+    position: relative;
+}
+
+.iuw-root .iuw-image-preview img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.iuw-root .iuw-delete-icon {
+    width: 32px;
+    height: 32px;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 50%;
+
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 50;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

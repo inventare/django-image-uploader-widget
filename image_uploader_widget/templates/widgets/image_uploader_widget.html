@@ -1,0 +1,11 @@
+<div class="iuw-root" {% if not widget.required %}data-candelete="true"{% endif %} {% if widget.is_initial %} data-raw="{{ widget.value.url }}"{% endif %}>
+    <input type="file" name="{{ widget.name }}" />
+    
+    <div class="iuw-empty">
+        {{ widget.non_file_text }}
+    </div>
+    
+    {% if not widget.required %}
+        <input type="checkbox" name="{{ widget.checkbox_name }}" id="{{ widget.checkbox_id }}" />
+    {% endif %}
+</div>
