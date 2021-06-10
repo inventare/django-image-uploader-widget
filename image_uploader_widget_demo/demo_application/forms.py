@@ -7,5 +7,7 @@ class ExampleForm(forms.ModelForm):
     class Meta:
         widgets = {
             'image': ImageUploaderWidget(),
+            'image2': ImageUploaderWidget(),
+            'image3': ImageUploaderWidget(),
         }
         fields = '__all__'

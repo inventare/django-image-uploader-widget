@@ -2,7 +2,7 @@
     'use strict';
     $ = window.django.jQuery;
     $(function(){
-        $.fn.inlineImageUploader = function(opts) {
+        $.fn.inlineImageUploader = function() {
             const handler = {
                 /**
                  * The initiated elements collection.

@@ -3,6 +3,10 @@ from django.db import models
 class ExampleModel(models.Model):
     image = models.ImageField('Image', null = True, blank = True)
 
+    image2 = models.ImageField('Image 2')
+
+    image3 = models.ImageField('Image 3', null = True, blank = True)
+
     def __str__(self):
         return 'Example Model'
 
