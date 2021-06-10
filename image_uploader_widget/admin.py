@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.conf import settings
 
 class ImageUploaderInline(admin.StackedInline):
-    template = 'admin/inlines/image_uploader_inline.html'
+    template = 'admin/edit_inline/image_uploader.html'
     extra = 0
 
     @property
