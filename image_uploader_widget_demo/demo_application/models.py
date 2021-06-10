@@ -21,3 +21,9 @@ class ExampleModelImage(models.Model):
 class AnotherModalImagesExample(models.Model):
     example = models.ForeignKey(ExampleModel, on_delete = models.CASCADE)
     image = models.ImageField('Image')
+
+class StackedExample(models.Model):
+    example = models.ForeignKey(ExampleModel, on_delete = models.CASCADE)
+    title = models.CharField('Example', max_length = 100)
+    text = models.TextField('Text')
+    image = models.ImageField('Image')

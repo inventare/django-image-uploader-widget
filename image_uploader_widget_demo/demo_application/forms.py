@@ -11,3 +11,10 @@ class ExampleForm(forms.ModelForm):
             'image3': ImageUploaderWidget(),
         }
         fields = '__all__'
+
+class ExampleInlineForm(forms.ModelForm):
+
+    class Meta:
+        widgets = {
+            'image': ImageUploaderWidget(),
+        }
