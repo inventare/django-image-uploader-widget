@@ -8,8 +8,15 @@ class ExampleModelImageAdmin(ImageUploaderInline):
     model = models.ExampleModelImage
     fields = ['image']
 
+class AnotherModalImagesExampleAdmin(ImageUploaderInline):
+    model = models.AnotherModalImagesExample
+    fields = ['image']
+
 class ExampleAdmin(admin.ModelAdmin):
     form = forms.ExampleForm
-    inlines = [ExampleModelImageAdmin]
+    inlines = [
+        ExampleModelImageAdmin,
+        AnotherModalImagesExampleAdmin
+    ]
 
 admin.site.register(models.ExampleModel, ExampleAdmin)

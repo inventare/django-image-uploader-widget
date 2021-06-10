@@ -13,3 +13,7 @@ class ExampleModel(models.Model):
 class ExampleModelImage(models.Model):
     example = models.ForeignKey(ExampleModel, on_delete = models.CASCADE)
     image = models.ImageField('Image')
+
+class AnotherModalImagesExample(models.Model):
+    example = models.ForeignKey(ExampleModel, on_delete = models.CASCADE)
+    image = models.ImageField('Image')
