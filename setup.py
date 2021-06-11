@@ -8,7 +8,7 @@ f.close()
 
 setup(
     name='django-image-uploader-widget',
-    version='0.0.2',
+    version='0.0.3',
     description='Simple Image Uploader Widget for Django-Admin',
     long_description=readme,
     author='Eduardo Oliveira',
