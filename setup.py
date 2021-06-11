@@ -11,6 +11,7 @@ setup(
     version='0.0.3',
     description='Simple Image Uploader Widget for Django-Admin',
     long_description=readme,
+    long_description_content_type='text/markdown',
     author='Eduardo Oliveira',
     author_email='eduardo_y05@outlook.com',
     url='https://github.com/EduardoJM/django-image-uploader-widget',
