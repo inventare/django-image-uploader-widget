@@ -19,7 +19,8 @@
                 },
                 fileRemarker: function(e) {
                     var iuw = $(this).parent().data('iuw');
-                    if (this.files.length == 0) {
+                    var raw = $(this).parent().attr('data-raw');
+                    if (this.files.length == 0 && !raw) {
                         this.classList.remove('non-empty');
                         $(this).parent().find('input[type=checkbox]').prop('checked', true);
                     } else {
