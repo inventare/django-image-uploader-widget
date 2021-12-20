@@ -1,10 +1,10 @@
 <h2 align="center">Simple Image Upload Widget</h2>
 <p align="center">
-    <img src="preview/single.gif" />
+    <img src=".github/images/single.gif" />
 </p>
 <h2 align="center">Inline Multiple Images Upload</h2>
 <p align="center">
-    <img src="preview/multiple.gif" />
+    <img src=".github/images/multiple.gif" />
 </p>
 
 ## Introduction
