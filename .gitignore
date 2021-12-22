@@ -6,3 +6,5 @@ media/
 dist
 build
 *.egg-info
+node_modules
+yarn-error.log
