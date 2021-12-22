@@ -8,13 +8,13 @@ f.close()
 
 setup(
     name='django-image-uploader-widget',
-    version='0.0.4',
+    version='0.0.6',
     description='Simple Image Uploader Widget for Django-Admin',
     long_description=readme,
     long_description_content_type='text/markdown',
     author='Eduardo Oliveira',
     author_email='eduardo_y05@outlook.com',
-    url='https://github.com/EduardoJM/django-image-uploader-widget',
+    url='https://github.com/inventare/django-image-uploader-widget',
     license='MIT',
     packages=find_packages(
         exclude = ("image_uploader_widget_demo.*", "image_uploader_widget_demo", )
