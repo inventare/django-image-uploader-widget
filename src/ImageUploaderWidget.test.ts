@@ -92,6 +92,6 @@ test('[Required Widget] must be possible to upload file and widget must be rende
 
     img = preview.querySelector('img');
     expect(img).not.toBeNull();
-    expect(img.src).toBe('aaaatest::/file.png');
+    expect(img.src).toBe('test::/file.png');
 });
 
