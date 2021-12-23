@@ -1,25 +1,27 @@
 name: Test Widget Features
 
-on:
-  pull_request:
-    branches:
-      - main
-      - develop
+on: pull_request
 
 jobs:
-  build:
+  code:
+    name: Test code
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
 
     - name: Install Node.js
-      uses: actions/steup-node@v1
+      uses: actions/setup-node@v1
       with:
-        node-version: 12.x
+        node-version: 12
     
-    - run: yarn
+    - name: Install dependencies
+      run: yarn
 
-    - run: yarn test
+    - name: Run Jest
+      run: yarn test
       env:
         CI: true
