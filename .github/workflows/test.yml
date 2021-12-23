@@ -22,6 +22,6 @@ jobs:
       run: yarn
 
     - name: Run Jest
-    - run: yarn test
+      run: yarn test
       env:
         CI: true
