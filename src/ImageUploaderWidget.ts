@@ -1,12 +1,18 @@
-/**
- * A class that manage a Image Uploader Widget.
- */
 class ImageUploaderWidget {
-    /**
-     * Creates a new ImageUploaderWidget instance.
-     * @param {HTMLElement} element the root element.
-     */
-    constructor(element) {
+    element: HTMLElement;
+    fileInput: HTMLInputElement;
+    checkboxInput: HTMLInputElement;
+    emptyMarker: HTMLElement;
+    dropLabel: HTMLElement;
+    canDelete: boolean = false;
+    dragging: boolean = false;
+
+    id: string;
+
+    raw: string | null = null;
+    file: File | null = null;
+
+    constructor(element: HTMLElement) {
         this.element = element;
         this.fileInput = element.querySelector('input[type=file]');
         this.checkboxInput = element.querySelector('input[type=checkbox]');
@@ -20,24 +26,13 @@ class ImageUploaderWidget {
             this.dropLabel.setAttribute('for', this.id);
         }
 
-        // bind this to events
-        this.fileChange = this.fileChange.bind(this);
-        this.browseFile = this.browseFile.bind(this);
-        this.previewClick = this.previewClick.bind(this);
-        this.onDragEnter = this.onDragEnter.bind(this);
-        this.onDragOver = this.onDragOver.bind(this);
-        this.onDragLeave = this.onDragLeave.bind(this);
-        this.onDrop = this.onDrop.bind(this);
         // add events
-        this.fileInput.addEventListener('change', this.fileChange);
-        if (this.emptyMarker) {
-            this.emptyMarker.addEventListener('click', this.browseFile);
-        }
+        this.fileInput.addEventListener('change', this.onFileInputChange);
+        this.emptyMarker.addEventListener('click', this.onEmptyMarkerClick);
         this.element.addEventListener('dragenter', this.onDragEnter);
         this.element.addEventListener('dragover', this.onDragOver);
         this.element.addEventListener('dragleave', this.onDragLeave);
         this.element.addEventListener('dragend', this.onDragLeave);
-        this.element.addEventListener('dragexit', this.onDragLeave);
         this.element.addEventListener('drop', this.onDrop);
         // init
         this.raw = element.getAttribute('data-raw');
@@ -45,81 +40,68 @@ class ImageUploaderWidget {
         this.renderWidget();
     }
 
-    onDrop(ev) {
-        ev.preventDefault();
+    onEmptyMarkerClick = () => {
+        this.fileInput.click();
+    }
+
+    onDrop = (e: DragEvent) => {
+        e.preventDefault();
 
         this.dragging = false;
         this.element.classList.remove('drop-zone');
 
-        if (ev.dataTransfer.files.length) {
-            this.fileInput.files = ev.dataTransfer.files;
+        if (e.dataTransfer.files.length) {
+            this.fileInput.files = e.dataTransfer.files;
             this.file = this.fileInput.files[0];
             this.raw = null;
             this.renderWidget();
         }
     }
 
-    onDragEnter(e) {
+    onDragEnter = () => {
         this.dragging = true;
         this.element.classList.add('drop-zone');
     }
 
-    onDragOver(e) {
+    onDragOver = (e: DragEvent) => {
         if (e) {
             e.preventDefault();
         }
     }
     
-    onDragLeave(e) {
-        if (e.relatedTarget && e.relatedTarget.closest('.iuw-root') === this.element) {
+    onDragLeave = (e: DragEvent) => {
+        if (e.relatedTarget && (e.relatedTarget as HTMLElement).closest('.iuw-root') === this.element) {
             return;
         }
         this.dragging = false;
         this.element.classList.remove('drop-zone');
     }
 
-    /**
-     * A method called to open the file browser dialog.
-     */
-    browseFile() {
-        this.fileInput.click();
-    }
-
-    /**
-     * Event called when user clicks on the preview image element.
-     * @param {MouseEvent} e the click mouse event.
-     * @returns undefined.
-     */
-    previewClick(e) {
-        if (e && e.target && e.target.closest('.iuw-delete-icon')) {
-            const element = e.target.closest('.iuw-image-preview');
-            element.parentElement.removeChild(element);
-            this.checkboxInput.checked = true;
-            this.fileInput.value = null;
-            this.file = null;
-            this.raw = null;
-            this.renderWidget();
-            return;
+    onImagePreviewClick = (e: Event) => {
+        if (e && e.target) {
+            const targetElement = e.target as HTMLElement;
+            if (e && e.target && targetElement.closest('.iuw-delete-icon')) {
+                const element = targetElement.closest('.iuw-image-preview');
+                element.parentElement.removeChild(element);
+                this.checkboxInput.checked = true;
+                this.fileInput.value = null;
+                this.file = null;
+                this.raw = null;
+                this.renderWidget();
+                return;
+            }
         }
         this.fileInput.click();
     }
 
-    /**
-     * Event called when the file input file is changed.
-     */
-    fileChange() {
+    onFileInputChange = () => {
         if (this.fileInput.files.length > 0) {
             this.file = this.fileInput.files[0];
         }
         this.renderWidget();
     }
 
-    /**
-     * render a preview image element.
-     * @param {String} url the url of the preview image.
-     * @returns HTMLElement
-     */
-    renderPreview(url) {
+    renderPreview(url: string) {
         const preview = document.createElement('div');
         preview.classList.add('iuw-image-preview');
         const img = document.createElement('img');
@@ -134,9 +116,6 @@ class ImageUploaderWidget {
         return preview;
     }
 
-    /**
-     * update the rendered widget.
-     */
     renderWidget() {
         if (!this.file && !this.raw) {
             this.element.classList.remove('non-empty');
@@ -162,25 +141,33 @@ class ImageUploaderWidget {
         }
         Array
             .from(this.element.querySelectorAll('.iuw-image-preview'))
-            .forEach((item) => item.addEventListener('click', this.previewClick));
+            .forEach((item) => item.addEventListener('click', this.onImagePreviewClick));
+    }
+}
+
+declare global {
+    interface Window {
+        django: {
+            jQuery: any;
+        }
     }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     Array
         .from(document.querySelectorAll('.iuw-root'))
-        .map((element) => new ImageUploaderWidget(element));
+        .map((element) => new ImageUploaderWidget(element as HTMLElement));
 
     if (window && window.django && window.django.jQuery) {
-        $ = window.django.jQuery;
+        const $ = window.django.jQuery;
         
-        $(document).on('formset:added', (_, row) => {
+        $(document).on('formset:added', (_: Event, row: HTMLElement[]) => {
             if (!row.length) {
                 return;
             }
             Array
                 .from(row[0].querySelectorAll('.iuw-root'))
-                .map((element) => new ImageUploaderWidget(element));
+                .map((element) => new ImageUploaderWidget(element as HTMLElement));
         });
     }
 });

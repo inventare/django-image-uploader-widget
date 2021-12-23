@@ -22,5 +22,8 @@
     "jest": "^27.4.5",
     "pump": "^3.0.0",
     "sass": "^1.45.1"
+  },
+  "dependencies": {
+    "@babel/preset-typescript": "^7.16.5"
   }
 }

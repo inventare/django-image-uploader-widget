@@ -11,7 +11,7 @@ const sass = require('gulp-sass')(require('sass'));
 // package.json
 const version = require('./package.json').version;
 
-const JS_WIDGET_INPUT = './src/ImageUploaderWidget.js';
+const JS_WIDGET_INPUT = './src/ImageUploaderWidget.ts';
 const JS_WIDGET_NAME = 'image-uploader.js';
 const JS_WIDGET_NAME_MIN = 'image-uploader.min.js';
 const JS_OUTPUT = './image_uploader_widget/static/admin/js';
@@ -39,14 +39,14 @@ function onError(err) {
 gulp.task('js', (callback) => {
     pump([
         gulp.src(JS_WIDGET_INPUT),
-        concat(JS_WIDGET_NAME),
         babel({
-            presets: ['@babel/env'],
+            presets: ['@babel/preset-env', '@babel/preset-typescript'],
             plugins: [
                 'babel-plugin-remove-import-export',
                 '@babel/plugin-proposal-class-properties',
             ]
         }),
+        rename(JS_WIDGET_NAME),
         header(HEADER),
         gulp.dest(JS_OUTPUT),
         uglify().on('error', onError),
