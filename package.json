@@ -5,6 +5,9 @@
   "repository": "https://github.com/EduardoJM/django-image-uploader-widget.git",
   "author": "Eduardo Oliveira <eduardo_y05@outlook.com>",
   "license": "MIT",
+  "scripts": {
+    "test": "jest"
+  },
   "devDependencies": {
     "@babel/core": "^7.16.5",
     "@babel/plugin-proposal-class-properties": "^7.16.5",
