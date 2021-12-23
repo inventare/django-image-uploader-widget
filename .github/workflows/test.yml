@@ -1,13 +1,10 @@
 name: Test Widget Features
 
-on:
-  pull_request:
-    branches:
-      - main
-      - develop
+on: pull_request
 
 jobs:
-  build:
+  code:
+    name: Test code
     runs-on: ubuntu-latest
 
     steps:
@@ -16,7 +13,7 @@ jobs:
     - name: Install Node.js
       uses: actions/setup-node@v1
       with:
-        node-version: 12.x
+        node-version: 12
     
     - run: yarn
 
