@@ -12,19 +12,70 @@ class ImageUploaderWidget {
         this.checkboxInput = element.querySelector('input[type=checkbox]');
         this.emptyMarker = this.element.querySelector('.iuw-empty');
         this.canDelete = element.getAttribute('data-candelete') === 'true';
+        this.dragging = false;
+        this.id = this.fileInput.getAttribute('id');
+        this.dropLabel = this.element.querySelector('.drop-label');
+        
+        if (this.dropLabel) {
+            this.dropLabel.setAttribute('for', this.id);
+        }
 
-        // add events
+        // bind this to events
         this.fileChange = this.fileChange.bind(this);
         this.browseFile = this.browseFile.bind(this);
         this.previewClick = this.previewClick.bind(this);
+        this.onDragEnter = this.onDragEnter.bind(this);
+        this.onDragOver = this.onDragOver.bind(this);
+        this.onDragLeave = this.onDragLeave.bind(this);
+        this.onDrop = this.onDrop.bind(this);
+        // add events
         this.fileInput.addEventListener('change', this.fileChange);
         if (this.emptyMarker) {
             this.emptyMarker.addEventListener('click', this.browseFile);
         }
+        this.element.addEventListener('dragenter', this.onDragEnter);
+        this.element.addEventListener('dragover', this.onDragOver);
+        this.element.addEventListener('dragleave', this.onDragLeave);
+        this.element.addEventListener('dragend', this.onDragLeave);
+        this.element.addEventListener('dragexit', this.onDragLeave);
+        this.element.addEventListener('drop', this.onDrop);
         // init
         this.raw = element.getAttribute('data-raw');
         this.file = null;
         this.renderWidget();
+    }
+
+    onDrop(ev) {
+        ev.preventDefault();
+
+        this.dragging = false;
+        this.element.classList.remove('drop-zone');
+
+        if (ev.dataTransfer.files.length) {
+            this.fileInput.files = ev.dataTransfer.files;
+            this.file = this.fileInput.files[0];
+            this.raw = null;
+            this.renderWidget();
+        }
+    }
+
+    onDragEnter(e) {
+        this.dragging = true;
+        this.element.classList.add('drop-zone');
+    }
+
+    onDragOver(e) {
+        if (e) {
+            e.preventDefault();
+        }
+    }
+    
+    onDragLeave(e) {
+        if (e.relatedTarget && e.relatedTarget.closest('.iuw-root') === this.element) {
+            return;
+        }
+        this.dragging = false;
+        this.element.classList.remove('drop-zone');
     }
 
     /**

@@ -60,6 +60,11 @@ body {
                 display: flex;
             }
         }
+        &.drop-zone {
+            .iuw-empty {
+                display: none;
+            }
+        }
 
         .iuw-delete-icon {
             width: 32px;
@@ -75,6 +80,31 @@ body {
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+
+        .iuw-drop-label {
+            position: absolute;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+
+            background: red;
+
+            display: none;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+
+            z-index: 50;
+        }
+
+        &.drop-zone {
+            background: blue;
+
+            .iuw-drop-label {
+                display: flex;
+            }
         }
     }
 
