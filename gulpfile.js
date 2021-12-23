@@ -12,9 +12,11 @@ const sass = require('gulp-sass')(require('sass'));
 const version = require('./package.json').version;
 
 const JS_WIDGET_INPUT = './src/ImageUploaderWidget.js';
-const JS_WIDGET_NAME = 'image-comparer.js';
-const JS_WIDGET_NAME_MIN = 'image-comparer.min.js';
+const JS_WIDGET_NAME = 'image-uploader.js';
+const JS_WIDGET_NAME_MIN = 'image-uploader.min.js';
 const JS_OUTPUT = './image_uploader_widget/static/admin/js';
+const SCSS_NAME = 'image-uploader.css';
+const SCSS_NAME_MIN = 'image-uploader.min.css';
 const SCSS_INPUT = './src/ImageUploaderWidget.scss';
 const SCSS_OUTPUT = './image_uploader_widget/static/admin/css';
 const HEADER = [
@@ -53,3 +55,32 @@ gulp.task('js', (callback) => {
         gulp.dest(JS_OUTPUT),
     ], callback);
 });
+
+gulp.task('scss-expanded', (callback) => {
+    pump([
+        gulp.src(SCSS_INPUT),
+        sass({
+            outputStyle: 'expanded'
+        }).on('error', sass.logError),
+        header(HEADER),
+        rename(SCSS_NAME),
+        gulp.dest(SCSS_OUTPUT),
+    ], callback);
+});
+
+gulp.task('scss-compressed', (callback) => {
+    pump([
+        gulp.src(SCSS_INPUT),
+        sass({
+            outputStyle: 'compressed',
+        }).on('error', sass.logError),
+        header(HEADER),
+        rename(SCSS_NAME_MIN),
+        gulp.dest(SCSS_OUTPUT),
+    ], callback);
+});
+
+gulp.task('scss', gulp.series([
+    'scss-expanded',
+    'scss-compressed'
+]));
