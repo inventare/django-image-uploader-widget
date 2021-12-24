@@ -9,63 +9,6 @@
                  */
                 elements: $(this),
                 /**
-                 * Update the indexes in a item.
-                 * @param {HTMLElement} el The element to update indexes.
-                 * @param {String} prefix The item prefix.
-                 * @param {Number} ndx The item index.
-                 */
-                updateElementIndex: function(el, prefix, ndx) {
-                    const id_regex = new RegExp("(" + prefix + "-(\\d+|__prefix__))");
-                    const replacement = prefix + "-" + ndx;
-                    if ($(el).prop("for")) {
-                        $(el).prop("for", $(el).prop("for").replace(id_regex, replacement));
-                    }
-                    if (el.id) {
-                        id = el.id.replace(id_regex, replacement)
-                        el.id = id;
-                    }
-                    if (el.name) {
-                        el.name = el.name.replace(id_regex, replacement);
-                    }
-                },
-                /**
-                 * Update all item indexes in a root element.
-                 * @param {HTMLElement} root The root html element.
-                 */
-                updateAllIndexes: function(root) {
-                    var items = root.find('.inline-related:not(.empty-form)');
-                    var prefix = root.data('prefix');
-                    var i;
-                    for (i = 0; i < items.length; i += 1) {
-                        this.updateElementIndex($(items).get(i), prefix, i);
-                        var that = this;
-                        $(items.get(i)).find("*").each(function(){
-                            that.updateElementIndex($(this).get(0), prefix, i);
-                        });
-                    }
-                    root.data('next', i);
-                    var totalForms = root.find('#id_' + prefix + '-TOTAL_FORMS');
-                    totalForms.val(i);
-                    var maxForms = root.find('#id_' + prefix + '-MAX_NUM_FORMS');
-                    if ((maxForms.val() === '') || (maxForms.val() - i) > 0) {
-                        root.find('.iuw-add-image-btn').addClass('visible-by-number');
-                    } else {
-                        root.find('.iuw-add-image-btn').removeClass('visible-by-number');
-                    }
-                },
-                /**
-                 * Check if we have any item in the root and marker the root with a class.
-                 * @param {HTMLElement} root The root element to check if we have any item.
-                 */
-                updateEmpty: function(root) {
-                    var childs = $(root).find('.inline-related:not(.empty-form):not(.deleted)');
-                    if (childs.length > 0) {
-                        root.addClass('non-empty');
-                    } else {
-                        root.removeClass('non-empty');
-                    }
-                },
-                /**
                  * Item click event Handler.
                  * @param {Event} e The event object.
                  */
@@ -122,29 +65,6 @@
                     fileInput.on('change', this.fileInputChange);
                 },
                 /**
-                 * Adjust inline related element to this script standards.
-                 * @param {HTMLElement} element The '.inline-related' element.
-                 */
-                adjustInlineRelated: function(element) {
-                    var hiddenInputs = $(element).find('input[type=hidden]');
-                    var rawImage = $(element).find('p.file-upload a');
-                    var fileInput = $(element).find('input[type=file]');
-                    var checkBoxInput = $(element).find('input[type=checkbox]');
-                    if (rawImage) {
-                        $(element).attr('data-raw', rawImage.attr('href'));
-                    }
-                    checkBoxInput.remove();
-                    hiddenInputs.remove();
-                    fileInput.remove();
-                    $(element).html('');
-                    $(element).append(hiddenInputs);
-                    $(element).append(fileInput);
-                    $(element).append(checkBoxInput);
-                    if ($(element).attr('data-raw')) {
-                        this.appendItem($(element), $(element).attr('data-raw'));
-                    }
-                },
-                /**
                  * Add image event handler.
                  */
                 handleAddImage: function(){
@@ -178,12 +98,8 @@
                 init: function() {
                     const that = this;
                     this.elements.each(function(index, element){
-                        var data = $(element).closest('.inline-group').data();
-                        $(element).data('prefix', data.inlineFormset.options.prefix);
-                        that.updateEmpty($(element));
-                        that.updateAllIndexes($(element));
 
-                        $(element).find('.inline-related').each(function(index, related){
+                        $(element).find().each(function(index, related){
                             that.adjustInlineRelated(related);
                         });
                         $(element).find('.iuw-add-image-btn').on('click', that.handleAddImage);
@@ -196,8 +112,5 @@
             return handler;
         };
 
-        $(document).ready(function(){
-            $('.iuw-inline-root').inlineImageUploader();
-        });
     });
 }

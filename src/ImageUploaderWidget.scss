@@ -185,12 +185,14 @@ body {
         }
 
         &.non-empty {
-            &:not(.visible-by-number) {
-                display: none;
-            }
+            .iuw-add-image-btn {
+                &:not(.visible-by-number) {
+                    display: none;
+                }
 
-            &.visible-by-number {
-                display: flex;
+                &.visible-by-number {
+                    display: flex;
+                }
             }
         }
         &:not(.non-empty) {
