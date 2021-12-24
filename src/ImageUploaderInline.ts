@@ -113,11 +113,40 @@ class ImageUploaderInline {
     }
 
     onRelatedItemClick = (e: Event) => {
-        console.log(e);
+        const target = e.target as HTMLElement;
+        const item = target.closest('.inline-related');
+        if (target.classList.contains('iuw-delete-icon')) {
+            if (item.getAttribute('data-raw')) {
+                item.classList.add('deleted');
+                const checkboxInput = item.querySelector('input[type=checkbox]') as HTMLInputElement;
+                checkboxInput.checked = true;
+            } else {
+                item.parentElement.removeChild(item);
+            }
+            this.updateEmpty();
+            return;
+        }
+        var fileInput = item.querySelector('input[type=file]') as HTMLInputElement;
+        if (e.target === fileInput) {
+            return;
+        }
+        fileInput.click();
     }
 
     onFileInputChange = (e: Event) => {
-        console.log(e);
+        const target = e.target as HTMLElement;
+        if (target.tagName !== 'INPUT') {
+            return;
+        }
+        const fileInput = target as HTMLInputElement;
+        var files = fileInput.files;
+        if (files.length <= 0) {
+            return;
+        }
+        const imgTag = target.closest('.inline-related').querySelector('img');
+        if (imgTag) {
+            imgTag.src = URL.createObjectURL(files[0]);
+        }
     }
 
     appendItem(element: Element, url: string) {
