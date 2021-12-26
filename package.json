@@ -1,6 +1,6 @@
 {
   "name": "django-image-uploader-widget",
-  "version": "0.0.7",
+  "version": "0.1.0",
   "main": "index.js",
   "repository": "https://github.com/EduardoJM/django-image-uploader-widget.git",
   "author": "Eduardo Oliveira <eduardo_y05@outlook.com>",
