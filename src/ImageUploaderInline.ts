@@ -155,9 +155,12 @@ class ImageUploaderInline {
     }
 
     onRelatedItemClick = (e: Event) => {
+        if (!e || !e.target) {
+            return;
+        }
         const target = e.target as HTMLElement;
         const item = target.closest('.inline-related');
-        if (target.classList.contains('iuw-delete-icon')) {
+        if (target.closest('.iuw-delete-icon')) {
             if (item.getAttribute('data-raw')) {
                 item.classList.add('deleted');
                 const checkboxInput = item.querySelector('input[type=checkbox]') as HTMLInputElement;
@@ -197,7 +200,7 @@ class ImageUploaderInline {
         if (related.getAttribute('data-candelete') === 'true') {
             delete_icon = document.createElement('span');
             delete_icon.classList.add('iuw-delete-icon');
-            delete_icon.innerHTML = 'X';
+            delete_icon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" width="100%" height="100%"><path xmlns="http://www.w3.org/2000/svg" d="m289.94 256 95-95A24 24 0 0 0 351 127l-95 95-95-95a24 24 0 0 0-34 34l95 95-95 95a24 24 0 1 0 34 34l95-95 95 95a24 24 0 0 0 34-34z"></path></svg>';
         }
         const img = document.createElement('img');
         img.src = url;

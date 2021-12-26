@@ -20,5 +20,5 @@ msgstr "Solte suas imagens aqui ou clique para selecionar..."
 msgid "Drop your images here..."
 msgstr "Solte suas imagens aqui..."
 
-msgid "Add"
-msgstr "Adicionar"
+msgid "Add image"
+msgstr "Adicionar Imagem"
