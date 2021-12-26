@@ -14,6 +14,9 @@ const version = require('./package.json').version;
 const JS_WIDGET_INPUT = './src/ImageUploaderWidget.ts';
 const JS_WIDGET_NAME = 'image-uploader.js';
 const JS_WIDGET_NAME_MIN = 'image-uploader.min.js';
+const JS_INLINE_INPUT = './src/ImageUploaderInline.ts';
+const JS_INLINE_NAME = 'image-uploader-inline.js';
+const JS_INLINE_NAME_MIN = 'image-uploader-inline.min.js';
 const JS_OUTPUT = './image_uploader_widget/static/admin/js';
 const SCSS_NAME = 'image-uploader.css';
 const SCSS_NAME_MIN = 'image-uploader.min.css';
@@ -36,7 +39,7 @@ function onError(err) {
     this.emit('end');
 }
 
-gulp.task('js', (callback) => {
+gulp.task('js:widget', (callback) => {
     pump([
         gulp.src(JS_WIDGET_INPUT),
         babel({
@@ -51,6 +54,26 @@ gulp.task('js', (callback) => {
         gulp.dest(JS_OUTPUT),
         uglify().on('error', onError),
         rename(JS_WIDGET_NAME_MIN),
+        header(HEADER),
+        gulp.dest(JS_OUTPUT),
+    ], callback);
+});
+
+gulp.task('js:inline', (callback) => {
+    pump([
+        gulp.src(JS_INLINE_INPUT),
+        babel({
+            presets: ['@babel/preset-env', '@babel/preset-typescript'],
+            plugins: [
+                'babel-plugin-remove-import-export',
+                '@babel/plugin-proposal-class-properties',
+            ]
+        }),
+        rename(JS_INLINE_NAME),
+        header(HEADER),
+        gulp.dest(JS_OUTPUT),
+        uglify().on('error', onError),
+        rename(JS_INLINE_NAME_MIN),
         header(HEADER),
         gulp.dest(JS_OUTPUT),
     ], callback);

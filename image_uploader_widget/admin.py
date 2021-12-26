@@ -9,10 +9,9 @@ class ImageUploaderInline(admin.StackedInline):
     @property
     def media(self):
         extra = '' if settings.DEBUG else '.min'
-        js = ['vendor/jquery/jquery%s.js' % extra, 'jquery.init.js', 'image_uploader_inline.js']
         return forms.Media(
             js = [
-                'admin/js/%s' % url for url in js
+                'admin/js/image-uploader-inline%s.js' % extra
             ],
             css = {
                 'screen': [

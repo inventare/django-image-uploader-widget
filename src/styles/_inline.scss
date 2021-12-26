@@ -1,0 +1,117 @@
+.iuw-inline-root, .iuw-inline-root * {
+    box-sizing: border-box;
+}
+
+.iuw-inline-root {
+    /* base widget */
+    @include make-root();
+
+    /* empty label */
+    .iuw-empty {
+        @include make-empty();
+    }
+    &:not(.non-empty) {
+        .iuw-empty {
+            height: 100%;
+            opacity: 1;
+        }
+    }
+    &.drop-zone {
+        .iuw-empty {
+            height: 0;
+            opacity: 0;
+        }
+    }
+
+    /* drop label */
+    .iuw-drop-label {
+        @include make-drop-label();
+    }
+    &.drop-zone {
+        .iuw-drop-label {
+            height: 100%;
+            opacity: 1;
+        }
+    }
+
+    /* image preview */
+    .inline-related {
+        @include make-image-preview();
+
+        &.empty-form {
+            display: none;
+        }
+        &.deleted {
+            display: none;
+        }
+    }
+
+    /* images carousel */
+    > div {
+        height: 100%;
+        width: auto;
+
+        @include flex-row-stretch();
+    }
+
+    /* add button */
+    .iuw-add-image-btn {
+        /* shape */
+        border-radius: 5px;
+        padding: 15px;
+        width: 160px;
+        max-width: 160px;
+        
+        /* styles */
+        border: 1px solid var(--iuw-image-preview-border);
+        box-shadow: 0 0 4px 0 var(--iuw-image-preview-shadow);
+        background: var(--iuw-add-image-background);
+        color: var(--iuw-add-image-color);
+        
+        /* display */
+        @include flex-column-center-center();
+        display: none;
+
+        /* behaviour */
+        cursor: pointer;
+        
+        svg {
+            fill: var(--iuw-add-image-color);
+            margin-bottom: 30px;
+            width: 60px;
+            height: auto;
+            transition: margin 0.3s ease, width 0.3s ease, height 0.3s ease;
+        }
+
+        &:hover {
+            svg {
+                margin-bottom: 10px;
+                width: 80px;
+                height: auto;
+            }
+        }
+
+        > span {
+            font-weight: bold;
+            text-align: center;
+            font-size: 1rem;
+        }
+    }
+
+    &.non-empty {
+        .iuw-add-image-btn {
+            &:not(.visible-by-number) {
+                display: none;
+            }
+
+            &.visible-by-number {
+                display: flex;
+            }
+        }
+    }
+    &:not(.non-empty) {
+        .iuw-add-image-btn {
+            display: none;
+        }
+    }
+}

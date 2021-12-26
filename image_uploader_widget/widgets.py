@@ -3,7 +3,7 @@ from django.forms import widgets
 from django.conf import settings
 
 class ImageUploaderWidget(widgets.ClearableFileInput):
-    template_name = 'widgets/image_uploader_widget.html'
+    template_name = 'admin/widgets/image_uploader_widget.html'
     non_file_text = ''
 
     def __init__(self, non_file_text = 'Click here to select a file!', attrs = None):
