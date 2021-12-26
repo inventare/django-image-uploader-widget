@@ -1,10 +1,13 @@
 body {
+    --iuw-border-color: #CCC;
+    --iuw-empty-color: #AAA;
+    --iuw-drop-color: #AAA;
+
     --iuw-background: #ffffff;
     --iuw-color: #222;
-    --iuw-border-color: #222;
     --iuw-item-background-color: #CCC;
     --iuw-item-foreground-color: #222;
-
+    
     @media (prefers-color-scheme: dark) {
         --iuw-background: #121212;
         --iuw-color: #FFF;
@@ -23,7 +26,7 @@ body {
         padding: 5px;
 
         background-color: var(--iuw-background);
-        border: 1px solid var(--iuw-border-color);
+        border: 3px dashed var(--iuw-border-color);
         color: var(--iuw-color);
 
         position: relative;
@@ -50,10 +53,17 @@ body {
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            
+            text-align: center;
+            font-size: 1.3em;
+            font-weight: bold;
+            letter-spacing: 0.05em;
 
             cursor: pointer;
 
             display: none;
+
+            color: var(--iuw-empty-color);
         }
         &:not(.non-empty) {
             .iuw-empty {
