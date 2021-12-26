@@ -1,0 +1,24 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: image_uploader_widget\n"
+"Report-Msgid-Bugs-To: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: pt_BR\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+msgid "Drop your image here or click to select one..."
+msgstr "Solte sua imagem aqui ou clique para selecionar uma..."
+
+msgid "Drop your image here..."
+msgstr "Solte sua imagem aqui..."
+
+msgid "Drop your images here or click to select..."
+msgstr "Solte suas imagens aqui ou clique para selecionar..."
+
+msgid "Drop your images here..."
+msgstr "Solte suas imagens aqui..."
+
+msgid "Add image"
+msgstr "Adicionar Imagem"

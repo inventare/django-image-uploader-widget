@@ -94,3 +94,4 @@ test('[Required Widget] must be possible to upload file and widget must be rende
     expect(img).not.toBeNull();
     expect(img.src).toBe('test::/file.png');
 });
+

@@ -1,0 +1,16 @@
+body {
+    --iuw-background: #FFF;
+    --iuw-border-color: #CCC;
+    --iuw-color: #333;
+    --iuw-placeholder-text-color: #AAA;
+    --iuw-placeholder-destak-color: #417690;
+    --iuw-dropzone-background: rgba(255, 255, 255, 0.8);
+    --iuw-image-preview-border: #BFBFBF;
+    --iuw-image-preview-shadow: rgba(0, 0, 0, 0.3);
+    --iuw-add-image-background: #EFEFEF;
+    --iuw-add-image-color: #AAA;
+
+    @media (prefers-color-scheme: dark) {
+        
+    }
+}
