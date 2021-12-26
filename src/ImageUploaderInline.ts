@@ -13,6 +13,7 @@ class ImageUploaderInline {
     inlineFormset: ImageUploaderInlineFormSet;
     tempFileInput: HTMLInputElement | null = null;
     next: number = 0;
+    dragging: boolean = false;
 
     constructor(element: HTMLElement) {
         this.element = element;
@@ -30,6 +31,44 @@ class ImageUploaderInline {
         Array
             .from(this.element.querySelectorAll('.iuw-add-image-btn, .iuw-empty'))
             .forEach((item) => item.addEventListener('click', this.onChooseAddImageAreaClick));
+        
+        this.element.addEventListener('dragenter', this.onDragEnter);
+        this.element.addEventListener('dragover', this.onDragOver);
+        this.element.addEventListener('dragleave', this.onDragLeave);
+        this.element.addEventListener('dragend', this.onDragLeave);
+        this.element.addEventListener('drop', this.onDrop);
+    }
+
+    onDrop = (e: DragEvent) => {
+        e.preventDefault();
+
+        this.dragging = false;
+        this.element.classList.remove('drop-zone');
+
+        if (e.dataTransfer.files.length) {
+            for (const file of e.dataTransfer.files) {
+                this.addFile(file);
+            }
+        }
+    }
+
+    onDragEnter = () => {
+        this.dragging = true;
+        this.element.classList.add('drop-zone');
+    }
+
+    onDragOver = (e: DragEvent) => {
+        if (e) {
+            e.preventDefault();
+        }
+    }
+    
+    onDragLeave = (e: DragEvent) => {
+        if (e.relatedTarget && (e.relatedTarget as HTMLElement).closest('.iuw-inline-root') === this.element) {
+            return;
+        }
+        this.dragging = false;
+        this.element.classList.remove('drop-zone');
     }
 
     updateEmpty() {
@@ -99,7 +138,10 @@ class ImageUploaderInline {
                 return item;
             });
         // get raw image url
-        const rawImage = document.querySelector('p.file-upload a');
+        let rawImage = document.querySelector('p.file-upload a');
+        if (element.classList.contains('empty-form')) {
+            rawImage = null;
+        }
         if (rawImage) {
             element.setAttribute('data-raw', rawImage.getAttribute('href'));
         }
@@ -180,6 +222,10 @@ class ImageUploaderInline {
         this.tempFileInput.parentElement.removeChild(this.tempFileInput);
         this.tempFileInput = null;
         
+        this.addFile(filesList[0]);
+    }
+
+    addFile(file: File) {
         const template = this.element.querySelector('.inline-related.empty-form');
         if (!template) {
             return;
@@ -192,10 +238,13 @@ class ImageUploaderInline {
         
         template.parentElement.insertBefore(row, template);
 
-        const rowFileInput = row.querySelector('input[type=file]') as HTMLInputElement;
-        rowFileInput.files = filesList;
+        const dataTransferList = new DataTransfer();
+        dataTransferList.items.add(file);
 
-        this.appendItem(row, URL.createObjectURL(filesList[0]));
+        const rowFileInput = row.querySelector('input[type=file]') as HTMLInputElement;
+        rowFileInput.files = dataTransferList.files;
+
+        this.appendItem(row, URL.createObjectURL(file));
         this.updateEmpty();
         this.updateAllIndexes();
     }
