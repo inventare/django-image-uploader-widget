@@ -1,0 +1,37 @@
+name: Build TypeScript and SCSS Code
+
+on: 'pull_request'
+
+jobs:
+  code:
+    name: Build TypeScript and SCSS
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: Install Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12
+    
+    - name: Install dependencies
+      run: yarn
+
+    - name: Run build Widget JavaScript
+      run: yarn gulp js:widget
+      env:
+        CI: true
+
+    - name: Run build Inline JavaScript
+      run: yarn gulp js:inline
+      env:
+        CI: true
+
+    - name: Run build SCSS
+      run: yarn gulp scss
+      env:
+        CI: true
