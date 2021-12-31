@@ -79,6 +79,7 @@ class ImageUploaderWidget {
     }
 
     closePreviewModal = () => {
+        document.body.style.overflow = 'auto';
         const modal = document.getElementById('iuw-modal-element');
         if (modal) {
             modal.classList.remove('visible');
@@ -140,6 +141,7 @@ class ImageUploaderWidget {
                     setTimeout(() => {
                         modal.classList.add('visible');
                         modal.classList.remove('hide');
+                        document.body.style.overflow = 'hidden';
                     }, 50);
                     return;
                 }
