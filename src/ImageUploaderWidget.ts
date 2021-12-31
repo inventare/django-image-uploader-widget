@@ -78,25 +78,39 @@ class ImageUploaderWidget {
         this.element.classList.remove('drop-zone');
     }
 
-    onModalClick = (e: Event) => {
-        console.log(e);
+    closePreviewModal = () => {
+        const modal = document.getElementById('iuw-modal-element');
+        if (modal) {
+            modal.classList.remove('visible');
+            modal.classList.add('hide');
+            setTimeout(() => {
+                modal.parentElement.removeChild(modal);
+            }, 300);
+        }
     }
 
-    getOrCreatePreviewModal = (image: HTMLImageElement) : HTMLElement => {
-        let modal = document.getElementById('iuw-modal-element');
-        if (modal) {
-            const preview = modal.querySelector('.iuw-modal-image-preview');
-            preview.innerHTML = '';
-            preview.appendChild(image);
-            return modal;
+    onModalClick = (e: Event) => {
+        if (e && e.target) {
+            const element = e.target as HTMLElement;
+            if (element.closest('img.iuw-modal-image-preview-item')) {
+                return;
+            }
         }
-        modal = document.createElement('div');
+        this.closePreviewModal();
+    }
+
+    createPreviewModal = (image: HTMLImageElement) : HTMLElement => {
+        image.className = '';
+        image.classList.add('iuw-modal-image-preview-item');
+
+        const modal = document.createElement('div');
         modal.id = 'iuw-modal-element';
-        modal.classList.add('iuw-modal');
-        modal.style.display = 'none';
+        modal.classList.add('iuw-modal', 'hide');
+        modal.addEventListener('click', this.onModalClick);
         
         const preview = document.createElement('div');
         preview.classList.add('iuw-modal-image-preview');
+        preview.innerHTML = '<span class="iuw-modal-close"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" width="100%" height="100%"><path xmlns="http://www.w3.org/2000/svg" d="m289.94 256 95-95A24 24 0 0 0 351 127l-95 95-95-95a24 24 0 0 0-34 34l95 95-95 95a24 24 0 1 0 34 34l95-95 95 95a24 24 0 0 0 34-34z"></path></svg></span>';
         preview.appendChild(image);
         modal.appendChild(preview);
         
@@ -122,8 +136,11 @@ class ImageUploaderWidget {
                 let image = element.querySelector('img');
                 if (image) {
                     image = image.cloneNode(true) as HTMLImageElement;
-                    const modal = this.getOrCreatePreviewModal(image);
-                    modal.style.display = 'block';
+                    const modal = this.createPreviewModal(image);
+                    setTimeout(() => {
+                        modal.classList.add('visible');
+                        modal.classList.remove('hide');
+                    }, 50);
                     return;
                 }
             }
