@@ -110,6 +110,7 @@ test('[Widget] widget instantiated with "data-raw" must be have a image-preview'
         } else {
             expect(previewItem.querySelector('.iuw-delete-icon')).not.toBeNull();
         }
+        expect(previewItem.querySelector('.iuw-preview-icon')).not.toBeNull();
     }, RAW_URL);
 });
 
@@ -120,11 +121,139 @@ test('[Widget] click on empty label must be call click on file input', async () 
         const clickFn = jest.fn();
         fileInput.click = clickFn;
 
-        userEvent.click(emptyMarker);
-
-        expect(clickFn).toBeCalledTimes(1);
+        if (emptyMarker) {
+            userEvent.click(emptyMarker);
+            expect(clickFn).toBeCalledTimes(1);
+        }
     });
 });
+
+test('[Widget] click on the preview button must be open a modal', async () => {
+    await testTwoWidgets(async (widget, element, required) => {
+        let modal = document.getElementById('iuw-modal-element');
+        // no modal exists, when not clicked
+        expect(modal).toBeNull();
+        // get and click in the preview button
+        const previewButton = element.querySelector('.iuw-preview-icon');
+        expect(previewButton).not.toBeNull();
+        
+        if (!previewButton) { // type check error only
+            return;
+        }
+        userEvent.click(previewButton);
+        // get the modal and the image element
+        modal = document.getElementById('iuw-modal-element');
+        const image = modal?.querySelector('img');
+        // await the modal open time
+        await new Promise((resolve) => setTimeout(() => resolve(null), 100));
+        // modal and image not be null
+        expect(modal).not.toBeNull();
+        expect(image).not.toBeNull();
+        // modal visible class
+        expect(modal?.classList.contains('visible')).toBeTruthy();
+        // modal image src
+        expect(image?.src).toBe(RAW_URL);
+        // modal is not children of a iuw-root component
+        expect(modal?.closest('.iuw-root')).toBeNull();
+    }, RAW_URL);
+});
+
+test('[Widget] when the modal is open, click in the image must not close the modal', async () => {
+    await testTwoWidgets(async (widget, element, required) => {
+        const previewButton = element.querySelector('.iuw-preview-icon');
+        expect(previewButton).not.toBeNull();
+        if (!previewButton) { // type check error only
+            return;
+        }
+        userEvent.click(previewButton);
+        // await full modal open time
+        await new Promise((resolve) => setTimeout(() => resolve(null), 600));
+        // get the modal and the image
+        let modal = document.getElementById('iuw-modal-element');
+        const image = modal?.querySelector('img');
+        expect(modal).not.toBeNull();
+        expect(image).not.toBeNull();
+        if (!modal || !image) { // type check error only
+            return;
+        }
+        
+        userEvent.click(image);
+
+        // await full modal close time
+        await new Promise((resolve) => setTimeout(() => resolve(null), 600));
+        
+        modal = document.getElementById('iuw-modal-element');
+        expect(modal).not.toBeNull();
+        if (!modal) { // type check error only
+            return;
+        }
+        expect(modal?.classList.contains('visible')).toBeTruthy();
+        expect(modal?.classList.contains('hide')).toBeFalsy();
+    }, RAW_URL);
+});
+
+test('[Widget] when the modal is open, click in the modal close icon must be close the modal', async () => {
+    await testTwoWidgets(async (widget, element, required) => {
+        const previewButton = element.querySelector('.iuw-preview-icon');
+        expect(previewButton).not.toBeNull();
+        if (!previewButton) { // type check error only
+            return;
+        }
+        userEvent.click(previewButton);
+        // await full modal open time
+        await new Promise((resolve) => setTimeout(() => resolve(null), 600));
+        // get the modal and the image
+        let modal = document.getElementById('iuw-modal-element');
+        const closeButton = modal?.querySelector('.iuw-modal-close');
+        expect(modal).not.toBeNull();
+        expect(closeButton).not.toBeNull();
+        if (!modal || !closeButton) { // type check error only
+            return;
+        }
+        
+        userEvent.click(closeButton);
+
+        // await 100ms
+        await new Promise((resolve) => setTimeout(() => resolve(null), 100));
+
+        modal = document.getElementById('iuw-modal-element');
+        expect(modal).not.toBeNull();
+        expect(modal?.classList.contains('hide')).toBeTruthy();
+
+        // await full modal close time
+        await new Promise((resolve) => setTimeout(() => resolve(null), 500));
+        
+        modal = document.getElementById('iuw-modal-element');
+        // modal must be destructed/removed
+        expect(modal).toBeNull();
+    }, RAW_URL);
+});
+
+test('[Widget] when try to instantiate the widget without file input must be thrown a error', async () => {
+    const html = `
+        <div class="iuw-root">
+            <div class="iuw-drop-label">
+                Drop your file here.
+            </div>
+
+            <div class="iuw-empty">
+                The widget is empty.
+            </div>
+        </div>
+    `;
+    document.body.innerHTML = html;
+    const element = document.querySelector('.iuw-root');
+    expect(element).not.toBeNull();
+    if (!element) { // type check only
+        return;
+    }
+    expect(() => {
+        new ImageUploaderWidget(element as HTMLElement);
+    }).toThrowError('no-file-input-found');
+});
+
+
+
 
 /*
 test('[Widget] widget instantiated with "data-raw" must be correctly initialize some variables', () => {
@@ -182,54 +311,7 @@ test('[Widget] preview button for a image preview must be rendered', () => {
 
 
 
-test('[Widget]')
 
-test('[Widget] must be possible to upload file and widget must be rendered with new file', () => {
-    const raw = 'https://via.placeholder.com/350x150';
-    const { element } = renderRequiredWidget(raw);
 
-    let preview = document.querySelector('.iuw-image-preview');
-    expect(preview).not.toBeNull();
-
-    let img = preview.querySelector('img');
-    expect(img).not.toBeNull();
-    expect(img.src).toBe(raw);
-
-    global.URL.createObjectURL = jest.fn(() => 'test::/file.png');
-    const file = new File([IMAGE_DATA], 'file.png', {type : 'image/png'});
-    
-    const fileInput = element.querySelector('input[type=file]') as HTMLInputElement;
-    userEvent.upload(fileInput, file);
-
-    expect(fileInput.files[0]).toStrictEqual(file)
-    expect(fileInput.files.item(0)).toStrictEqual(file)
-    expect(fileInput.files).toHaveLength(1)
-
-    preview = document.querySelector('.iuw-image-preview');
-    expect(preview).not.toBeNull();
-
-    img = preview.querySelector('img');
-    expect(img).not.toBeNull();
-    expect(img.src).toBe('test::/file.png');
-});
-
-test('[Widget] click on preview button must be open a modal', async () => {
-    const raw = 'https://via.placeholder.com/350x150';
-    renderRequiredWidget(raw);
-
-    let modal = document.getElementById('iuw-modal-element');
-    expect(modal).toBeNull();
-
-    const previewButton = document.querySelector('.iuw-preview-icon');
-    userEvent.click(previewButton);
-
-    //await new Promise((resolve) => setTimeout(() => resolve(null), 500));
-    modal = document.getElementById('iuw-modal-element');
-    const image = modal.querySelector('img');
-
-    expect(modal).not.toBeNull();
-    expect(image).not.toBeNull();
-    expect(image.src).toEqual(raw);
-});
 
 */
