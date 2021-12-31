@@ -2,7 +2,7 @@ class ImageUploaderWidget {
     element: HTMLElement;
     fileInput: HTMLInputElement;
     checkboxInput: HTMLInputElement | null;
-    emptyMarker: HTMLElement;
+    emptyMarker: HTMLElement | null;
     canDelete: boolean = false;
     dragging: boolean = false;
     canPreview: boolean = true;
@@ -14,22 +14,20 @@ class ImageUploaderWidget {
         this.element = element;
         const fileInput = element.querySelector<HTMLInputElement>('input[type=file]');
         const checkBoxInput = element.querySelector<HTMLInputElement>('input[type=checkbox]');
-        const emptyMarker = element.querySelector<HTMLElement>('.iuw-empty')
         if (!fileInput) {
             throw new Error('no-file-input-found')
         }
         this.fileInput = fileInput;
         this.checkboxInput = checkBoxInput;
-        if (!emptyMarker) {
-            throw new Error('no-empty-label-found');
-        }
-        this.emptyMarker = emptyMarker;
+        this.emptyMarker = element.querySelector<HTMLElement>('.iuw-empty');
         this.canDelete = element.getAttribute('data-candelete') === 'true';
         this.dragging = false;
 
         // add events
         this.fileInput.addEventListener('change', this.onFileInputChange);
-        this.emptyMarker.addEventListener('click', this.onEmptyMarkerClick);
+        if (this.emptyMarker) {
+            this.emptyMarker.addEventListener('click', this.onEmptyMarkerClick);
+        }
         this.element.addEventListener('dragenter', this.onDragEnter);
         this.element.addEventListener('dragover', this.onDragOver);
         this.element.addEventListener('dragleave', this.onDragLeave);
