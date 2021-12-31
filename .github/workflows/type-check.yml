@@ -1,4 +1,4 @@
-name: Test Widget
+name: Type Check
 
 on: pull_request
 
@@ -21,7 +21,7 @@ jobs:
     - name: Install dependencies
       run: yarn
 
-    - name: Run Jest
-      run: yarn test
+    - name: Type Check with TypeScript
+      run: yarn tsc
       env:
         CI: true
