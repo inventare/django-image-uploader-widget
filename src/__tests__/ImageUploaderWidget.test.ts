@@ -253,65 +253,38 @@ test('[Widget] when try to instantiate the widget without file input must be thr
 });
 
 
+test('[Widget] must be possible to upload file and widget must be rendered with new file', () => {
+    testTwoWidgets((widget, element, required) => {
+        // get preview
+        let preview = element.querySelector('.iuw-image-preview');
+        expect(preview).not.toBeNull();
+        // get preview image
+        let img = preview?.querySelector('img');
+        expect(img).not.toBeNull();
+        expect(img?.src).toBe(RAW_URL);
 
+        // mock the createObjectURL
+        global.URL.createObjectURL = jest.fn(() => 'test::/file.png');
+        const file = new File([IMAGE_DATA], 'file.png', {type : 'image/png'});
 
-/*
-test('[Widget] widget instantiated with "data-raw" must be correctly initialize some variables', () => {
-    const raw = 'https://via.placeholder.com/350x150';
-    {
-        // not required
-        const { widget, element } = renderWidget(raw, false);
+        const fileInput = element.querySelector<HTMLInputElement>('input[type=file]');
+        expect(fileInput).not.toBeNull();
+        if (!fileInput) { // type check error only
+            return;
+        }
+        userEvent.upload(fileInput, file);
+
+        // check the file input changes
+        expect(fileInput?.files).toHaveLength(1);
+        expect(fileInput?.files?.item(0)).toStrictEqual(file);
         
-        expect(widget.raw).toBe(raw);
-        expect(widget.file).toBeNull();
-        expect(widget.id).toBe('image-widget');
-        expect(widget.canDelete).toBe(true);
-        expect(element.classList.contains('non-empty')).toBeTruthy();
-    }
-    {
-        // required
-        const { widget, element } = renderWidget(raw, true);
-        
-        expect(widget.raw).toBe(raw);
-        expect(widget.file).toBeNull();
-        expect(widget.id).toBe('image-widget');
-        expect(widget.canDelete).toBe(false);
-        expect(element.classList.contains('non-empty')).toBeTruthy();
-    }
+        // get the new preview
+        preview = document.querySelector('.iuw-image-preview');
+        expect(preview).not.toBeNull();
+
+        // check the new rendered item
+        img = preview?.querySelector('img');
+        expect(img).not.toBeNull();
+        expect(img?.src).toBe('test::/file.png');
+    }, RAW_URL);
 });
-
-/*
-
-test('[Widget] image preview must be rendered with a img element', () => {
-    const raw = 'https://via.placeholder.com/350x150';
-    renderRequiredWidget(raw);
-
-    const preview = document.querySelector('.iuw-image-preview');
-    expect(preview).not.toBeNull();
-
-    const img = preview.querySelector('img');
-    expect(img).not.toBeNull();
-});
-
-test('[Required Widget] close button for a image preview must not be rendered', () => {
-    const raw = 'https://via.placeholder.com/350x150';
-    renderRequiredWidget(raw);
-
-    const closeButton = document.querySelector('.iuw-delete-icon');
-    expect(closeButton).toBeNull();
-});
-
-test('[Widget] preview button for a image preview must be rendered', () => {
-    const raw = 'https://via.placeholder.com/350x150';
-    renderRequiredWidget(raw);
-
-    const previewButton = document.querySelector('.iuw-preview-icon');
-    expect(previewButton).not.toBeNull();
-});
-
-
-
-
-
-
-*/
