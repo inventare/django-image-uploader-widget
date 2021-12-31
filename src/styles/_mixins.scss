@@ -205,7 +205,8 @@
         object-position: center;
     }
 
-    .iuw-delete-icon {
+    .iuw-delete-icon,
+    .iuw-preview-icon {
         /* shape */
         width: 32px;
         height: 32px;
@@ -237,15 +238,18 @@
             transform: none;
             transition: transform 0.3s ease;
         }
-    }
 
-    &:hover {
-        .iuw-delete-icon {
+        &:hover {
             opacity: 1;
 
             svg {
                 transform: scale(1.3);
             }
         }
+    }
+
+    .iuw-preview-icon:not(.iuw-only-preview) {
+        top: 32px;
+        border-radius: 0;
     }
 }
