@@ -224,8 +224,8 @@ declare global {
 
 document.addEventListener('DOMContentLoaded', () => {
     Array
-        .from(document.querySelectorAll('.iuw-root'))
-        .map((element) => new ImageUploaderWidget(element as HTMLElement));
+        .from(document.querySelectorAll<HTMLElement>('.iuw-root'))
+        .map((element) => new ImageUploaderWidget(element));
 
     if (window && window.django && window.django.jQuery) {
         const $ = window.django.jQuery;
@@ -235,8 +235,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
             Array
-                .from(row[0].querySelectorAll('.iuw-root'))
-                .map((element) => new ImageUploaderWidget(element as HTMLElement));
+                .from(row[0].querySelectorAll<HTMLElement>('.iuw-root'))
+                .map((element) => new ImageUploaderWidget(element));
         });
     }
 });
