@@ -9,8 +9,29 @@ body {
     --iuw-image-preview-shadow: rgba(0, 0, 0, 0.3);
     --iuw-add-image-background: #EFEFEF;
     --iuw-add-image-color: #AAA;
+    
+    --iuw-modal-overlay: rgba(0, 0, 0, 0.6);
+    --iuw-modal-image-background: #FFF;
+    --iuw-modal-closebutton-background: #FFF;
+    --iuw-modal-closebutton-color: #333;
+    --iuw-modal-closebutton-shadow: rgba(0, 0, 0, 0.2);
 
     @media (prefers-color-scheme: dark) {
+        --iuw-background: #121212;
+        --iuw-border-color: #CCC;
+        --iuw-color: #333;
+        --iuw-placeholder-text-color: #AAA;
+        --iuw-placeholder-destak-color: #417690;
+        --iuw-dropzone-background: rgba(0, 0, 0, 0.8);
+        --iuw-image-preview-border: #333;
+        --iuw-image-preview-shadow: rgba(0, 0, 0, 0.3);
+        --iuw-add-image-background: #333;
+        --iuw-add-image-color: #CCC;
         
+        --iuw-modal-overlay: rgba(0, 0, 0, 0.6);
+        --iuw-modal-image-background: #FFF;
+        --iuw-modal-closebutton-background: #FFF;
+        --iuw-modal-closebutton-color: #333;
+        --iuw-modal-closebutton-shadow: rgba(0, 0, 0, 0.2);
     }
 }
