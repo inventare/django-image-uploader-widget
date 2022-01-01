@@ -61,6 +61,8 @@ test('[Widget] widget instantiated must be correctly set variables', async () =>
             expect(widget.checkboxInput).toBeNull();
         } else {
             expect(widget.checkboxInput).not.toBeNull();
+            // no images -> checkbox must be true
+            expect(widget.checkboxInput?.checked).toBeTruthy();
         }
         // element variables
         expect(element.classList.contains('non-empty')).toBeFalsy();
@@ -81,6 +83,7 @@ test('[Widget] widget instantiated with "data-raw" must be correctly set variabl
             expect(widget.checkboxInput).toBeNull();
         } else {
             expect(widget.checkboxInput).not.toBeNull();
+            expect(widget.checkboxInput?.checked).toBeFalsy();
         }
         // element variables
         expect(element.classList.contains('non-empty')).toBeTruthy();
@@ -252,9 +255,14 @@ test('[Widget] when try to instantiate the widget without file input must be thr
     }).toThrowError('no-file-input-found');
 });
 
-
-test('[Widget] must be possible to upload file and widget must be rendered with new file', () => {
+test('[Widget] must be possible to upload file when "data-raw" is set and widget must be rendered with new file', () => {
     testTwoWidgets((widget, element, required) => {
+        // checkbox
+        if (!required) {
+            expect(widget.checkboxInput).not.toBeNull();
+            expect(widget.checkboxInput?.checked).toBeFalsy();
+        }
+
         // get preview
         let preview = element.querySelector('.iuw-image-preview');
         expect(preview).not.toBeNull();
@@ -286,5 +294,55 @@ test('[Widget] must be possible to upload file and widget must be rendered with 
         img = preview?.querySelector('img');
         expect(img).not.toBeNull();
         expect(img?.src).toBe('test::/file.png');
+
+        // checkbox
+        if (!required) {
+            expect(widget.checkboxInput).not.toBeNull();
+            expect(widget.checkboxInput?.checked).toBeFalsy();
+        }
     }, RAW_URL);
+});
+
+test('[Widget] must be possible to upload file when "data-raw" is not set and widget must be rendered with new file', () => {
+    testTwoWidgets((widget, element, required) => {
+        // checkbox
+        if (!required) {
+            expect(widget.checkboxInput).not.toBeNull();
+            expect(widget.checkboxInput?.checked).toBeTruthy();
+        }
+
+        // get preview
+        let preview = element.querySelector('.iuw-image-preview');
+        expect(preview).toBeNull();
+
+        // mock the createObjectURL
+        global.URL.createObjectURL = jest.fn(() => 'test::/file.png');
+        const file = new File([IMAGE_DATA], 'file.png', {type : 'image/png'});
+
+        const fileInput = element.querySelector<HTMLInputElement>('input[type=file]');
+        expect(fileInput).not.toBeNull();
+        if (!fileInput) { // type check error only
+            return;
+        }
+        userEvent.upload(fileInput, file);
+
+        // check the file input changes
+        expect(fileInput?.files).toHaveLength(1);
+        expect(fileInput?.files?.item(0)).toStrictEqual(file);
+        
+        // get the new preview
+        preview = document.querySelector('.iuw-image-preview');
+        expect(preview).not.toBeNull();
+
+        // check the new rendered item
+        const img = preview?.querySelector('img');
+        expect(img).not.toBeNull();
+        expect(img?.src).toBe('test::/file.png');
+
+        // checkbox
+        if (!required) {
+            expect(widget.checkboxInput).not.toBeNull();
+            expect(widget.checkboxInput?.checked).toBeFalsy();
+        }
+    });
 });
