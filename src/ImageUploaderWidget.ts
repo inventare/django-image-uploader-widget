@@ -202,8 +202,7 @@ class ImageUploaderWidget {
         if (this.file) {
             const url = URL.createObjectURL(this.file);
             this.element.appendChild(this.renderPreview(url));
-        }
-        if (this.raw) {
+        } else if (this.raw) {
             this.element.appendChild(this.renderPreview(this.raw));
         }
         Array

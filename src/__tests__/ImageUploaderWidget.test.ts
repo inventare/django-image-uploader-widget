@@ -266,8 +266,9 @@ test('[Widget] must be possible to upload file when "data-raw" is set and widget
         expect(element.classList.contains('non-empty')).toBeTruthy();
 
         // get preview
-        let preview = element.querySelector('.iuw-image-preview');
-        expect(preview).not.toBeNull();
+        let previews = element.querySelectorAll('.iuw-image-preview');
+        expect(previews).toHaveLength(1);
+        let [preview] = previews;
         // get preview image
         let img = preview?.querySelector('img');
         expect(img).not.toBeNull();
@@ -289,8 +290,9 @@ test('[Widget] must be possible to upload file when "data-raw" is set and widget
         expect(fileInput?.files?.item(0)).toStrictEqual(file);
         
         // get the new preview
-        preview = document.querySelector('.iuw-image-preview');
-        expect(preview).not.toBeNull();
+        previews = document.querySelectorAll('.iuw-image-preview');
+        expect(previews).toHaveLength(1);
+        preview = previews[0];
 
         // check the new rendered item
         img = preview?.querySelector('img');
@@ -317,8 +319,8 @@ test('[Widget] must be possible to upload file when "data-raw" is not set and wi
         expect(element.classList.contains('non-empty')).toBeFalsy();
 
         // get preview
-        let preview = element.querySelector('.iuw-image-preview');
-        expect(preview).toBeNull();
+        let previews = element.querySelectorAll('.iuw-image-preview');
+        expect(previews).toHaveLength(0)
 
         // mock the createObjectURL
         global.URL.createObjectURL = jest.fn(() => 'test::/file.png');
@@ -336,8 +338,9 @@ test('[Widget] must be possible to upload file when "data-raw" is not set and wi
         expect(fileInput?.files?.item(0)).toStrictEqual(file);
         
         // get the new preview
-        preview = document.querySelector('.iuw-image-preview');
-        expect(preview).not.toBeNull();
+        previews = document.querySelectorAll('.iuw-image-preview');
+        expect(previews).toHaveLength(1);
+        const preview = previews[0];
 
         // check the new rendered item
         const img = preview?.querySelector('img');
@@ -396,8 +399,9 @@ test('[Not Required Widget] click on the delete icon on the preview image must b
     expect(fileInput?.files?.item(0)).toStrictEqual(file);
     
     // get the new preview
-    let preview = element.querySelector('.iuw-image-preview');
-    expect(preview).not.toBeNull();
+    let previews = element.querySelectorAll('.iuw-image-preview');
+    expect(previews).toHaveLength(1)
+    let [preview] = previews;
     // check the new rendered item
     const img = preview?.querySelector('img');
     expect(img).not.toBeNull();
@@ -415,8 +419,8 @@ test('[Not Required Widget] click on the delete icon on the preview image must b
 
     userEvent.click(deleteButton);
 
-    preview = element.querySelector('.iuw-image-preview');
-    expect(preview).toBeNull();
+    previews = element.querySelectorAll('.iuw-image-preview');
+    expect(previews).toHaveLength(0);
     
     expect(widget.checkboxInput?.checked).toBeTruthy();
 });
@@ -425,8 +429,9 @@ test('[Not Required Widget] click on the delete icon on the preview image must b
     const { element, widget } = renderWidget(RAW_URL, false);
    
     // get the new preview
-    let preview = element.querySelector('.iuw-image-preview');
-    expect(preview).not.toBeNull();
+    let previews = element.querySelectorAll('.iuw-image-preview');
+    expect(previews).toHaveLength(1);
+    const [preview] = previews;
     // check the new rendered item
     const img = preview?.querySelector('img');
     expect(img).not.toBeNull();
@@ -444,8 +449,8 @@ test('[Not Required Widget] click on the delete icon on the preview image must b
 
     userEvent.click(deleteButton);
 
-    preview = element.querySelector('.iuw-image-preview');
-    expect(preview).toBeNull();
+    previews = element.querySelectorAll('.iuw-image-preview');
+    expect(previews).toHaveLength(0);
     
     expect(widget.checkboxInput?.checked).toBeTruthy();
 });
