@@ -1,35 +1,33 @@
 class ImageUploaderWidget {
     element: HTMLElement;
     fileInput: HTMLInputElement;
-    checkboxInput: HTMLInputElement;
-    emptyMarker: HTMLElement;
-    dropLabel: HTMLElement;
+    checkboxInput: HTMLInputElement | null;
+    emptyMarker: HTMLElement | null;
     canDelete: boolean = false;
     dragging: boolean = false;
     canPreview: boolean = true;
-
-    id: string;
 
     raw: string | null = null;
     file: File | null = null;
 
     constructor(element: HTMLElement) {
         this.element = element;
-        this.fileInput = element.querySelector('input[type=file]');
-        this.checkboxInput = element.querySelector('input[type=checkbox]');
-        this.emptyMarker = this.element.querySelector('.iuw-empty');
+        const fileInput = element.querySelector<HTMLInputElement>('input[type=file]');
+        const checkBoxInput = element.querySelector<HTMLInputElement>('input[type=checkbox]');
+        if (!fileInput) {
+            throw new Error('no-file-input-found')
+        }
+        this.fileInput = fileInput;
+        this.checkboxInput = checkBoxInput;
+        this.emptyMarker = element.querySelector<HTMLElement>('.iuw-empty');
         this.canDelete = element.getAttribute('data-candelete') === 'true';
         this.dragging = false;
-        this.id = this.fileInput.getAttribute('id');
-        this.dropLabel = this.element.querySelector('.drop-label');
-        
-        if (this.dropLabel) {
-            this.dropLabel.setAttribute('for', this.id);
-        }
 
         // add events
         this.fileInput.addEventListener('change', this.onFileInputChange);
-        this.emptyMarker.addEventListener('click', this.onEmptyMarkerClick);
+        if (this.emptyMarker) {
+            this.emptyMarker.addEventListener('click', this.onEmptyMarkerClick);
+        }
         this.element.addEventListener('dragenter', this.onDragEnter);
         this.element.addEventListener('dragover', this.onDragOver);
         this.element.addEventListener('dragleave', this.onDragLeave);
@@ -51,7 +49,7 @@ class ImageUploaderWidget {
         this.dragging = false;
         this.element.classList.remove('drop-zone');
 
-        if (e.dataTransfer.files.length) {
+        if (e.dataTransfer?.files.length) {
             this.fileInput.files = e.dataTransfer.files;
             this.file = this.fileInput.files[0];
             this.raw = null;
@@ -85,7 +83,7 @@ class ImageUploaderWidget {
             modal.classList.remove('visible');
             modal.classList.add('hide');
             setTimeout(() => {
-                modal.parentElement.removeChild(modal);
+                modal.parentElement?.removeChild(modal);
             }, 300);
         }
     }
@@ -124,9 +122,11 @@ class ImageUploaderWidget {
             const targetElement = e.target as HTMLElement;
             if (targetElement.closest('.iuw-delete-icon')) {
                 const element = targetElement.closest('.iuw-image-preview');
-                element.parentElement.removeChild(element);
-                this.checkboxInput.checked = true;
-                this.fileInput.value = null;
+                element?.parentElement?.removeChild(element);
+                if (this.checkboxInput) {
+                    this.checkboxInput.checked = true;
+                }
+                this.fileInput.value = '';
                 this.file = null;
                 this.raw = null;
                 this.renderWidget();
@@ -134,7 +134,7 @@ class ImageUploaderWidget {
             }
             if (targetElement.closest('.iuw-preview-icon')) {
                 const element = targetElement.closest('.iuw-image-preview');
-                let image = element.querySelector('img');
+                let image = element?.querySelector('img');
                 if (image) {
                     image = image.cloneNode(true) as HTMLImageElement;
                     const modal = this.createPreviewModal(image);
@@ -151,7 +151,7 @@ class ImageUploaderWidget {
     }
 
     onFileInputChange = () => {
-        if (this.fileInput.files.length > 0) {
+        if (this.fileInput.files?.length) {
             this.file = this.fileInput.files[0];
         }
         this.renderWidget();
@@ -222,8 +222,8 @@ declare global {
 
 document.addEventListener('DOMContentLoaded', () => {
     Array
-        .from(document.querySelectorAll('.iuw-root'))
-        .map((element) => new ImageUploaderWidget(element as HTMLElement));
+        .from(document.querySelectorAll<HTMLElement>('.iuw-root'))
+        .map((element) => new ImageUploaderWidget(element));
 
     if (window && window.django && window.django.jQuery) {
         const $ = window.django.jQuery;
@@ -233,8 +233,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
             Array
-                .from(row[0].querySelectorAll('.iuw-root'))
-                .map((element) => new ImageUploaderWidget(element as HTMLElement));
+                .from(row[0].querySelectorAll<HTMLElement>('.iuw-root'))
+                .map((element) => new ImageUploaderWidget(element));
         });
     }
 });
