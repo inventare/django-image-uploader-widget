@@ -1,6 +1,6 @@
-name: Test Widget
+name: Type Check
 
-on: ['push', 'pull_request']
+on: pull_request
 
 jobs:
   code:
@@ -21,12 +21,7 @@ jobs:
     - name: Install dependencies
       run: yarn
 
-    - name: Run Jest
-      run: yarn test
+    - name: Type Check with TypeScript
+      run: yarn tsc
       env:
         CI: true
-    
-    - name: Coveralls
-      uses: coverallsapp/github-action@master
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}

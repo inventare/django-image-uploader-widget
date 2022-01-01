@@ -1,4 +1,4 @@
-name: Build TypeScript and SCSS Code
+name: Transpile the TypeScript and Build SCSS
 
 on: 'pull_request'
 
