@@ -25,3 +25,8 @@ jobs:
       run: yarn test
       env:
         CI: true
+    
+    - name: Coveralls
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.COVERALLS_TOKEN }}
