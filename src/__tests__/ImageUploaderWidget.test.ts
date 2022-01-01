@@ -263,6 +263,8 @@ test('[Widget] must be possible to upload file when "data-raw" is set and widget
             expect(widget.checkboxInput?.checked).toBeFalsy();
         }
 
+        expect(element.classList.contains('non-empty')).toBeTruthy();
+
         // get preview
         let preview = element.querySelector('.iuw-image-preview');
         expect(preview).not.toBeNull();
@@ -295,6 +297,8 @@ test('[Widget] must be possible to upload file when "data-raw" is set and widget
         expect(img).not.toBeNull();
         expect(img?.src).toBe('test::/file.png');
 
+        expect(element.classList.contains('non-empty')).toBeTruthy();
+
         // checkbox
         if (!required) {
             expect(widget.checkboxInput).not.toBeNull();
@@ -310,6 +314,7 @@ test('[Widget] must be possible to upload file when "data-raw" is not set and wi
             expect(widget.checkboxInput).not.toBeNull();
             expect(widget.checkboxInput?.checked).toBeTruthy();
         }
+        expect(element.classList.contains('non-empty')).toBeFalsy();
 
         // get preview
         let preview = element.querySelector('.iuw-image-preview');
@@ -338,6 +343,8 @@ test('[Widget] must be possible to upload file when "data-raw" is not set and wi
         const img = preview?.querySelector('img');
         expect(img).not.toBeNull();
         expect(img?.src).toBe('test::/file.png');
+        
+        expect(element.classList.contains('non-empty')).toBeTruthy();
 
         // checkbox
         if (!required) {
@@ -345,4 +352,27 @@ test('[Widget] must be possible to upload file when "data-raw" is not set and wi
             expect(widget.checkboxInput?.checked).toBeFalsy();
         }
     });
+});
+
+test('[Widget] click on preview image must be call click on file input', async () => {
+    await testTwoWidgets((widget, element, required) => {
+        const { fileInput } = widget;
+
+        const clickFn = jest.fn();
+        fileInput.click = clickFn;
+
+        const preview = element.querySelectorAll('.iuw-image-preview');
+        expect(preview).toHaveLength(1);
+
+        const [previewItem] = preview;
+        expect(previewItem).not.toBeNull();
+
+        if (!previewItem) { // type check error only
+            return;
+        }
+
+        userEvent.click(previewItem);
+
+        expect(clickFn).toBeCalledTimes(1);
+    }, RAW_URL);
 });
