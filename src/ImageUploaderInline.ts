@@ -18,10 +18,16 @@ class ImageUploaderInline {
 
     constructor(element: HTMLElement) {
         this.element = element;
-        this.inlineGroup = element.closest('.inline-group');
-        this.inlineFormset = <ImageUploaderInlineFormSet>JSON.parse(
-            this.inlineGroup.getAttribute('data-inline-formset'),
-        );
+        const inlineGroup = element.closest<HTMLElement>('.inline-group');
+        if (!inlineGroup) {
+            throw new Error('no-inline-group-found');
+        }
+        this.inlineGroup = inlineGroup;
+        const formSetDataString = this.inlineGroup.getAttribute('data-inline-formset');
+        if (!formSetDataString) {
+            throw new Error('no-formset-data-found');
+        }
+        this.inlineFormset = <ImageUploaderInlineFormSet>JSON.parse(formSetDataString);
         
         this.updateEmpty();
         this.updateAllIndexes();
@@ -46,7 +52,7 @@ class ImageUploaderInline {
         this.dragging = false;
         this.element.classList.remove('drop-zone');
 
-        if (e.dataTransfer.files.length) {
+        if (e.dataTransfer?.files.length) {
             for (const file of e.dataTransfer.files) {
                 this.addFile(file);
             }
@@ -84,14 +90,16 @@ class ImageUploaderInline {
     updateElementIndex(element: HTMLElement, prefix: string, index: number) {
         const id_regex = new RegExp(`(${prefix}-(\\d+|__prefix__))`);
         const replacement = `${prefix}-${index}`;
-        if (element.getAttribute('for')) {
-            element.setAttribute('for', element.getAttribute('for').replace(id_regex, replacement));
+        const forAttr = element.getAttribute('for');
+        if (forAttr) {
+            element.setAttribute('for', forAttr.replace(id_regex, replacement));
         }
         if (element.id) {
             element.id = element.id.replace(id_regex, replacement);
         }
-        if (element.getAttribute('name')) {
-            element.setAttribute('name', element.getAttribute('name').replace(id_regex, replacement));
+        const nameAttr = element.getAttribute('name');
+        if (nameAttr) {
+            element.setAttribute('name', nameAttr.replace(id_regex, replacement));
         }
     }
 
@@ -120,12 +128,10 @@ class ImageUploaderInline {
         }
         if (maxFormsInput.value === '' || maxNumber - this.next > 0) {
             this.element
-                .querySelector('.iuw-add-image-btn')
-                .classList.add('visible-by-number');
+                .querySelector('.iuw-add-image-btn')?.classList.add('visible-by-number');
         } else {
             this.element
-                .querySelector('.iuw-add-image-btn')
-                .classList.remove('visible-by-number');
+                .querySelector('.iuw-add-image-btn')?.classList.remove('visible-by-number');
         }
     }
 
@@ -135,7 +141,7 @@ class ImageUploaderInline {
                 element.querySelectorAll('input[type=hidden], input[type=checkbox], input[type=file]'),
             )
             .map((item) => {
-                item.parentElement.removeChild(item);
+                item.parentElement?.removeChild(item);
                 return item;
             });
         // get raw image url
@@ -143,15 +149,19 @@ class ImageUploaderInline {
         if (element.classList.contains('empty-form')) {
             rawImage = null;
         }
+        let hrefAttr: string | null = null;
         if (rawImage) {
-            element.setAttribute('data-raw', rawImage.getAttribute('href'));
+            hrefAttr = rawImage.getAttribute('href');
+            if (hrefAttr) {
+                element.setAttribute('data-raw', hrefAttr);
+            }
         }
         // clear element
         element.innerHTML = '';
         inputs.forEach((item) => element.appendChild(item));
         // apply raw image
-        if (rawImage) {
-            this.appendItem(element, rawImage.getAttribute('href'));
+        if (hrefAttr) {
+            this.appendItem(element, hrefAttr);
         }
     }
 
@@ -162,18 +172,18 @@ class ImageUploaderInline {
         const target = e.target as HTMLElement;
         const item = target.closest('.inline-related');
         if (target.closest('.iuw-delete-icon')) {
-            if (item.getAttribute('data-raw')) {
-                item.classList.add('deleted');
+            if (item?.getAttribute('data-raw')) {
+                item?.classList.add('deleted');
                 const checkboxInput = item.querySelector('input[type=checkbox]') as HTMLInputElement;
                 checkboxInput.checked = true;
             } else {
-                item.parentElement.removeChild(item);
+                item?.parentElement?.removeChild(item);
             }
             this.updateEmpty();
             return;
         }
         if (target.closest('.iuw-preview-icon')) {
-            let image = item.querySelector('img');
+            let image = item?.querySelector('img');
             if (image) {
                 image = image.cloneNode(true) as HTMLImageElement;
                 const modal = this.createPreviewModal(image);
@@ -185,11 +195,11 @@ class ImageUploaderInline {
                 return;
             }
         }
-        var fileInput = item.querySelector('input[type=file]') as HTMLInputElement;
+        const fileInput = item?.querySelector<HTMLInputElement>('input[type=file]');
         if (e.target === fileInput) {
             return;
         }
-        fileInput.click();
+        fileInput?.click();
     }
 
     onFileInputChange = (e: Event) => {
@@ -199,10 +209,10 @@ class ImageUploaderInline {
         }
         const fileInput = target as HTMLInputElement;
         var files = fileInput.files;
-        if (files.length <= 0) {
+        if (!files?.length) {
             return;
         }
-        const imgTag = target.closest('.inline-related').querySelector('img');
+        const imgTag = target.closest('.inline-related')?.querySelector('img');
         if (imgTag) {
             imgTag.src = URL.createObjectURL(files[0]);
         }
@@ -215,7 +225,7 @@ class ImageUploaderInline {
             modal.classList.remove('visible');
             modal.classList.add('hide');
             setTimeout(() => {
-                modal.parentElement.removeChild(modal);
+                modal.parentElement?.removeChild(modal);
             }, 300);
         }
     }
@@ -252,7 +262,7 @@ class ImageUploaderInline {
     appendItem(element: Element, url: string) {
         let delete_icon: Element | null = null;
         const related = element.closest('.inline-related');
-        if (related.getAttribute('data-candelete') === 'true') {
+        if (related?.getAttribute('data-candelete') === 'true') {
             delete_icon = document.createElement('span');
             delete_icon.classList.add('iuw-delete-icon');
             delete_icon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" width="100%" height="100%"><path xmlns="http://www.w3.org/2000/svg" d="m289.94 256 95-95A24 24 0 0 0 351 127l-95 95-95-95a24 24 0 0 0-34 34l95 95-95 95a24 24 0 1 0 34 34l95-95 95 95a24 24 0 0 0 34-34z"></path></svg>';
@@ -260,7 +270,7 @@ class ImageUploaderInline {
         if (this.canPreview) {
             const span = document.createElement('span');
             span.classList.add('iuw-preview-icon');
-            if (related.getAttribute('data-candelete') !== 'true') {
+            if (related?.getAttribute('data-candelete') !== 'true') {
                 span.classList.add('iuw-only-preview');
             }
             span.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-zoom-in" viewBox="0 0 16 16" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" width="100%" height="100%"><path xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"></path><path xmlns="http://www.w3.org/2000/svg" d="M10.344 11.742c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1 6.538 6.538 0 0 1-1.398 1.4z"></path><path xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" d="M6.5 3a.5.5 0 0 1 .5.5V6h2.5a.5.5 0 0 1 0 1H7v2.5a.5.5 0 0 1-1 0V7H3.5a.5.5 0 0 1 0-1H6V3.5a.5.5 0 0 1 .5-.5z"></path></svg>';
@@ -272,21 +282,21 @@ class ImageUploaderInline {
         if (delete_icon) {
             element.appendChild(delete_icon);
         }
-        related.removeEventListener('click', this.onRelatedItemClick);
-        related.addEventListener('click', this.onRelatedItemClick);
-        const fileInput = related.querySelector('input[type=file]');
-        fileInput.removeEventListener('change', this.onFileInputChange);
-        fileInput.addEventListener('change', this.onFileInputChange);
+        related?.removeEventListener('click', this.onRelatedItemClick);
+        related?.addEventListener('click', this.onRelatedItemClick);
+        const fileInput = related?.querySelector('input[type=file]');
+        fileInput?.removeEventListener('change', this.onFileInputChange);
+        fileInput?.addEventListener('change', this.onFileInputChange);
     }
 
     onTempFileChange = () => {
-        const filesList = this.tempFileInput.files;
-        if (filesList.length <= 0) {
+        const filesList = this.tempFileInput?.files;
+        if (!filesList?.length) {
             return;
         }
         
-        this.tempFileInput.removeEventListener('change', this.onTempFileChange);
-        this.tempFileInput.parentElement.removeChild(this.tempFileInput);
+        this.tempFileInput?.removeEventListener('change', this.onTempFileChange);
+        this.tempFileInput?.parentElement?.removeChild(this.tempFileInput);
         this.tempFileInput = null;
         
         this.addFile(filesList[0]);
@@ -303,7 +313,7 @@ class ImageUploaderInline {
         row.setAttribute('data-candelete', 'true');
         row.id = `${this.inlineFormset.options.prefix}-${this.next}`;
         
-        template.parentElement.insertBefore(row, template);
+        template.parentElement?.insertBefore(row, template);
 
         const dataTransferList = new DataTransfer();
         dataTransferList.items.add(file);
