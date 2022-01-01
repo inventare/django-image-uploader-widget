@@ -376,3 +376,76 @@ test('[Widget] click on preview image must be call click on file input', async (
         expect(clickFn).toBeCalledTimes(1);
     }, RAW_URL);
 });
+
+test('[Not Required Widget] click on the delete icon on the preview image must be remove the image if it is not the raw', async () => {
+    const { element, widget } = renderWidget(undefined, false);
+
+    // mock the createObjectURL
+    global.URL.createObjectURL = jest.fn(() => 'test::/file.png');
+    const file = new File([IMAGE_DATA], 'file.png', {type : 'image/png'});
+
+    const fileInput = element.querySelector<HTMLInputElement>('input[type=file]');
+    expect(fileInput).not.toBeNull();
+    if (!fileInput) { // type check error only
+        return;
+    }
+    userEvent.upload(fileInput, file);
+
+    // check the file input changes
+    expect(fileInput?.files).toHaveLength(1);
+    expect(fileInput?.files?.item(0)).toStrictEqual(file);
+    
+    // get the new preview
+    let preview = element.querySelector('.iuw-image-preview');
+    expect(preview).not.toBeNull();
+    // check the new rendered item
+    const img = preview?.querySelector('img');
+    expect(img).not.toBeNull();
+    expect(img?.src).toBe('test::/file.png');
+
+    expect(widget.checkboxInput).not.toBeNull();
+    expect(widget.checkboxInput?.checked).toBeFalsy();
+
+    const deleteButton = preview?.querySelector('.iuw-delete-icon');
+    expect(deleteButton).not.toBeNull();
+
+    if (!deleteButton) { // type check only
+        return;
+    }
+
+    userEvent.click(deleteButton);
+
+    preview = element.querySelector('.iuw-image-preview');
+    expect(preview).toBeNull();
+    
+    expect(widget.checkboxInput?.checked).toBeTruthy();
+});
+
+test('[Not Required Widget] click on the delete icon on the preview image must be check the checkbox if it is the raw', async () => {
+    const { element, widget } = renderWidget(RAW_URL, false);
+   
+    // get the new preview
+    let preview = element.querySelector('.iuw-image-preview');
+    expect(preview).not.toBeNull();
+    // check the new rendered item
+    const img = preview?.querySelector('img');
+    expect(img).not.toBeNull();
+    expect(img?.src).toBe(RAW_URL);
+
+    expect(widget.checkboxInput).not.toBeNull();
+    expect(widget.checkboxInput?.checked).toBeFalsy();
+
+    const deleteButton = preview?.querySelector('.iuw-delete-icon');
+    expect(deleteButton).not.toBeNull();
+
+    if (!deleteButton) { // type check only
+        return;
+    }
+
+    userEvent.click(deleteButton);
+
+    preview = element.querySelector('.iuw-image-preview');
+    expect(preview).toBeNull();
+    
+    expect(widget.checkboxInput?.checked).toBeTruthy();
+});
