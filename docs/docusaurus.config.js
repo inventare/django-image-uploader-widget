@@ -50,31 +50,27 @@ const config = {
         ],
       },
       footer: {
-        style: 'dark',
+        style: 'light',
         links: [
           {
-            title: 'Docs',
+            title: 'Documentation',
             items: [
               {
-                label: 'Tutorial',
+                label: 'Introduction',
                 to: '/docs/intro',
               },
             ],
           },
           {
-            title: 'Community',
+            title: 'Developer',
             items: [
               {
-                label: 'Stack Overflow',
-                href: 'https://stackoverflow.com/questions/tagged/docusaurus',
-              },
-              {
-                label: 'Discord',
-                href: 'https://discordapp.com/invite/docusaurus',
-              },
-              {
                 label: 'Twitter',
-                href: 'https://twitter.com/docusaurus',
+                href: 'https://twitter.com/goticodocalypso',
+              },
+              {
+                label: 'GitHub',
+                href: 'https://github.com/EduardoJM',
               },
             ],
           },
@@ -87,12 +83,12 @@ const config = {
               },
               {
                 label: 'GitHub',
-                href: 'https://github.com/facebook/docusaurus',
+                href: 'https://github.com/inventare/django-image-uploader-widget',
               },
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} Instituto Inventare, Inc. Built with Docusaurus.`,
+        copyright: `Copyright © ${new Date().getFullYear()} Eduardo Oliveira, Instituto Inventare. Built with Docusaurus.`,
       },
       prism: {
         theme: lightCodeTheme,
