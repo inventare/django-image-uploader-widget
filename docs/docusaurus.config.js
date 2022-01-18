@@ -8,8 +8,8 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 const config = {
   title: 'django-image-uploader-widget',
   tagline: 'A beautiful image uploader widget for django/django-admin',
-  url: 'https://inventare.github.io/',
-  baseUrl: '/django-image-uploader-widget/',
+  url: 'https://iuw.institutoinventare.com.br/',
+  baseUrl: '',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
