@@ -4,42 +4,42 @@ import styles from './HomepageFeatures.module.css';
 
 const FeatureList = [
   {
-    title: 'Easy to Use',
-    Svg: require('../../static/img/undraw_docusaurus_mountain.svg').default,
+    title: 'Beautiful',
+    image: require('../../static/img/beautiful.gif').default,
     description: (
       <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
+        The <strong>django-image-uploader-widget</strong> is a beautiful widget for handling 
+        image uploads in django forms, specially in django-admin.
       </>
     ),
   },
   {
-    title: 'Focus on What Matters',
-    Svg: require('../../static/img/undraw_docusaurus_tree.svg').default,
+    title: 'Multiple Images Handling',
+    image: require('../../static/img/inline_multiple.gif').default,
     description: (
       <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
+        The <strong>django-image-uploader-widget</strong> includes an inline editor
+        to handle multiple images uploading.
       </>
     ),
   },
   {
-    title: 'Powered by React',
-    Svg: require('../../static/img/undraw_docusaurus_react.svg').default,
+    title: 'Support Both Click and Drag and Drop Behaviours',
+    image: require('../../static/img/click.gif').default,
     description: (
       <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
+        The <strong>django-image-uploader-widget</strong> includes both behaviours
+        support: <strong>click to select image</strong> or <strong>drag and drop image</strong>.
       </>
     ),
   },
 ];
 
-function Feature({Svg, title, description}) {
+function Feature({image, title, description}) {
   return (
     <div className={clsx('col col--4')}>
       <div className="text--center">
-        <Svg className={styles.featureSvg} alt={title} />
+        <img src={image} className={styles.featureImage} />
       </div>
       <div className="text--center padding-horiz--md">
         <h3>{title}</h3>
