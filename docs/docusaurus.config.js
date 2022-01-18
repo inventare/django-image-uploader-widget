@@ -10,6 +10,7 @@ const config = {
   tagline: 'A beautiful image uploader widget for django/django-admin',
   url: 'https://iuw.institutoinventare.com.br/',
   baseUrl: '/',
+  trailingSlash: true,
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
