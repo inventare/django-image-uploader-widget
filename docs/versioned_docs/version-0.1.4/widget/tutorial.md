@@ -6,7 +6,7 @@ sidebar_position: 1
 
 First, we need of some context: the image uploader widget is a widget to handle image uploading with a beautiful interface with click to select file and a drop file behaviour handler. It is used with django forms.
 
-This is a more long and for newbies tutorial of how to use this widget. If you is an advanced user, see the [Resumed](./resumed) version.
+This is a more long and for newbies tutorial of how to use this widget. If you is an advanced user, see the [Resumed](./resumed.md) version.
 
 To write this tutorial of this documentation we go to create an empty django project, then if you don't want to see this part, skip to [using the widget section](#installing-the-widget). Another information is: we're assuming you already know the basics of **django** and already have it installed in your machine.
 
