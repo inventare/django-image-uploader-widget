@@ -21,6 +21,9 @@ const config = {
       'classic',
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
+        gtag: {
+          trackingID: 'G-Q92QGDVY38',
+        },
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
           editUrl: 'https://github.com/inventare/django-image-uploader-widget/blob/main/docs/',
@@ -39,9 +42,6 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
-      gtag: {
-        trackingID: 'G-Q92QGDVY38',
-      },
       navbar: {
         title: 'image-uploader-widget',
         logo: {
