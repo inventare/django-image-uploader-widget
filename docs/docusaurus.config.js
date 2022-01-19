@@ -42,6 +42,9 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
+      gtag: {
+        trackingID: 'G-Q92QGDVY38',
+      },
       navbar: {
         title: 'image-uploader-widget',
         logo: {
