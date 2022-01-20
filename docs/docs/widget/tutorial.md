@@ -155,8 +155,6 @@ class ProductForm(ModelForm):
         }
 ```
 
-The `ImageUploaderWidget`, for now, contains a optional `non_file_text` kwarg in the constructor, but it is no more used by the widget (See [#18](https://github.com/inventare/django-image-uploader-widget/issues/18)).
-
 #### Creating and applying migrations
 
 Our Model, declared in the above section, needs to be inserted on our database using the [migrations](https://docs.djangoproject.com/en/3.2/topics/migrations/). To create our migrations, we need to add our `ecommerce` app to `INSTALLED_APPS` on the `settings.py`:
