@@ -17,7 +17,7 @@ class ImageUploaderWidget(widgets.ClearableFileInput):
         extra = '' if settings.DEBUG else '.min'
         return forms.Media(
             js=(
-                'admin/js/image-uploader%s.js' % extra,
+                'admin/js/image-uploader.js',
             ),
             css={
                 'screen': (
