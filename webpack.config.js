@@ -1,7 +1,11 @@
 const path = require('path');
 
-module.exports = {
-    entry: './src/ImageUploaderWidget.ts',
+module.exports = (env) => ({
+    entry: {
+        widget: ['./src/ImageUploaderWidget.ts'],
+        inline: ['./src/ImageUploaderInline.ts'],
+    },
+    mode: env.production ? "production" : "development",
     module: {
         rules: [
             {
@@ -13,9 +17,9 @@ module.exports = {
     },
     resolve: {
         extensions: ['.tsx', '.ts', '.js'],
-    },    
+    },
     output: {
-        filename: 'bundle.js',
-        path: path.resolve(__dirname, 'build_test'),
+        filename: env.production ? 'image-uploader-[name].min.js' : 'image-uploader-[name].js',
+        path: path.resolve(__dirname, 'image_uploader_widget', 'static', 'admin', 'js'),
     }
-};
+});
