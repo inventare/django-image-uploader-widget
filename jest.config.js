@@ -7,5 +7,12 @@ module.exports = {
     testMatch: [
         '**/*.spec.ts'
     ],
-    setupFilesAfterEnv: ['<rootDir>/jest-setup.ts']
+    setupFilesAfterEnv: ['<rootDir>/jest-setup.ts'],
+    collectCoverage: true,
+    collectCoverageFrom: [
+        "**/*.ts",
+        "!**/node_modules/**",
+        "!**/vendor/**",
+        "!**/venv/**",
+    ],
 };
