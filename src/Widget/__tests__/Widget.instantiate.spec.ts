@@ -1,11 +1,7 @@
-import {
-    renderWidget,
-    testTwoWidgets,
-    IMAGE_DATA,
-    RAW_URL,
-} from './Utils';
+import { testTwoWidgets, RAW_URL } from './Utils';
+import { ImageUploaderWidget } from '../Widget';
 
-describe('Widget', () => {
+describe("Widget", () => {
     test('Widget instantiated must be correctly set variables', async () => {
         await testTwoWidgets((widget, element, required) => {
             // widget variables
@@ -65,14 +61,30 @@ describe('Widget', () => {
             const image = previewItem.querySelector('img');
     
             expect(image).not.toBeNull();
-            expect(image?.src).toBe(RAW_URL);
-    
-            if (required) {
-                expect(previewItem.querySelector('.iuw-delete-icon')).toBeNull();
-            } else {
-                expect(previewItem.querySelector('.iuw-delete-icon')).not.toBeNull();
-            }
-            expect(previewItem.querySelector('.iuw-preview-icon')).not.toBeNull();
+            expect(image?.src).toBe(RAW_URL)
         }, RAW_URL);
+    });
+
+    test('When try to instantiate the widget without file input must be thrown a error', async () => {
+        const html = `
+            <div class="iuw-root">
+                <div class="iuw-drop-label">
+                    Drop your file here.
+                </div>
+    
+                <div class="iuw-empty">
+                    The widget is empty.
+                </div>
+            </div>
+        `;
+        document.body.innerHTML = html;
+        const element = document.querySelector('.iuw-root');
+        expect(element).not.toBeNull();
+        if (!element) { // type check only
+            return;
+        }
+        expect(() => {
+            new ImageUploaderWidget(element as HTMLElement);
+        }).toThrowError('no-file-input-found');
     });
 });

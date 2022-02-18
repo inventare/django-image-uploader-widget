@@ -32,7 +32,17 @@ export class ImageUploaderWidget {
         this.emptyMarker = element.querySelector<HTMLElement>('.iuw-empty');
         this.canDelete = element.getAttribute('data-candelete') === 'true';
         this.dragging = false;
+
         // add events
+        this.fileInput.addEventListener('change', this.onFileInputChange);
+        if (this.emptyMarker) {
+            this.emptyMarker.addEventListener('click', this.onEmptyMarkerClick);
+        }
+        this.element.addEventListener('dragenter', this.onDragEnter);
+        this.element.addEventListener('dragover', this.onDragOver);
+        this.element.addEventListener('dragleave', this.onDragLeave);
+        this.element.addEventListener('dragend', this.onDragLeave);
+        this.element.addEventListener('drop', this.onDrop);
 
         // init
         this.raw = element.getAttribute('data-raw');
@@ -89,6 +99,50 @@ export class ImageUploaderWidget {
             PreviewModal.createPreviewModal(image);
             PreviewModal.openPreviewModal();
         }
+    }
+
+    onEmptyMarkerClick = () => {
+        this.fileInput.click();
+    }
+
+    onDrop = (e: DragEvent) => {
+        e.preventDefault();
+
+        this.dragging = false;
+        this.element.classList.remove('drop-zone');
+
+        if (e.dataTransfer?.files.length) {
+            this.fileInput.files = e.dataTransfer.files;
+            this.file = this.fileInput.files[0];
+            this.raw = null;
+            this.renderWidget();
+        }
+    }
+
+    onDragEnter = () => {
+        this.dragging = true;
+        this.element.classList.add('drop-zone');
+    }
+
+    onDragOver = (e: DragEvent) => {
+        if (e) {
+            e.preventDefault();
+        }
+    }
+    
+    onDragLeave = (e: DragEvent) => {
+        if (e.relatedTarget && (e.relatedTarget as HTMLElement).closest('.iuw-root') === this.element) {
+            return;
+        }
+        this.dragging = false;
+        this.element.classList.remove('drop-zone');
+    }
+
+    onFileInputChange = () => {
+        if (this.fileInput.files?.length) {
+            this.file = this.fileInput.files[0];
+        }
+        this.renderWidget();
     }
 
     onImagePreviewClick = (e: Event) => {
