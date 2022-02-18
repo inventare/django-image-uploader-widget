@@ -253,3 +253,22 @@
         border-radius: 0;
     }
 }
+
+
+
+
+
+
+
+
+/*****/
+/*****/
+/*****/
+@mixin cssvars($css_variables, $prefix: iuw) {
+    :root {
+        @each $name, $value in $css_variables {
+            --#{$prefix}-#{$name}: #{$value};
+        }
+    }
+}
+

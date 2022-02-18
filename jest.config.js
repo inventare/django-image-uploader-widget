@@ -5,7 +5,7 @@ module.exports = {
     coverageProvider: "v8",
     testEnvironment: "jsdom",
     testMatch: [
-        '**/*.test.ts'
+        '**/*.spec.ts'
     ],
     setupFilesAfterEnv: ['<rootDir>/jest-setup.ts']
 };
