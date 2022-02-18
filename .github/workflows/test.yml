@@ -18,7 +18,7 @@ jobs:
       with:
         node-version: 12
     
-    - name: Install dependencies
+    - name: Install Dependencies
       run: yarn
 
     - name: Run Jest
@@ -26,7 +26,15 @@ jobs:
       env:
         CI: true
     
-    - name: Coveralls
-      uses: coverallsapp/github-action@master
+    - name: Test & Publish Code Coverage
+      uses: paambaati/codeclimate-action@v3.0.0
+      env:
+        CC_TEST_REPORTER_ID: ${{ secrets.CODE_CLIMATE_COVERAGE_ID }}
       with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
+        coverageCommand: yarn test
+        debug: true
+
+#    - name: Coveralls
+#      uses: coverallsapp/github-action@master
+#      with:
+#        github-token: ${{ secrets.GITHUB_TOKEN }}
