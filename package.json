@@ -6,7 +6,8 @@
   "author": "Eduardo Oliveira <eduardo_y05@outlook.com>",
   "license": "MIT",
   "scripts": {
-    "test": "jest --coverage"
+    "test": "jest --coverage",
+    "build": "yarn webpack && yarn webpack --env production"
   },
   "devDependencies": {
     "@babel/core": "^7.16.5",
