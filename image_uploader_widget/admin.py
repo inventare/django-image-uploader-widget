@@ -15,7 +15,7 @@ class ImageUploaderInline(admin.StackedInline):
             ],
             css = {
                 'screen': [
-                    'admin/css/image-uploader%s.css' % extra,
+                    'admin/css/image-uploader-inline%s.css' % extra,
                 ]
             }
         )

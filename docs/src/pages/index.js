@@ -30,7 +30,7 @@ export default function Home() {
   return (
     <Layout
       title={`${siteConfig.title}`}
-      description="Description will go into a meta tag in <head />">
+      description="A beautiful image uploader widget for django/django-admin">
       <HomepageHeader />
       <main>
         <HomepageFeatures />
