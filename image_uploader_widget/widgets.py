@@ -21,7 +21,7 @@ class ImageUploaderWidget(widgets.ClearableFileInput):
             ),
             css={
                 'screen': (
-                    'admin/css/image-uploader%s.css' % extra,
+                    'admin/css/image-uploader-widget%s.css' % extra,
                 ),
             },
         )
