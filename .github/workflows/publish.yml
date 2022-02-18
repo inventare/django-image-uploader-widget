@@ -24,13 +24,7 @@ jobs:
         run: yarn
       
       - name: Build Widget JavaScript
-        run: yarn gulp js:widget
-
-      - name: Build Inline JavaScript
-        run: yarn gulp js:inline
-
-      - name: Build SCSS
-        run: yarn gulp scss
+        run: yarn build
 
       - name: Install pypa/build
         run: python -m pip install build --user

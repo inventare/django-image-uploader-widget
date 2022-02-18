@@ -1,10 +1,10 @@
-name: Transpile the TypeScript and Build SCSS
+name: Transpile the TypeScript and Build Styles
 
 on: 'pull_request'
 
 jobs:
   code:
-    name: Build TypeScript and SCSS
+    name: Transpile TypeScripts and Styles
     runs-on: ubuntu-latest
 
     steps:
@@ -21,17 +21,7 @@ jobs:
     - name: Install dependencies
       run: yarn
 
-    - name: Run build Widget JavaScript
-      run: yarn gulp js:widget
-      env:
-        CI: true
-
-    - name: Run build Inline JavaScript
-      run: yarn gulp js:inline
-      env:
-        CI: true
-
-    - name: Run build SCSS
-      run: yarn gulp scss
+    - name: Build JavaScripts and Styles
+      run: yarn build
       env:
         CI: true
