@@ -66,10 +66,42 @@ export class ImageUploaderWidget {
         } else if (this.raw) {
             this.element.appendChild(renderPreview(this.raw, this.canDelete, this.canPreview));
         }
-        /*
         Array
             .from(this.element.querySelectorAll('.iuw-image-preview'))
             .forEach((item) => item.addEventListener('click', this.onImagePreviewClick));
-        */
+    }
+
+    performDeleteImage = (previewElement?: Element | null) => {
+        previewElement?.parentElement?.removeChild(previewElement);
+        if (this.checkboxInput) {
+            this.checkboxInput.checked = true;
+        }
+        this.fileInput.value = '';
+        this.file = null;
+        this.raw = null;
+        this.renderWidget();
+    }
+    
+    performPreviewImage = (previewElement?: Element | null) => {
+        let image = previewElement?.querySelector('img');
+        if (image) {
+            image = image.cloneNode(true) as HTMLImageElement;
+            PreviewModal.createPreviewModal(image);
+            PreviewModal.openPreviewModal();
+        }
+    }
+
+    onImagePreviewClick = (e: Event) => {
+        if (e && e.target) {
+            const targetElement = e.target as HTMLElement;
+            if (targetElement.closest('.iuw-delete-icon')) {
+                const element = targetElement.closest('.iuw-image-preview');
+                return this.performDeleteImage(element);
+            } else if (targetElement.closest('.iuw-preview-icon')) {
+                const element = targetElement.closest('.iuw-image-preview');
+                return this.performPreviewImage(element);
+            }
+        }
+        this.fileInput.click();
     }
 }
