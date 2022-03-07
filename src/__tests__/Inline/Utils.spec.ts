@@ -6,6 +6,7 @@ import {
     updateAllElementsIndexes,
     getAddButton,
     getManagementInputs,
+    createTempFileInput,
 } from "../../Inline/Utils";
 import { getBySelector } from '../../test/querySelector';
 import { getMockManagementForms } from '../../__mocks__/mockInlineTemplate';
@@ -113,5 +114,13 @@ describe('Utils', () => {
 
         document.body.innerHTML = getMockManagementForms({ prefix: 'test', total: false });
         expect(() => getManagementInputs('test')).toThrow();
+    });
+
+    it('createTempFileInput must returns an input', () => {
+        const element = createTempFileInput();
+        
+        expect(element).not.toBeNull();
+        expect(element).not.toBeUndefined();
+        expect(element.tagName.toLowerCase()).toEqual('input');
     });
 });

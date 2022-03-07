@@ -75,3 +75,21 @@ export function getAddButton(element: HTMLElement): HTMLElement {
     }
     return addImageButton;
 }
+
+export function createTempFileInput(): HTMLInputElement {
+    const tempFileInput = document.createElement('input');
+    tempFileInput.setAttribute('type', 'file');
+    tempFileInput.classList.add('temp_file');
+    tempFileInput.setAttribute('accept', 'image/*');
+    tempFileInput.style.display = 'none';
+    return tempFileInput;
+}
+
+export function applyFileToInput(file: File, input?: HTMLInputElement | null) {
+    const dataTransferList = new DataTransfer();
+    dataTransferList.items.add(file);
+    if (!input) {
+        return;
+    }
+    input.files = dataTransferList.files;
+}

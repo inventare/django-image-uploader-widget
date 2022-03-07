@@ -5,16 +5,20 @@ export class EditorImage {
     element: HTMLElement;
     canPreview: boolean;
     
-    constructor(element: HTMLElement, canPreview: boolean) {
+    constructor(element: HTMLElement, canPreview: boolean, newImage?: string) {
         this.element = element;
         this.canPreview = canPreview;
 
-        const inputs = this.removeAndGetInputs();
-        const link = this.getAndUpdateRawImage();
+        if (!!newImage) {
+            this.render(newImage);
+        } else {
+            const inputs = this.removeAndGetInputs();
+            const link = this.getAndUpdateRawImage();
 
-        this.element.innerHTML = '';
-        inputs.forEach((item) => this.element.appendChild(item));
-        this.render(link);
+            this.element.innerHTML = '';
+            inputs.forEach((item) => this.element.appendChild(item));
+            this.render(link);
+        }
     }
 
     private removeAndGetInputs() {

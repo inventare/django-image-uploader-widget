@@ -6,6 +6,8 @@ import {
     updateAllElementsIndexes,
     getManagementInputs,
     getAddButton,
+    createTempFileInput,
+    applyFileToInput,
 } from './Utils';
 import { EditorImage } from './EditorImage';
 
@@ -13,6 +15,7 @@ export class ImageUploaderInline {
     element: HTMLElement;
     inlineGroup: HTMLElement;
     addImageButton: HTMLElement;
+    tempFileInput: HTMLInputElement | null;
     inlineFormset: ImageUploaderInlineFormSet;
     management: ImageUploaderInlineManagementInputs;
     next: number;
@@ -23,6 +26,7 @@ export class ImageUploaderInline {
     constructor(element: HTMLElement) {
         this.canPreview = true;
 
+        this.tempFileInput = null;
         this.element = element;
         this.inlineGroup = getInlineGroupOrThrow(this.element);
         this.inlineFormset = parseFormSet(this.inlineGroup);
@@ -48,6 +52,7 @@ export class ImageUploaderInline {
 
     bindVariables() {
         this.handleAddImage = this.handleAddImage.bind(this);
+        this.handleTempFileInputChange = this.handleTempFileInputChange.bind(this);
     }
 
     bindEvents() {
@@ -74,7 +79,51 @@ export class ImageUploaderInline {
         this.addImageButton.classList.toggle('visible-by-number', this.maxCount - this.next > 0);
     }
 
+    createFromEmptyTemplate(): HTMLElement {
+        const template = this.element.querySelector('.inline-related.empty-form');
+        if (!template) {
+            throw new Error('no-empty-template');
+        }
+
+        const row = <HTMLElement>template.cloneNode(true);
+        row.classList.remove('empty-form');
+        row.classList.remove('last-related');
+        row.setAttribute('data-candelete', 'true');
+        row.id = `${this.inlineFormset.options.prefix}-${this.next}`;
+
+        template.parentElement?.insertBefore(row, template);
+
+        return row;
+    }
+
+    addFile(file: File) {
+        const row = this.createFromEmptyTemplate();
+        
+        const rowFileInput = row.querySelector<HTMLInputElement>('input[type=file]');
+        applyFileToInput(file, rowFileInput);
+        
+        this.images.push(new EditorImage(row, true, URL.createObjectURL(file)));
+        this.updateEmpty();
+        this.updateAllIndexes();
+    }
+
+    handleTempFileInputChange() {
+        const filesList = this.tempFileInput?.files;
+        if (!filesList || filesList.length <= 0) {
+            return;
+        }
+        this.tempFileInput?.removeEventListener('change', this.handleTempFileInputChange);
+        this.tempFileInput?.parentElement?.removeChild(this.tempFileInput);
+        this.tempFileInput = null;
+        this.addFile(filesList[0]);
+    }
+
     handleAddImage() {
-        console.log("QQQ?");
+        if(!this.tempFileInput) {
+            this.tempFileInput = createTempFileInput();
+            this.tempFileInput.addEventListener('change', this.handleTempFileInputChange);
+            this.element.appendChild(this.tempFileInput);
+        }
+        this.tempFileInput.click();
     }
 }
