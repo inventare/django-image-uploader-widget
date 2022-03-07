@@ -10,15 +10,18 @@ interface ImageUploaderInlineFormSet {
 }
 
 class ImageUploaderInline {
+    /*
     element: HTMLElement;
     inlineGroup: HTMLElement;
     inlineFormset: ImageUploaderInlineFormSet;
+    */
     tempFileInput: HTMLInputElement | null = null;
     next: number = 0;
     dragging: boolean = false;
     canPreview: boolean = true;
 
     constructor(element: HTMLElement) {
+        /*
         this.element = element;
         const inlineGroup = element.closest<HTMLElement>('.inline-group');
         if (!inlineGroup) {
@@ -40,6 +43,7 @@ class ImageUploaderInline {
         Array
             .from(this.element.querySelectorAll('.iuw-add-image-btn, .iuw-empty'))
             .forEach((item) => item.addEventListener('click', this.onChooseAddImageAreaClick));
+        */
         
         this.element.addEventListener('dragenter', this.onDragEnter);
         this.element.addEventListener('dragover', this.onDragOver);
@@ -80,6 +84,7 @@ class ImageUploaderInline {
         this.element.classList.remove('drop-zone');
     }
 
+    /*
     updateEmpty() {
         const { length } = this.element.querySelectorAll('.inline-related:not(.empty-form):not(.deleted)');
         if (length > 0) {
@@ -88,7 +93,7 @@ class ImageUploaderInline {
             this.element.classList.remove('non-empty');
         }
     }
-
+    
     updateElementIndex(element: HTMLElement, prefix: string, index: number) {
         const id_regex = new RegExp(`(${prefix}-(\\d+|__prefix__))`);
         const replacement = `${prefix}-${index}`;
@@ -166,6 +171,7 @@ class ImageUploaderInline {
             this.appendItem(element, hrefAttr);
         }
     }
+    */
 
     onRelatedItemClick = (e: Event) => {
         if (!e || !e.target) {
