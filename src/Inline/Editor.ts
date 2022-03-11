@@ -43,7 +43,11 @@ export class ImageUploaderInline {
 
         this.images = Array
             .from(this.element.querySelectorAll<HTMLElement>('.inline-related'))
-            .map((item) => new EditorImage(item, this.canPreview));
+            .map((item) => {
+                const editorImage = new EditorImage(item, this.canPreview);
+                editorImage.onDelete = this.handleImageDelete;
+                return editorImage;
+            });
 
         this.bindVariables();
         this.bindEvents();
@@ -52,6 +56,7 @@ export class ImageUploaderInline {
     bindVariables() {
         this.handleAddImage = this.handleAddImage.bind(this);
         this.handleTempFileInputChange = this.handleTempFileInputChange.bind(this);
+        this.handleImageDelete = this.handleImageDelete.bind(this);
     }
 
     bindEvents() {
@@ -119,7 +124,9 @@ export class ImageUploaderInline {
         parent.appendChild(this.tempFileInput);
         this.tempFileInput = null;
 
-        this.images.push(new EditorImage(row, true, URL.createObjectURL(file)));
+        const editorImage = new EditorImage(row, true, URL.createObjectURL(file));
+        editorImage.onDelete = this.handleImageDelete;
+        this.images.push(editorImage);
         this.updateEmpty();
         this.updateAllIndexes();
     }
@@ -139,5 +146,17 @@ export class ImageUploaderInline {
             this.element.appendChild(this.tempFileInput);
         }
         this.tempFileInput.click();
+    }
+
+    handleImageDelete(image: EditorImage) {
+        if (image.element.getAttribute('data-raw')) {
+            image.element.classList.add('deleted');
+            const checkboxInput = image.element.querySelector('input[type=checkbox]') as HTMLInputElement;
+            checkboxInput.checked = true;
+        } else {
+            image.element.parentElement?.removeChild(image.element);
+        }
+        this.images = this.images.filter((item) => item !== image);
+        this.updateEmpty();
     }
 }

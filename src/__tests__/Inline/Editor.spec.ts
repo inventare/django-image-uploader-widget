@@ -4,6 +4,7 @@ import * as Utils from '../../Inline/Utils';
 import { getBySelector } from '../../test/querySelector';
 import { getMockInlineTemplate } from '../../__mocks__/mockInlineTemplate';
 import { getMockFile } from '../../__mocks__/mockImageData';
+import { EditorImage } from '../../Inline/EditorImage';
 
 describe('ImageUploaderInline', () => {
     it('constructor must call getInlineGroupOrThrow and parseFormSet', () => {
@@ -181,11 +182,13 @@ describe('ImageUploaderInline', () => {
         editor.handleAddImage();
 
         expect(editor.images).toHaveLength(1);
+        expect(root.querySelectorAll('.inline-related')).toHaveLength(1);
 
         const mockFile = getMockFile();
         userEvent.upload(editor.tempFileInput as HTMLInputElement, mockFile);
 
         expect(editor.images).toHaveLength(2);
+        expect(root.querySelectorAll('.inline-related')).toHaveLength(2);
     });
 
     it('if no template empty-form is present, when uploading a file, must throw an error', async () => {
@@ -228,5 +231,46 @@ describe('ImageUploaderInline', () => {
         expect(addFile).not.toBeCalled();
 
         jest.clearAllMocks();
+    });
+
+    it('handleImageDelete must remove the image from list and check the delete input if has raw', async () => {
+        document.body.innerHTML = getMockInlineTemplate({ images: ['test.png'] });
+        const root = getBySelector('.iuw-inline-root');
+        const editor = new ImageUploaderInline(root);
+
+        expect(editor.images).toHaveLength(2);
+        expect(root.querySelectorAll('.inline-related')).toHaveLength(2);
+
+        const item = editor.images.find((item) => !item.element.classList.contains(".empty-form")) as EditorImage;
+
+        expect((item.element.querySelector('input[type=checkbox]') as HTMLInputElement).checked).toBeFalsy();
+
+        editor.handleImageDelete(item);
+
+        expect(editor.images).toHaveLength(1);
+        expect(root.querySelectorAll('.inline-related')).toHaveLength(2);
+        expect((item.element.querySelector('input[type=checkbox]') as HTMLInputElement).checked).toBeTruthy();
+    });
+
+    it('handleImageDelete must remove the image from list and delete the node if has not raw', async () => {
+        document.body.innerHTML = getMockInlineTemplate({});
+        const root = getBySelector('.iuw-inline-root');
+        const editor = new ImageUploaderInline(root);
+
+        expect(editor.images).toHaveLength(1);
+        expect(root.querySelectorAll('.inline-related')).toHaveLength(1);        
+
+        editor.handleAddImage();
+
+        const mockFile = getMockFile();
+        userEvent.upload(editor.tempFileInput as HTMLInputElement, mockFile);
+
+        expect(editor.images).toHaveLength(2);
+        expect(root.querySelectorAll('.inline-related')).toHaveLength(2);
+        
+        editor.handleImageDelete(editor.images[editor.images.length - 1]);
+
+        expect(editor.images).toHaveLength(1);
+        expect(root.querySelectorAll('.inline-related')).toHaveLength(1);
     });
 });
