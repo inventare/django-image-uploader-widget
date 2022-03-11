@@ -1,6 +1,7 @@
 import userEvent from '@testing-library/user-event';
 import { getBySelector } from "../../test/querySelector";
 import { getMockImageItem } from "../../__mocks__/mockInlineTemplate";
+import { mockObjectURL, getMockFile } from '../../__mocks__/mockImageData';
 import { EditorImage } from '../../Inline/EditorImage';
 import { PreviewModal } from '../../PreviewModal';
 
@@ -159,5 +160,23 @@ describe('EditorImage', () => {
         userEvent.click(fileInput);
 
         expect(fileInput.click).not.toBeCalled();
+    });
+
+    it('change the input file must change the img src', () => {
+        document.body.innerHTML = getMockImageItem({ image: null, canDelete: true });
+
+        const item = getBySelector('.inline-related');
+        const image = new EditorImage(item, true, 'image/data.png');
+        
+        const fileInput = item.querySelector('input') as HTMLInputElement;
+        const img = item.querySelector('img') as HTMLImageElement;
+
+        expect(img.src).toContain('image/data.png');
+
+        const mockFile = getMockFile();
+        userEvent.upload(fileInput, mockFile);
+
+        expect(img.src).not.toContain('image/data.png');
+        expect(img.src).toContain(mockObjectURL);
     });
 });

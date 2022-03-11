@@ -13,6 +13,7 @@ export class EditorImage {
         this.onDelete = null;
 
         this.handleClick = this.handleClick.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
 
         if (!!newImage) {
             this.render(newImage);
@@ -60,7 +61,10 @@ export class EditorImage {
         }
         let delete_icon: Element | null = null;
         const related = this.element.closest('.inline-related');
+        
         related?.addEventListener('click', this.handleClick);
+        related?.querySelector('input[type=file]')?.addEventListener('change', this.handleInputChange);
+
         if (related?.getAttribute('data-candelete') === 'true') {
             delete_icon = document.createElement('span');
             delete_icon.classList.add('iuw-delete-icon');
@@ -107,5 +111,20 @@ export class EditorImage {
             return;
         }
         fileInput?.click();
+    }
+
+    private handleInputChange(e: Event) {
+        if (!e || !e.target || (e.target as any).tagName !== 'INPUT') {
+            return;
+        }
+        const fileInput = e.target as HTMLInputElement;
+        var files = fileInput.files;
+        if (!files?.length) {
+            return;
+        }
+        const imgTag = fileInput.closest('.inline-related')?.querySelector('img');
+        if (imgTag) {
+            imgTag.src = URL.createObjectURL(files[0]);
+        }
     }
 }
