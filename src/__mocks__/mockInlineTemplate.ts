@@ -5,6 +5,7 @@ interface getMockInlineTemplateOptions {
     images?: string[];
     canDelete?: boolean;
     maxCount?: number | string;
+    emptyForm?: boolean;
 }
 
 export const getMockInlineTemplate = ({
@@ -19,6 +20,7 @@ export const getMockInlineTemplate = ({
     images = [],
     canDelete = true,
     maxCount = 1000,
+    emptyForm = true,
 }: getMockInlineTemplateOptions) => `
 <div
     class="iuw-inline-admin-formset inline-group"
@@ -55,7 +57,7 @@ export const getMockInlineTemplate = ({
                     <input type="hidden" name="${formset.options.prefix}-${index}-example" value="1" id="id_${formset.options.prefix}-${index}-example"/>
                 </div>
             `).join('')}
-            <div
+            ${emptyForm ? `<div
                 class="inline-related empty-form last-related" id="${formset.options.prefix}-empty"
                 ${canDelete ? ' data-candelete="true" ' : ''}
             >
@@ -69,7 +71,7 @@ export const getMockInlineTemplate = ({
                 </fieldset>
                 <input type="hidden" name="${formset.options.prefix}-__prefix__-id" id="id_${formset.options.prefix}-__prefix__-id" />
                 <input type="hidden" name="${formset.options.prefix}-__prefix__-example" value="1" id="id_${formset.options.prefix}-__prefix__-example" />
-            </div>
+            </div>` : ''}
             
             <div class="iuw-add-image-btn">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" width="100%" height="100%"><path xmlns="http://www.w3.org/2000/svg" d="M21 15v3h3v2h-3v3h-2v-3h-3v-2h3v-3h2zm.008-12c.548 0 .992.445.992.993V13h-2V5H4v13.999L14 9l3 3v2.829l-3-3L6.827 19H14v2H2.992A.993.993 0 0 1 2 20.007V3.993A1 1 0 0 1 2.992 3h18.016zM8 7a2 2 0 1 1 0 4 2 2 0 0 1 0-4z"></path></svg>

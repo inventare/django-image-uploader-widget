@@ -84,12 +84,3 @@ export function createTempFileInput(): HTMLInputElement {
     tempFileInput.style.display = 'none';
     return tempFileInput;
 }
-
-export function applyFileToInput(file: File, input?: HTMLInputElement | null) {
-    const dataTransferList = new DataTransfer();
-    dataTransferList.items.add(file);
-    if (!input) {
-        return;
-    }
-    input.files = dataTransferList.files;
-}

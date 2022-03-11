@@ -252,6 +252,7 @@ class ImageUploaderInline {
         fileInput?.addEventListener('change', this.onFileInputChange);
     }
 
+    /*
     onTempFileChange = () => {
         const filesList = this.tempFileInput?.files;
         if (!filesList?.length) {
@@ -264,6 +265,7 @@ class ImageUploaderInline {
         
         this.addFile(filesList[0]);
     }
+    */
 
     addFile(file: File) {
         const template = this.element.querySelector('.inline-related.empty-form');
@@ -289,6 +291,7 @@ class ImageUploaderInline {
         this.updateAllIndexes();
     }
 
+    /*
     onChooseAddImageAreaClick = () => {
         if (!this.tempFileInput) {
             this.tempFileInput = document.createElement('input');
@@ -301,6 +304,7 @@ class ImageUploaderInline {
         }
         this.tempFileInput.click();
     }
+    */
 }
 
 document.addEventListener('DOMContentLoaded', () => {

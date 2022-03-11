@@ -73,4 +73,15 @@ describe('EditorImage', () => {
 
         expect(() => getBySelector('img')).toThrow();
     });
+
+    it('constructor must render an parsed image url', () => {
+        document.body.innerHTML = getMockImageItem({ image: null });
+
+        const item = getBySelector('.inline-related');
+        new EditorImage(item, true, 'image/data.png');
+
+        const img = getBySelector('img');
+        expect(img).toBeInTheDocument();
+        expect(img.getAttribute('src')).toEqual('image/data.png');
+    });
 });

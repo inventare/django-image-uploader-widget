@@ -7,7 +7,6 @@ import {
     getManagementInputs,
     getAddButton,
     createTempFileInput,
-    applyFileToInput,
 } from './Utils';
 import { EditorImage } from './EditorImage';
 
@@ -96,12 +95,30 @@ export class ImageUploaderInline {
         return row;
     }
 
-    addFile(file: File) {
+    addFile() {
         const row = this.createFromEmptyTemplate();
+
+        if (!this.tempFileInput) {
+            throw new Error('no-temp-input-for-upload');
+        }
+        const file = (this.tempFileInput.files || [null])[0];
+        if (!file) {
+            throw new Error('no-file-in-input')
+        }
         
-        const rowFileInput = row.querySelector<HTMLInputElement>('input[type=file]');
-        applyFileToInput(file, rowFileInput);
-        
+        const rowFileInput = row.querySelector('input[type=file]') as HTMLInputElement;
+        const parent = rowFileInput.parentElement as HTMLElement;
+
+        const className = rowFileInput.className;
+        const name = rowFileInput.getAttribute('name');
+        parent.removeChild(rowFileInput);
+
+        this.tempFileInput.className = className;
+        this.tempFileInput.setAttribute('name', name || '');
+        this.tempFileInput.parentElement?.removeChild(this.tempFileInput);
+        parent.appendChild(this.tempFileInput);
+        this.tempFileInput = null;
+
         this.images.push(new EditorImage(row, true, URL.createObjectURL(file)));
         this.updateEmpty();
         this.updateAllIndexes();
@@ -112,10 +129,7 @@ export class ImageUploaderInline {
         if (!filesList || filesList.length <= 0) {
             return;
         }
-        this.tempFileInput?.removeEventListener('change', this.handleTempFileInputChange);
-        this.tempFileInput?.parentElement?.removeChild(this.tempFileInput);
-        this.tempFileInput = null;
-        this.addFile(filesList[0]);
+        this.addFile();
     }
 
     handleAddImage() {
