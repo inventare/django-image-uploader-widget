@@ -56,7 +56,6 @@ export class ImageUploaderInline {
     bindVariables() {
         this.handleAddImage = this.handleAddImage.bind(this);
         this.handleTempFileInputChange = this.handleTempFileInputChange.bind(this);
-        this.handleImageDelete = this.handleImageDelete.bind(this);
     }
 
     bindEvents() {
@@ -148,7 +147,7 @@ export class ImageUploaderInline {
         this.tempFileInput.click();
     }
 
-    handleImageDelete(image: EditorImage) {
+    handleImageDelete = (image: EditorImage) => {
         if (image.element.getAttribute('data-raw')) {
             image.element.classList.add('deleted');
             const checkboxInput = image.element.querySelector('input[type=checkbox]') as HTMLInputElement;
