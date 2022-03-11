@@ -1,13 +1,18 @@
 import PreviewIcon from '../Icons/PreviewIcon';
 import DeleteIcon from '../Icons/DeleteIcon';
+import { PreviewModal } from '../PreviewModal';
 
 export class EditorImage {
     element: HTMLElement;
     canPreview: boolean;
+    onDelete: ((image: EditorImage) => void) | null;
     
     constructor(element: HTMLElement, canPreview: boolean, newImage?: string) {
         this.element = element;
         this.canPreview = canPreview;
+        this.onDelete = null;
+
+        this.handleClick = this.handleClick.bind(this);
 
         if (!!newImage) {
             this.render(newImage);
@@ -55,6 +60,7 @@ export class EditorImage {
         }
         let delete_icon: Element | null = null;
         const related = this.element.closest('.inline-related');
+        related?.addEventListener('click', this.handleClick);
         if (related?.getAttribute('data-candelete') === 'true') {
             delete_icon = document.createElement('span');
             delete_icon.classList.add('iuw-delete-icon');
@@ -75,5 +81,31 @@ export class EditorImage {
         if (delete_icon) {
             this.element.appendChild(delete_icon);
         }
+    }
+
+    private handleClick(e: Event) {
+        if (!e || !e.target) {
+            return;
+        }
+        const target = e.target as HTMLElement;
+        const item = target.closest('.inline-related');
+        if (target.closest('.iuw-delete-icon') && !!this.onDelete) {
+            this.onDelete(this);
+            return;
+        }
+        if (target.closest('.iuw-preview-icon')) {
+            let image = item?.querySelector('img');
+            if (image) {
+                image = image.cloneNode(true) as HTMLImageElement;
+                PreviewModal.createPreviewModal(image);
+                PreviewModal.openPreviewModal();
+                return;
+            }
+        }
+        const fileInput = item?.querySelector<HTMLInputElement>('input[type=file]');
+        if (e.target === fileInput) {
+            return;
+        }
+        fileInput?.click();
     }
 }

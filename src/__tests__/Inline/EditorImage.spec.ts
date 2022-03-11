@@ -1,6 +1,8 @@
+import userEvent from '@testing-library/user-event';
 import { getBySelector } from "../../test/querySelector";
 import { getMockImageItem } from "../../__mocks__/mockInlineTemplate";
 import { EditorImage } from '../../Inline/EditorImage';
+import { PreviewModal } from '../../PreviewModal';
 
 describe('EditorImage', () => {
     it('constructor must preserve the inputs', () => {
@@ -83,5 +85,79 @@ describe('EditorImage', () => {
         const img = getBySelector('img');
         expect(img).toBeInTheDocument();
         expect(img.getAttribute('src')).toEqual('image/data.png');
+    });
+
+    it('click on the delete icon must call the onDelete handler', () => {
+        document.body.innerHTML = getMockImageItem({ image: null, canDelete: true });
+
+        const item = getBySelector('.inline-related');
+        const image = new EditorImage(item, true, 'image/data.png');
+
+        image.onDelete = jest.fn();
+
+        const deleteButton = getBySelector('.iuw-delete-icon');
+        userEvent.click(deleteButton);
+
+        expect(image.onDelete).toBeCalled();
+        expect(image.onDelete).toBeCalledTimes(1);
+    });
+
+    it('click on the preview icon must call open the image modal', () => {
+        const spyOpenPreviewModal = jest.spyOn(PreviewModal, 'openPreviewModal');
+        const spyCreatePreviewModal = jest.spyOn(PreviewModal, 'createPreviewModal');
+        const openPreviewModal = jest.fn();
+        const createPreviewModal = jest.fn();
+        spyOpenPreviewModal.mockImplementation(openPreviewModal);
+        spyCreatePreviewModal.mockImplementation(createPreviewModal);
+
+        document.body.innerHTML = getMockImageItem({ image: null, canDelete: true });
+
+        const item = getBySelector('.inline-related');
+        const image = new EditorImage(item, true, 'image/data.png');
+
+        expect(createPreviewModal).not.toHaveBeenCalled();
+        expect(openPreviewModal).not.toHaveBeenCalled();
+
+        const previewButton = getBySelector('.iuw-preview-icon');
+        userEvent.click(previewButton);
+
+        expect(createPreviewModal).toHaveBeenCalled();
+        expect(createPreviewModal).toHaveBeenCalledTimes(1);
+        expect(openPreviewModal).toHaveBeenCalled();
+        expect(openPreviewModal).toHaveBeenCalledTimes(1);
+
+        spyOpenPreviewModal.mockClear();
+        spyCreatePreviewModal.mockClear();
+    });
+
+    it('click on the outside of the input must call the input click', () => {
+        document.body.innerHTML = getMockImageItem({ image: null, canDelete: true });
+
+        const item = getBySelector('.inline-related');
+        const image = new EditorImage(item, true, 'image/data.png');
+        
+        const fileInput = item.querySelector('input') as HTMLInputElement;
+        const imageTag = item.querySelector('img') as HTMLElement;
+
+        fileInput.click = jest.fn();
+
+        userEvent.click(imageTag);
+
+        expect(fileInput.click).toBeCalled();
+        expect(fileInput.click).toBeCalledTimes(1);
+    });
+
+    it('click on the inside of the input must not call the input click() method', () => {
+        document.body.innerHTML = getMockImageItem({ image: null, canDelete: true });
+
+        const item = getBySelector('.inline-related');
+        const image = new EditorImage(item, true, 'image/data.png');
+        
+        const fileInput = item.querySelector('input') as HTMLInputElement;
+
+        fileInput.click = jest.fn();
+        userEvent.click(fileInput);
+
+        expect(fileInput.click).not.toBeCalled();
     });
 });
