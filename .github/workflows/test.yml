@@ -25,16 +25,8 @@ jobs:
       run: yarn test
       env:
         CI: true
-    
-    - name: Test & Publish Code Coverage
-      uses: paambaati/codeclimate-action@v3.0.0
-      env:
-        CC_TEST_REPORTER_ID: ${{ secrets.CODE_CLIMATE_COVERAGE_ID }}
-      with:
-        coverageCommand: yarn test
-        debug: true
 
-#    - name: Coveralls
-#      uses: coverallsapp/github-action@master
-#      with:
-#        github-token: ${{ secrets.GITHUB_TOKEN }}
+    - name: Coveralls
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}

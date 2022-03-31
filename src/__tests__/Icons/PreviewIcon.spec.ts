@@ -1,11 +1,11 @@
-import PreviewIcon from './PreviewIcon';
+import PreviewIcon from '../../Icons/PreviewIcon';
 
 describe('PreviewIcon', () => {
-    test('PreviewIcon must be a string', () => {
+    it('PreviewIcon must be a string', () => {
         expect(typeof PreviewIcon).toBe('string');
     });
 
-    test('PreviewIcon must contains an svg', () => {
+    it('PreviewIcon must contains an svg', () => {
         const div = document.createElement('div');
         div.innerHTML = PreviewIcon;
         

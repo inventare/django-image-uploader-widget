@@ -1,11 +1,11 @@
-import DeleteIcon from './DeleteIcon';
+import DeleteIcon from '../../Icons/DeleteIcon';
 
 describe('DeleteIcon', () => {
-    test('DeleteIcon must be a string', () => {
+    it('DeleteIcon must be a string', () => {
         expect(typeof DeleteIcon).toBe('string');
     });
 
-    test('DeleteIcon must contains an svg', () => {
+    it('DeleteIcon must contains an svg', () => {
         const div = document.createElement('div');
         div.innerHTML = DeleteIcon;
         
