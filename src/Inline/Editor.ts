@@ -51,6 +51,12 @@ export class ImageUploaderInline {
 
         this.bindVariables();
         this.bindEvents();
+        
+        this.element.addEventListener('dragenter', this.handleDragEnter);
+        this.element.addEventListener('dragover', this.handleDragOver);
+        this.element.addEventListener('dragleave', this.handleDragLeave);
+        this.element.addEventListener('dragend', this.handleDragLeave);
+        this.element.addEventListener('drop', this.handleDrop);
     }
 
     bindVariables() {
@@ -157,5 +163,34 @@ export class ImageUploaderInline {
         }
         this.images = this.images.filter((item) => item !== image);
         this.updateEmpty();
+    }
+
+    handleDrop = (e: DragEvent) => {
+        e.preventDefault();
+        
+        this.element.classList.remove('drop-zone');
+        if (e.dataTransfer?.files.length) {
+            for (const file of e.dataTransfer.files) {
+                
+                //TODO: this.addFile(file);
+            }
+        }
+    }
+
+    handleDragEnter = () => {
+        this.element.classList.add('drop-zone');
+    }
+
+    handleDragOver = (e: DragEvent) => {
+        if (e) {
+            e.preventDefault();
+        }
+    }
+    
+    handleDragLeave = (e: DragEvent) => {
+        if (e.relatedTarget && (e.relatedTarget as HTMLElement).closest('.iuw-inline-root') === this.element) {
+            return;
+        }
+        this.element.classList.remove('drop-zone');
     }
 }
