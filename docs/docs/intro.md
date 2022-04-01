@@ -63,6 +63,7 @@ class ExampleForm(forms.ModelForm):
         fields = '__all__'
 ```
 
-## Advanced Use Cases
+## Code Example
 
-Better writed widget use cases and more effective examples is comming. Other examples with the inline is comming. For now, check the `image_uploader_widget_demo` folder in the Github [repository](https://github.com/inventare/django-image-uploader-widget).
+For code direct examples, check the `image_uploader_widget_demo` folder in the Github [repository](https://github.com/inventare/django-image-uploader-widget).
+
