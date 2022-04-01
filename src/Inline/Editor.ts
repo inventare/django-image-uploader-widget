@@ -105,29 +105,40 @@ export class ImageUploaderInline {
         return row;
     }
 
-    addFile() {
+    addFile(fileToAdd: File | null = null) {
         const row = this.createFromEmptyTemplate();
 
-        if (!this.tempFileInput) {
-            throw new Error('no-temp-input-for-upload');
-        }
-        const file = (this.tempFileInput.files || [null])[0];
-        if (!file) {
-            throw new Error('no-file-in-input')
-        }
-        
-        const rowFileInput = row.querySelector('input[type=file]') as HTMLInputElement;
-        const parent = rowFileInput.parentElement as HTMLElement;
+        let file = null;
+        if (fileToAdd) {
+            file = fileToAdd;
+            const rowFileInput = row.querySelector('input[type=file]') as HTMLInputElement;
+            
+            const dataTransferList = new DataTransfer();
+            dataTransferList.items.add(file);
 
-        const className = rowFileInput.className;
-        const name = rowFileInput.getAttribute('name');
-        parent.removeChild(rowFileInput);
+            rowFileInput.files = dataTransferList.files;
+        } else {
+            if (!this.tempFileInput) {
+                throw new Error('no-temp-input-for-upload');
+            }
+            file = (this.tempFileInput.files || [null])[0];
+            if (!file) {
+                throw new Error('no-file-in-input')
+            }
+            
+            const rowFileInput = row.querySelector('input[type=file]') as HTMLInputElement;
+            const parent = rowFileInput.parentElement as HTMLElement;
 
-        this.tempFileInput.className = className;
-        this.tempFileInput.setAttribute('name', name || '');
-        this.tempFileInput.parentElement?.removeChild(this.tempFileInput);
-        parent.appendChild(this.tempFileInput);
-        this.tempFileInput = null;
+            const className = rowFileInput.className;
+            const name = rowFileInput.getAttribute('name');
+            parent.removeChild(rowFileInput);
+
+            this.tempFileInput.className = className;
+            this.tempFileInput.setAttribute('name', name || '');
+            this.tempFileInput.parentElement?.removeChild(this.tempFileInput);
+            parent.appendChild(this.tempFileInput);
+            this.tempFileInput = null;
+        }
 
         const editorImage = new EditorImage(row, true, URL.createObjectURL(file));
         editorImage.onDelete = this.handleImageDelete;
@@ -171,8 +182,7 @@ export class ImageUploaderInline {
         this.element.classList.remove('drop-zone');
         if (e.dataTransfer?.files.length) {
             for (const file of e.dataTransfer.files) {
-                
-                //TODO: this.addFile(file);
+                this.addFile(file);
             }
         }
     }
