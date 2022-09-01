@@ -16,8 +16,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (window && window.django && window.django.jQuery) {
         const $ = window.django.jQuery;
         
-        $(document).on('formset:added', (_: Event, row: HTMLElement[]) => {
-            if (!row.length) {
+        $(document).on('formset:added', (e: Event, row: HTMLElement[]) => {
+            if (!row || !row.length) {
+                row = [e.target as HTMLElement]
+            }
+            if (!row || !row.length) {
                 return;
             }
             Array
