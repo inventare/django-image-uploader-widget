@@ -9,11 +9,12 @@ class ImageUploaderInline(admin.StackedInline):
     def media(self):
         return forms.Media(
             js = [
-                'admin/js/image-uploader-inline.js'
+                'admin/js/image-uploader-modal.js',
+                'admin/js/image-uploader-inline.js',
             ],
             css = {
                 'screen': [
-                    'admin/css/image-uploader-inline.css'
+                    'admin/css/image-uploader-inline.css',
                 ]
             }
         )

@@ -15,11 +15,12 @@ class ImageUploaderWidget(widgets.ClearableFileInput):
     def media(self):
         return forms.Media(
             js=(
-                'admin/js/image-uploader-widget.js'
+                'admin/js/image-uploader-modal.js',
+                'admin/js/image-uploader-widget.js',
             ),
             css={
                 'screen': (
-                    'admin/css/image-uploader-widget.css'
+                    'admin/css/image-uploader-widget.css',
                 ),
             },
         )

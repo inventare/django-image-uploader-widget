@@ -1,59 +1,8 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', function() {
     let DRAGGING_EDITOR = null;
     window.uploaderEditors = {};
     const DELETE_ICON = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" width="100%" height="100%"><path xmlns="http://www.w3.org/2000/svg" d="m289.94 256 95-95A24 24 0 0 0 351 127l-95 95-95-95a24 24 0 0 0-34 34l95 95-95 95a24 24 0 1 0 34 34l95-95 95 95a24 24 0 0 0 34-34z"></path></svg>';
     const PREVIEW_ICON = '<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-zoom-in" viewBox="0 0 16 16" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" width="100%" height="100%"><path xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"></path><path xmlns="http://www.w3.org/2000/svg" d="M10.344 11.742c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1 6.538 6.538 0 0 1-1.398 1.4z"></path><path xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" d="M6.5 3a.5.5 0 0 1 .5.5V6h2.5a.5.5 0 0 1 0 1H7v2.5a.5.5 0 0 1-1 0V7H3.5a.5.5 0 0 1 0-1H6V3.5a.5.5 0 0 1 .5-.5z"></path></svg>';
-    const PreviewModal = {
-        openPreviewModal: () => {
-            const modal = document.getElementById('iuw-modal-element');
-            if (!modal) {
-                return;
-            }
-            setTimeout(() => {
-                modal.classList.add('visible');
-                modal.classList.remove('hide');
-                document.body.style.overflow = 'hidden';
-            }, 50);
-        },
-        closePreviewModal: () => {
-            document.body.style.overflow = 'auto';
-            const modal = document.getElementById('iuw-modal-element');
-            if (modal) {
-                modal.classList.remove('visible');
-                modal.classList.add('hide');
-                setTimeout(() => {
-                    modal.parentElement.removeChild(modal);
-                }, 300);
-            }
-        },
-        onModalClick: (e) => {
-            if (e && e.target) {
-                const element = e.target;
-                if (element.closest('img.iuw-modal-image-preview-item')) {
-                    return;
-                }
-            }
-            PreviewModal.closePreviewModal();
-        },
-        createPreviewModal: function (image) {
-            image.className = '';
-            image.classList.add('iuw-modal-image-preview-item');
-
-            const modal = document.createElement('div');
-            modal.id = 'iuw-modal-element';
-            modal.classList.add('iuw-modal', 'hide');
-            modal.addEventListener('click', PreviewModal.onModalClick);
-            
-            const preview = document.createElement('div');
-            preview.classList.add('iuw-modal-image-preview');
-            preview.innerHTML = '<span class="iuw-modal-close"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" width="100%" height="100%"><path xmlns="http://www.w3.org/2000/svg" d="m289.94 256 95-95A24 24 0 0 0 351 127l-95 95-95-95a24 24 0 0 0-34 34l95 95-95 95a24 24 0 1 0 34 34l95-95 95 95a24 24 0 0 0 34-34z"></path></svg></span>';
-            preview.appendChild(image);
-            modal.appendChild(preview);
-            
-            document.body.appendChild(modal);
-            return modal;
-        }
-    };
 
     function getEditor(element) {
         const root = element.closest('.iuw-inline-root');
@@ -206,8 +155,8 @@ document.addEventListener('DOMContentLoaded', () => {
             let image = item?.querySelector('img');
             if (image) {
                 image = image.cloneNode(true);
-                PreviewModal.createPreviewModal(image);
-                PreviewModal.openPreviewModal();
+                IUWPreviewModal.createPreviewModal(image);
+                IUWPreviewModal.openPreviewModal();
                 return;
             }
             return;
