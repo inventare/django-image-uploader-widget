@@ -10,7 +10,7 @@ A beautiful image uploader widget for django/django-admin.
 
 ## Documentation
 
-To understand this package and how to use it you can access the package [documentation](https://iuw.institutoinventare.com.br/).
+To understand this package and how to use it you can access the package [documentation](https://inventare.github.io/django-image-uploader-widget/).
 
 ## Installing
 
