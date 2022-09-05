@@ -3,10 +3,5 @@ venv
 __pycache__
 *.sqlite3
 media/
-dist
 build
 *.egg-info
-node_modules
-yarn-error.log
-coverage
-ts-out

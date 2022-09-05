@@ -1,43 +1,43 @@
-export const PreviewModal = {
-    openPreviewModal: () => {
+const IUWPreviewModal = {
+    openPreviewModal: function() {
         const modal = document.getElementById('iuw-modal-element');
         if (!modal) {
             return;
         }
-        setTimeout(() => {
+        setTimeout(function() {
             modal.classList.add('visible');
             modal.classList.remove('hide');
             document.body.style.overflow = 'hidden';
         }, 50);
     },
-    closePreviewModal: () => {
+    closePreviewModal: function() {
         document.body.style.overflow = 'auto';
         const modal = document.getElementById('iuw-modal-element');
         if (modal) {
             modal.classList.remove('visible');
             modal.classList.add('hide');
-            setTimeout(() => {
-                modal.parentElement?.removeChild(modal);
+            setTimeout(function() {
+                modal.parentElement.removeChild(modal);
             }, 300);
         }
     },
-    onModalClick: (e: Event) => {
+    onModalClick: function (e) {
         if (e && e.target) {
-            const element = e.target as HTMLElement;
+            const element = e.target;
             if (element.closest('img.iuw-modal-image-preview-item')) {
                 return;
             }
         }
-        PreviewModal.closePreviewModal();
+        IUWPreviewModal.closePreviewModal();
     },
-    createPreviewModal: (image: HTMLImageElement) : HTMLElement => {
+    createPreviewModal: function (image) {
         image.className = '';
         image.classList.add('iuw-modal-image-preview-item');
 
         const modal = document.createElement('div');
         modal.id = 'iuw-modal-element';
         modal.classList.add('iuw-modal', 'hide');
-        modal.addEventListener('click', PreviewModal.onModalClick);
+        modal.addEventListener('click', IUWPreviewModal.onModalClick);
         
         const preview = document.createElement('div');
         preview.classList.add('iuw-modal-image-preview');
@@ -48,4 +48,4 @@ export const PreviewModal = {
         document.body.appendChild(modal);
         return modal;
     }
-}
+};

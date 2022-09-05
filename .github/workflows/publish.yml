@@ -15,17 +15,6 @@ jobs:
         with:
           python-version: 3.9
 
-      - name: Install Node.js
-        uses: actions/setup-node@v1
-        with:
-          node-version: 12
-
-      - name: Install Node.js Dependencies
-        run: yarn
-      
-      - name: Build Widget JavaScript
-        run: yarn build
-
       - name: Install pypa/build
         run: python -m pip install build --user
 
