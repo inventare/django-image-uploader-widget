@@ -24,7 +24,12 @@ document.addEventListener('DOMContentLoaded', function() {
         const initialForms = document.querySelector(`#id_${prefix}-INITIAL_FORMS`);
         const minNumForms = document.querySelector(`#id_${prefix}-MIN_NUM_FORMS`);
         const maxNumForms = document.querySelector(`#id_${prefix}-MAX_NUM_FORMS`);
-        return { totalForms, initialForms, minNumForms, maxNumForms };
+        return {
+            totalForms: totalForms,
+            initialForms: initialForms,
+            minNumForms: minNumForms,
+            maxNumForms: maxNumForms,
+        };
     }
 
     function getFromEmptyTemplate(editor) {
