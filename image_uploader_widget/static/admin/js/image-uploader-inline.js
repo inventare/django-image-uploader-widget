@@ -278,8 +278,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function updateEmptyState(editor) {
-        const { length } = editor.element.querySelectorAll('.inline-related:not(.empty-form):not(.deleted)');
-        editor.element.classList.toggle('empty', length == 0);
+        const items = editor.element.querySelectorAll('.inline-related:not(.empty-form):not(.deleted)');
+        editor.element.classList.toggle('empty', items.length == 0);
     }
 
     function updateElementIndex(element, prefix, index) {
@@ -311,7 +311,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function updateAllIndexes(editor) {
-        const { prefix } = editor.inlineFormset.options;
+        const prefix = editor.inlineFormset.options.prefix;
         const elements = editor.element.querySelectorAll('.inline-related:not(.empty-form)');
         
         let index = 0;
