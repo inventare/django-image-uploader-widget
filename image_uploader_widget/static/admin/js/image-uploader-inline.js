@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', function() {
         row.setAttribute('data-candelete', 'true');
         row.id = editor.inlineFormset.options.prefix + '-' + editor.next;
 
-        template.parentElement?.insertBefore(row, template);
+        template.parentElement.insertBefore(row, template);
 
         return row;
     }
@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (editor.canPreview) {
             const span = document.createElement('span');
             span.classList.add('iuw-preview-icon');
-            if (related?.getAttribute('data-candelete') !== 'true') {
+            if (related.getAttribute('data-candelete') !== 'true') {
                 span.classList.add('iuw-only-preview');
             }
             span.innerHTML = PREVIEW_ICON;
@@ -157,7 +157,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         if (target.closest('.iuw-preview-icon')) {
-            let image = item?.querySelector('img');
+            let image = item.querySelector('img');
             if (image) {
                 image = image.cloneNode(true);
                 IUWPreviewModal.createPreviewModal(image);
@@ -248,7 +248,7 @@ document.addEventListener('DOMContentLoaded', function() {
         DRAGGING_EDITOR = null;
         editor.element.classList.remove('drop-zone');
 
-        if (!e.dataTransfer?.files.length) {
+        if (!e.dataTransfer.files.length) {
             return;
         }
         for (const file of e.dataTransfer.files) {
@@ -259,7 +259,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function handleTempFileInputChange(e) {
         const editor = getEditor(e.target);
         
-        const filesList = editor.tempFileInput?.files;
+        const filesList = editor.tempFileInput.files;
         if (!filesList || filesList.length <= 0) {
             return;
         }

@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!widget) {
             return;
         }
-        if (!widget.fileInput.files?.length) {
+        if (!widget.fileInput.files.length) {
             return;
         }
         widget.file = widget.fileInput.files[0];
@@ -142,7 +142,7 @@ document.addEventListener('DOMContentLoaded', function () {
         
         DRAGGING_WIDGET = null;
 
-        if (!e.dataTransfer?.files.length) {
+        if (!e.dataTransfer.files.length) {
             return;
         }
         widget.fileInput.files = e.dataTransfer.files;
