@@ -20,10 +20,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function getManagementInputs(prefix) {
-        const totalForms = document.querySelector(`#id_${prefix}-TOTAL_FORMS`);
-        const initialForms = document.querySelector(`#id_${prefix}-INITIAL_FORMS`);
-        const minNumForms = document.querySelector(`#id_${prefix}-MIN_NUM_FORMS`);
-        const maxNumForms = document.querySelector(`#id_${prefix}-MAX_NUM_FORMS`);
+        const totalForms = document.querySelector('#id_' + prefix + '-TOTAL_FORMS');
+        const initialForms = document.querySelector('#id_' + prefix + '-INITIAL_FORMS');
+        const minNumForms = document.querySelector('#id_' + prefix + '-MIN_NUM_FORMS');
+        const maxNumForms = document.querySelector('#id_' + prefix + '-MAX_NUM_FORMS');
         return {
             totalForms: totalForms,
             initialForms: initialForms,
@@ -288,7 +288,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function updateElementIndex(element, prefix, index) {
-        const findRegex = new RegExp(`(${prefix}-(\\d+|__prefix__))`);
+        const findRegex = new RegExp('(' + prefix + '-(\\d+|__prefix__))');
         const replacement = prefix + '-' + index;
         // replace at [for]
         const forAttr = element.getAttribute('for');
