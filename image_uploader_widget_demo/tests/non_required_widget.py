@@ -196,3 +196,28 @@ class ImageUploaderWidget(StaticLiveServerTestCase):
         self.assertEqual(len(itens), 1)
         item = itens[0]
         self.assertFalse(bool(item.image))
+
+    def test_click_on_the_preview_image(self):
+        self.selenium.get(self.get_url(self.admin_add_url))
+
+        form_row = self.selenium.find_element(By.CSS_SELECTOR, '.form-row.field-image')
+        previews = form_row.find_elements(By.CSS_SELECTOR, '.iuw-image-preview')
+        file_input = form_row.find_element(By.CSS_SELECTOR, 'input[type=file]');
+        file_input.send_keys(self.image_file)
+        
+        injected_javascript = (
+            'const callback = arguments[0];'
+            'const input = document.querySelector(".form-row.field-image input[type=file]");'
+            'input.addEventListener("click", (e) => { e.preventDefault(); alert("CLICKED"); });'
+            'callback();'
+        )
+        self.selenium.execute_async_script(injected_javascript)
+
+        previews = form_row.find_elements(By.CSS_SELECTOR, '.iuw-image-preview')
+        self.assertEqual(len(previews), 1)
+        preview = previews[0]
+
+        img = preview.find_element(By.TAG_NAME, 'img')
+        img.click()
+        
+        self.selenium.switch_to.alert.accept()
