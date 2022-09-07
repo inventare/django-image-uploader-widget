@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model
 from django.core.files import File
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.expected_conditions import invisibility_of_element_located
 from selenium.webdriver.support.wait import WebDriverWait
 from image_uploader_widget_demo.demo_application import models
 
@@ -79,7 +80,7 @@ class ImageUploaderWidget(StaticLiveServerTestCase):
         previews = form_row.find_elements(By.CSS_SELECTOR, '.iuw-image-preview')
         self.assertEqual(len(previews), 0)
 
-        file_input = form_row.find_element(By.CSS_SELECTOR, 'input[type=file]');
+        file_input = form_row.find_element(By.CSS_SELECTOR, 'input[type=file]')
 
         self.assertEqual(file_input.get_attribute('value'), "")
 
@@ -92,8 +93,8 @@ class ImageUploaderWidget(StaticLiveServerTestCase):
         
         preview = previews[0]
         img = preview.find_element(By.TAG_NAME, 'img')
-        preview_button = preview.find_element(By.CSS_SELECTOR, '.iuw-preview-icon');
-        delete_button = preview.find_element(By.CSS_SELECTOR, '.iuw-delete-icon');
+        preview_button = preview.find_element(By.CSS_SELECTOR, '.iuw-preview-icon')
+        delete_button = preview.find_element(By.CSS_SELECTOR, '.iuw-delete-icon')
         self.assertTrue(preview.is_displayed())
         self.assertIsNotNone(img)
         self.assertIsNotNone(preview_button)
@@ -117,7 +118,7 @@ class ImageUploaderWidget(StaticLiveServerTestCase):
         self.selenium.get(self.get_url(self.admin_add_url))
         
         form_row = self.selenium.find_element(By.CSS_SELECTOR, '.form-row.field-image')
-        file_input = form_row.find_element(By.CSS_SELECTOR, 'input[type=file]');
+        file_input = form_row.find_element(By.CSS_SELECTOR, 'input[type=file]')
         
         self.assertEqual(file_input.get_attribute('value'), "")
         
@@ -129,7 +130,7 @@ class ImageUploaderWidget(StaticLiveServerTestCase):
         self.assertEqual(len(previews), 1)
         
         preview = previews[0]
-        delete_button = preview.find_element(By.CSS_SELECTOR, '.iuw-delete-icon');
+        delete_button = preview.find_element(By.CSS_SELECTOR, '.iuw-delete-icon')
 
         delete_button.click()
 
@@ -156,8 +157,8 @@ class ImageUploaderWidget(StaticLiveServerTestCase):
 
         preview = previews[0]
         img = preview.find_element(By.TAG_NAME, 'img')
-        preview_button = preview.find_element(By.CSS_SELECTOR, '.iuw-preview-icon');
-        delete_button = preview.find_element(By.CSS_SELECTOR, '.iuw-delete-icon');
+        preview_button = preview.find_element(By.CSS_SELECTOR, '.iuw-preview-icon')
+        delete_button = preview.find_element(By.CSS_SELECTOR, '.iuw-delete-icon')
         self.assertTrue(preview.is_displayed())
         self.assertIsNotNone(img)
         self.assertTrue(item.image.url in img.get_attribute('src'))
@@ -180,7 +181,7 @@ class ImageUploaderWidget(StaticLiveServerTestCase):
 
         self.assertFalse(checkbox.is_selected())
 
-        delete_button = preview.find_element(By.CSS_SELECTOR, '.iuw-delete-icon');
+        delete_button = preview.find_element(By.CSS_SELECTOR, '.iuw-delete-icon')
 
         delete_button.click()
 
@@ -202,7 +203,7 @@ class ImageUploaderWidget(StaticLiveServerTestCase):
 
         form_row = self.selenium.find_element(By.CSS_SELECTOR, '.form-row.field-image')
         previews = form_row.find_elements(By.CSS_SELECTOR, '.iuw-image-preview')
-        file_input = form_row.find_element(By.CSS_SELECTOR, 'input[type=file]');
+        file_input = form_row.find_element(By.CSS_SELECTOR, 'input[type=file]')
         file_input.send_keys(self.image_file)
         
         injected_javascript = (
@@ -221,3 +222,71 @@ class ImageUploaderWidget(StaticLiveServerTestCase):
         img.click()
         
         self.selenium.switch_to.alert.accept()
+
+    def test_click_on_the_preview_button(self):
+        self.selenium.get(self.get_url(self.admin_add_url))
+
+        form_row = self.selenium.find_element(By.CSS_SELECTOR, '.form-row.field-image')
+        previews = form_row.find_elements(By.CSS_SELECTOR, '.iuw-image-preview')
+        file_input = form_row.find_element(By.CSS_SELECTOR, 'input[type=file]')
+        file_input.send_keys(self.image_file)
+        
+        previews = form_row.find_elements(By.CSS_SELECTOR, '.iuw-image-preview')
+        self.assertEqual(len(previews), 1)
+        preview = previews[0]
+
+        preview_button = preview.find_element(By.CSS_SELECTOR, '.iuw-preview-icon')
+        preview_button.click()
+        
+        preview_modal = WebDriverWait(self.selenium, timeout=3).until(lambda d: d.find_element(By.CSS_SELECTOR, "#iuw-modal-element.visible"))
+        self.assertIsNotNone(preview_modal)
+        self.assertEqual(preview_modal.get_attribute('class'), 'iuw-modal visible')
+
+        img = preview_modal.find_element(By.TAG_NAME, 'img')
+        self.assertIsNotNone(img)
+
+    def test_click_on_the_preview_button_and_image_on_modal(self):
+        self.selenium.get(self.get_url(self.admin_add_url))
+
+        form_row = self.selenium.find_element(By.CSS_SELECTOR, '.form-row.field-image')
+        previews = form_row.find_elements(By.CSS_SELECTOR, '.iuw-image-preview')
+        file_input = form_row.find_element(By.CSS_SELECTOR, 'input[type=file]')
+        file_input.send_keys(self.image_file)
+        
+        previews = form_row.find_elements(By.CSS_SELECTOR, '.iuw-image-preview')
+        self.assertEqual(len(previews), 1)
+        preview = previews[0]
+
+        preview_button = preview.find_element(By.CSS_SELECTOR, '.iuw-preview-icon')
+        preview_button.click()
+        
+        preview_modal = WebDriverWait(self.selenium, timeout=3).until(lambda d: d.find_element(By.CSS_SELECTOR, "#iuw-modal-element.visible"))
+
+        img = preview_modal.find_element(By.TAG_NAME, 'img')
+        img.click()
+
+        self.selenium.implicitly_wait(0.5)
+
+        self.assertEqual(preview_modal.get_attribute("class"), "iuw-modal visible")
+
+    def test_click_on_the_preview_button_and_close_on_modal(self):
+        self.selenium.get(self.get_url(self.admin_add_url))
+
+        form_row = self.selenium.find_element(By.CSS_SELECTOR, '.form-row.field-image')
+        previews = form_row.find_elements(By.CSS_SELECTOR, '.iuw-image-preview')
+        file_input = form_row.find_element(By.CSS_SELECTOR, 'input[type=file]')
+        file_input.send_keys(self.image_file)
+        
+        previews = form_row.find_elements(By.CSS_SELECTOR, '.iuw-image-preview')
+        self.assertEqual(len(previews), 1)
+        preview = previews[0]
+
+        preview_button = preview.find_element(By.CSS_SELECTOR, '.iuw-preview-icon')
+        preview_button.click()
+        
+        preview_modal = WebDriverWait(self.selenium, timeout=3).until(lambda d: d.find_element(By.CSS_SELECTOR, "#iuw-modal-element.visible"))
+        
+        close_button = preview_modal.find_element(By.CSS_SELECTOR, '.iuw-modal-close')
+        close_button.click()
+
+        WebDriverWait(self.selenium, timeout=3).until(invisibility_of_element_located((By.CSS_SELECTOR, "#iuw-modal-element")));
