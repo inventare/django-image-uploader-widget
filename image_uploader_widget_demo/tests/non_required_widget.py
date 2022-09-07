@@ -1,6 +1,7 @@
 import os
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.contrib.auth import get_user_model
+from django.core.files import File
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
@@ -9,11 +10,13 @@ from image_uploader_widget_demo.demo_application import models
 User = get_user_model()
 
 class ImageUploaderWidget(StaticLiveServerTestCase):
-    admin_url = '/admin/demo_application/testnonrequired/add/'
-    url = ''
+    admin_add_url = '/admin/demo_application/testnonrequired/add/'
 
     def get_url(self, path):
         return "%s%s" % (self.live_server_url, path)
+
+    def get_edit_url(self, id):
+        return "%s/admin/demo_application/testnonrequired/%s/change/" % (self.live_server_url, id)
 
     @property
     def image_file(self):
@@ -23,8 +26,6 @@ class ImageUploaderWidget(StaticLiveServerTestCase):
         return image
 
     def setUp(self):
-        self.url = self.get_url(self.admin_url)
-
         self.user = User.objects.create_superuser(
             'admin', 'admin@admin.com', 'admin'
         )
@@ -45,7 +46,7 @@ class ImageUploaderWidget(StaticLiveServerTestCase):
         The empty marker must be visible and the file input click event should be
         called when click on the empty marker.
         """
-        self.selenium.get(self.url)
+        self.selenium.get(self.get_url(self.admin_add_url))
 
         form_row = self.selenium.find_element(By.CSS_SELECTOR, '.form-row.field-image')
 
@@ -71,7 +72,7 @@ class ImageUploaderWidget(StaticLiveServerTestCase):
         itens = models.TestNonRequired.objects.all()
         self.assertEqual(len(itens), 0)
 
-        self.selenium.get(self.url)
+        self.selenium.get(self.get_url(self.admin_add_url))
 
         form_row = self.selenium.find_element(By.CSS_SELECTOR, '.form-row.field-image')
 
@@ -93,6 +94,7 @@ class ImageUploaderWidget(StaticLiveServerTestCase):
         img = preview.find_element(By.TAG_NAME, 'img')
         preview_button = preview.find_element(By.CSS_SELECTOR, '.iuw-preview-icon');
         delete_button = preview.find_element(By.CSS_SELECTOR, '.iuw-delete-icon');
+        self.assertTrue(preview.is_displayed())
         self.assertIsNotNone(img)
         self.assertIsNotNone(preview_button)
         self.assertIsNotNone(delete_button)
@@ -112,7 +114,7 @@ class ImageUploaderWidget(StaticLiveServerTestCase):
         itens = models.TestNonRequired.objects.all()
         self.assertEqual(len(itens), 0)
         
-        self.selenium.get(self.url)
+        self.selenium.get(self.get_url(self.admin_add_url))
         
         form_row = self.selenium.find_element(By.CSS_SELECTOR, '.form-row.field-image')
         file_input = form_row.find_element(By.CSS_SELECTOR, 'input[type=file]');
@@ -135,3 +137,62 @@ class ImageUploaderWidget(StaticLiveServerTestCase):
         
         self.assertEqual(file_input.get_attribute('value'), "")
         self.assertEqual(len(previews), 0)
+
+    def test_image_with_database_data(self):
+        image_file = self.image_file
+        item = models.TestNonRequired()
+        with open(image_file, 'rb') as f:
+            item.image.save("image.png", File(f))
+        item.save()
+
+        self.selenium.get(self.get_edit_url(item.id))
+
+        form_row = self.selenium.find_element(By.CSS_SELECTOR, '.form-row.field-image')
+        root = form_row.find_element(By.CSS_SELECTOR, '.iuw-root')
+
+        previews = form_row.find_elements(By.CSS_SELECTOR, '.iuw-image-preview')
+        self.assertEqual(len(previews), 1)
+        self.assertEqual(root.get_attribute("data-raw"), item.image.url)
+
+        preview = previews[0]
+        img = preview.find_element(By.TAG_NAME, 'img')
+        preview_button = preview.find_element(By.CSS_SELECTOR, '.iuw-preview-icon');
+        delete_button = preview.find_element(By.CSS_SELECTOR, '.iuw-delete-icon');
+        self.assertTrue(preview.is_displayed())
+        self.assertIsNotNone(img)
+        self.assertTrue(item.image.url in img.get_attribute('src'))
+        self.assertIsNotNone(preview_button)
+        self.assertIsNotNone(delete_button)        
+
+    def test_delete_saved_image(self):
+        image_file = self.image_file
+        item = models.TestNonRequired()
+        with open(image_file, 'rb') as f:
+            item.image.save("image.png", File(f))
+        item.save()
+
+        self.selenium.get(self.get_edit_url(item.id))
+
+        form_row = self.selenium.find_element(By.CSS_SELECTOR, '.form-row.field-image')
+        checkbox = form_row.find_element(By.CSS_SELECTOR, '[type=checkbox]')
+        previews = form_row.find_elements(By.CSS_SELECTOR, '.iuw-image-preview')
+        preview = previews[0]
+
+        self.assertFalse(checkbox.is_selected())
+
+        delete_button = preview.find_element(By.CSS_SELECTOR, '.iuw-delete-icon');
+
+        delete_button.click()
+
+        previews = form_row.find_elements(By.CSS_SELECTOR, '.iuw-image-preview')
+        self.assertEqual(len(previews), 0)
+
+        self.assertTrue(checkbox.is_selected())
+
+        submit = self.selenium.find_element(By.CSS_SELECTOR, '#testnonrequired_form [type="submit"]')
+        submit.click()
+
+        itens = models.TestNonRequired.objects.all()
+        self.assertEqual(len(itens), 1)
+        item = itens[0]
+        self.assertFalse(bool(item.image))
