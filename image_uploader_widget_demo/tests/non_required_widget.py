@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model
 from django.core.files import File
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.expected_conditions import invisibility_of_element_located
 from selenium.webdriver.support.wait import WebDriverWait
 from image_uploader_widget_demo.demo_application import models
@@ -31,7 +32,9 @@ class ImageUploaderWidget(StaticLiveServerTestCase):
             'admin', 'admin@admin.com', 'admin'
         )
         
-        self.selenium = webdriver.Chrome()
+        chrome_options = Options()
+        chrome_options.add_argument('--headless')
+        self.selenium = webdriver.Chrome(options=chrome_options)
         self.selenium.get(self.get_url('/admin/login'))
         
         username = self.selenium.find_element(By.ID, "id_username")
