@@ -1,49 +1,18 @@
-import os
-from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.contrib.auth import get_user_model
 from django.core.files import File
-from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.expected_conditions import invisibility_of_element_located
 from selenium.webdriver.support.wait import WebDriverWait
 from image_uploader_widget_demo.demo_application import models
+from .base import IUWTestCase
 
 User = get_user_model()
 
-class ImageUploaderWidget(StaticLiveServerTestCase):
+class NonRequiredWidgetTestCase(IUWTestCase):
     admin_add_url = '/admin/demo_application/testnonrequired/add/'
 
-    def get_url(self, path):
-        return "%s%s" % (self.live_server_url, path)
-
     def get_edit_url(self, id):
-        return "%s/admin/demo_application/testnonrequired/%s/change/" % (self.live_server_url, id)
-
-    @property
-    def image_file(self):
-        base_dir = os.path.dirname(os.path.dirname(__file__))
-        mocks_dir = os.path.join(base_dir, "mocks")
-        image = os.path.join(mocks_dir, "image.png")
-        return image
-
-    def setUp(self):
-        self.user = User.objects.create_superuser(
-            'admin', 'admin@admin.com', 'admin'
-        )
-        
-        chrome_options = Options()
-        chrome_options.add_argument('--headless')
-        self.selenium = webdriver.Chrome(options=chrome_options)
-        self.selenium.get(self.get_url('/admin/login'))
-        
-        username = self.selenium.find_element(By.ID, "id_username")
-        password = self.selenium.find_element(By.ID, "id_password")
-        submit = self.selenium.find_element(By.XPATH, "//input[@type='submit']")
-
-        username.send_keys('admin')
-        password.send_keys('admin')
-        submit.click()
+        return self.get_url("/admin/demo_application/testnonrequired/%s/change/" % id)
 
     def test_empty_marker_click(self):
         """
