@@ -49,3 +49,11 @@ class TestRequiredTabularInline(models.Model):
 class TestRequiredTabularInlineItem(models.Model):
     parent = models.ForeignKey(TestRequiredTabularInline, on_delete=models.CASCADE)
     image = models.ImageField('Image')
+
+class Inline(models.Model):
+    class Meta:
+        verbose_name = 'Test With Inline'
+    
+class InlineItem(models.Model):
+    parent = models.ForeignKey(Inline, related_name="items", on_delete=models.CASCADE)
+    image = models.ImageField('Image')

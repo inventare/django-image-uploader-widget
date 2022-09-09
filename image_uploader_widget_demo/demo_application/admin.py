@@ -1,4 +1,5 @@
 from django.contrib import admin
+from image_uploader_widget.admin import ImageUploaderInline
 from . import models
 from . import forms
 
@@ -45,3 +46,10 @@ class TestRequiredTabularInlineItemAdmin(admin.TabularInline):
 @admin.register(models.TestRequiredTabularInline)
 class TestRequiredTabularInlineAdmin(admin.ModelAdmin):
     inlines = [TestRequiredTabularInlineItemAdmin]
+
+class InlineEditor(ImageUploaderInline):
+    model = models.InlineItem
+
+@admin.register(models.Inline)
+class InlineAdmin(admin.ModelAdmin):
+    inlines = [InlineEditor]

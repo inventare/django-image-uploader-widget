@@ -199,11 +199,10 @@ document.addEventListener('DOMContentLoaded', function() {
             const name = rowFileInput.getAttribute('name');
             parent.removeChild(rowFileInput);
 
-            editor.tempFileInput.className = className;
-            editor.tempFileInput.setAttribute('name', name || '');
-            editor.tempFileInput.parentElement.removeChild(editor.tempFileInput);
-            parent.appendChild(editor.tempFileInput);
-            editor.tempFileInput = null;
+            clonedInput = editor.tempFileInput.cloneNode(true)
+            clonedInput.className = className;
+            clonedInput.setAttribute('name', name || '');
+            parent.appendChild(clonedInput);
         }
 
         updatePreviewState(editor, row, URL.createObjectURL(file));
@@ -270,14 +269,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const editor = getEditor(e.target);
 
         if(!editor.tempFileInput) {
-            const tempFileInput = document.createElement('input');
-            tempFileInput.setAttribute('type', 'file');
-            tempFileInput.classList.add('temp_file');
-            tempFileInput.setAttribute('accept', 'image/*');
-            tempFileInput.style.display = 'none';
-            editor.tempFileInput = tempFileInput;
-            editor.tempFileInput.addEventListener('change', handleTempFileInputChange);
-            editor.element.appendChild(editor.tempFileInput);
+            return;
         }
         editor.tempFileInput.click();
     }
@@ -364,6 +356,16 @@ document.addEventListener('DOMContentLoaded', function() {
             maxCount: 0,
             addImageButton: element.querySelector('.iuw-add-image-btn'),
         };
+
+        const tempFileInput = document.createElement('input');
+        tempFileInput.setAttribute('type', 'file');
+        tempFileInput.classList.add('temp_file');
+        tempFileInput.setAttribute('accept', 'image/*');
+        tempFileInput.style.display = 'none';
+        editor.tempFileInput = tempFileInput;
+        editor.tempFileInput.addEventListener('change', handleTempFileInputChange);
+        editor.element.appendChild(editor.tempFileInput);
+
         if (editor.management.maxNumForms.value === '') {
             editor.maxCount = Number.MAX_SAFE_INTEGER;
         } else {
