@@ -1,8 +1,7 @@
 from django import forms
 from image_uploader_widget.widgets import ImageUploaderWidget
 
-class TestNonRequiredForm(forms.ModelForm):
-
+class TestForm(forms.ModelForm):
     class Meta:
         widgets = {
             'image': ImageUploaderWidget(),

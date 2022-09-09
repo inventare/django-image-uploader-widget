@@ -4,12 +4,11 @@ from . import forms
 
 @admin.register(models.TestNonRequired)
 class TestNonRequiredAdmin(admin.ModelAdmin):
-    form = forms.TestNonRequiredForm
-
+    form = forms.TestForm
 
 class TestNonRequiredInlineItemAdmin(admin.StackedInline):
     model = models.TestNonRequiredInlineItem
-    form = forms.TestNonRequiredForm
+    form = forms.TestForm
     extra = 0
 
 @admin.register(models.TestNonRequiredInline)
@@ -18,9 +17,31 @@ class TestNonRequiredInlineAdmin(admin.ModelAdmin):
 
 class TestNonRequiredTabularInlineItemAdmin(admin.TabularInline):
     model = models.TestNonRequiredTabularInlineItem
-    form = forms.TestNonRequiredForm
+    form = forms.TestForm
     extra = 0
 
 @admin.register(models.TestNonRequiredTabularInline)
 class TestNonRequiredTabularInlineAdmin(admin.ModelAdmin):
     inlines = [TestNonRequiredTabularInlineItemAdmin]
+
+@admin.register(models.TestRequired)
+class TestRequiredAdmin(admin.ModelAdmin):
+    form = forms.TestForm
+
+class TestRequiredInlineItemAdmin(admin.StackedInline):
+    model = models.TestRequiredInlineItem
+    form = forms.TestForm
+    extra = 0
+
+@admin.register(models.TestRequiredInline)
+class TestRequiredInlineAdmin(admin.ModelAdmin):
+    inlines = [TestRequiredInlineItemAdmin]
+
+class TestRequiredTabularInlineItemAdmin(admin.TabularInline):
+    model = models.TestRequiredTabularInlineItem
+    form = forms.TestForm
+    extra = 0
+
+@admin.register(models.TestRequiredTabularInline)
+class TestRequiredTabularInlineAdmin(admin.ModelAdmin):
+    inlines = [TestRequiredTabularInlineItemAdmin]

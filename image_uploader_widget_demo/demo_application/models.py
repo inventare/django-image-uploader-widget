@@ -24,3 +24,28 @@ class TestNonRequiredTabularInline(models.Model):
 class TestNonRequiredTabularInlineItem(models.Model):
     parent = models.ForeignKey(TestNonRequiredTabularInline, on_delete=models.CASCADE)
     image = models.ImageField('Image', null=True, blank=True)
+
+class TestRequired(models.Model):
+    image = models.ImageField('Image')
+
+    def __str__(self):
+        return 'Example Model'
+
+    class Meta:
+        verbose_name = 'Test Required'
+
+class TestRequiredInline(models.Model):
+    class Meta:
+        verbose_name = 'Test Required Inline'
+
+class TestRequiredInlineItem(models.Model):
+    parent = models.ForeignKey(TestRequiredInline, on_delete=models.CASCADE)
+    image = models.ImageField('Image')
+
+class TestRequiredTabularInline(models.Model):
+    class Meta:
+        verbose_name = 'Test Non Required Tabular Inline'
+    
+class TestRequiredTabularInlineItem(models.Model):
+    parent = models.ForeignKey(TestRequiredTabularInline, on_delete=models.CASCADE)
+    image = models.ImageField('Image')
