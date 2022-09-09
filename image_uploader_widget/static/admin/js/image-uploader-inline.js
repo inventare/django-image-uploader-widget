@@ -203,8 +203,6 @@ document.addEventListener('DOMContentLoaded', function() {
             clonedInput.className = className;
             clonedInput.setAttribute('name', name || '');
             parent.appendChild(clonedInput);
-            
-            editor.tempFileInput.files = null;
         }
 
         updatePreviewState(editor, row, URL.createObjectURL(file));
