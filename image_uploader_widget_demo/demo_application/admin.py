@@ -37,3 +37,11 @@ class TestRequiredInlineItemAdmin(admin.StackedInline):
 class TestRequiredInlineAdmin(admin.ModelAdmin):
     inlines = [TestRequiredInlineItemAdmin]
 
+class TestRequiredTabularInlineItemAdmin(admin.TabularInline):
+    model = models.TestRequiredTabularInlineItem
+    form = forms.TestForm
+    extra = 0
+
+@admin.register(models.TestRequiredTabularInline)
+class TestRequiredTabularInlineAdmin(admin.ModelAdmin):
+    inlines = [TestRequiredTabularInlineItemAdmin]
