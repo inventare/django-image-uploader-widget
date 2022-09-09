@@ -88,6 +88,9 @@ class RequiredWidgetTestCase(IUWTestCase):
         self.assertEqual(len(previews), 1)
         self.assertEqual(root.get_attribute("data-raw"), item.image.url)
 
+        empty_marker = form_row.find_element(By.CSS_SELECTOR, '.iuw-empty')
+        self.assertFalse(empty_marker.is_displayed())
+
         preview = previews[0]
         img = preview.find_element(By.TAG_NAME, 'img')
         preview_button = preview.find_element(By.CSS_SELECTOR, '.iuw-preview-icon')
