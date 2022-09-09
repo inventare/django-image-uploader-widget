@@ -33,3 +33,11 @@ class TestRequired(models.Model):
 
     class Meta:
         verbose_name = 'Test Required'
+
+class TestRequiredInline(models.Model):
+    class Meta:
+        verbose_name = 'Test Required Inline'
+
+class TestRequiredInlineItem(models.Model):
+    parent = models.ForeignKey(TestRequiredInline, on_delete=models.CASCADE)
+    image = models.ImageField('Image')

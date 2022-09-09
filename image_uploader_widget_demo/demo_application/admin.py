@@ -27,3 +27,13 @@ class TestNonRequiredTabularInlineAdmin(admin.ModelAdmin):
 @admin.register(models.TestRequired)
 class TestRequiredAdmin(admin.ModelAdmin):
     form = forms.TestForm
+
+class TestRequiredInlineItemAdmin(admin.StackedInline):
+    model = models.TestRequiredInlineItem
+    form = forms.TestForm
+    extra = 0
+
+@admin.register(models.TestRequiredInline)
+class TestRequiredInlineAdmin(admin.ModelAdmin):
+    inlines = [TestRequiredInlineItemAdmin]
+
