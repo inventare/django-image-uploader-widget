@@ -31,7 +31,7 @@ class RequiredWidgetTestCase(IUWTestCase):
         self.assertTrue(empty_marker.is_displayed())
 
         empty_marker.click()
-        self.selenium.switch_to.alert.accept()
+        self.assertEqual(self.selenium.switch_to.alert.text, "CLICKED")
         
     def test_required_file_input(self):
         itens = models.TestRequired.objects.all()
@@ -122,7 +122,7 @@ class RequiredWidgetTestCase(IUWTestCase):
         img = preview.find_element(By.TAG_NAME, 'img')
         img.click()
         
-        self.selenium.switch_to.alert.accept()
+        self.assertEqual(self.selenium.switch_to.alert.text, "CLICKED")
 
     def test_click_on_the_preview_button(self):
         self.selenium.get(self.get_url(self.admin_add_url))

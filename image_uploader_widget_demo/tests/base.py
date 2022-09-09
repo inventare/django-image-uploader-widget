@@ -31,7 +31,7 @@ class IUWTestCase(StaticLiveServerTestCase):
         )
         
         chrome_options = Options()
-        #chrome_options.add_argument('--headless')
+        chrome_options.add_argument('--headless')
         self.selenium = webdriver.Chrome(options=chrome_options)
         self.selenium.get(self.get_url('/admin/login'))
         
