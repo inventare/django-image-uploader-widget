@@ -18,13 +18,20 @@ class IUWTestCase(StaticLiveServerTestCase):
         image = os.path.join(mocks_dir, "image.png")
         return image
 
+    @property
+    def image_file2(self):
+        base_dir = os.path.dirname(os.path.dirname(__file__))
+        mocks_dir = os.path.join(base_dir, "mocks")
+        image = os.path.join(mocks_dir, "image2.png")
+        return image
+
     def setUp(self):
         self.user = User.objects.create_superuser(
             'admin', 'admin@admin.com', 'admin'
         )
         
         chrome_options = Options()
-        chrome_options.add_argument('--headless')
+        #chrome_options.add_argument('--headless')
         self.selenium = webdriver.Chrome(options=chrome_options)
         self.selenium.get(self.get_url('/admin/login'))
         
