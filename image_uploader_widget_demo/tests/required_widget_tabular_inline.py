@@ -6,6 +6,9 @@ class RequiredWidgetTabularInlineTestCase(IUWTestCase):
     admin_add_url = '/admin/demo_application/testrequiredtabularinline/add/'
     
     def test_build_new_widget(self):
+        """
+        Test an basic flow of widget creation inside tabular inline.
+        """
         itens = models.TestRequiredTabularInlineItem.objects.all()
         self.assertEqual(len(itens), 0)
 

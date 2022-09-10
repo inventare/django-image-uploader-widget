@@ -15,6 +15,10 @@ class RequiredWidgetTestCase(IUWTestCase):
         return self.get_url("/admin/demo_application/testrequired/%s/change/" % id)
 
     def test_empty_marker_click(self):
+        """
+        should emit click event for the file input of the widget when
+        click on the empty marker.
+        """
         self.selenium.get(self.get_url(self.admin_add_url))
 
         form_row = self.selenium.find_element(By.CSS_SELECTOR, '.form-row.field-image')
@@ -34,6 +38,10 @@ class RequiredWidgetTestCase(IUWTestCase):
         self.assertEqual(self.selenium.switch_to.alert.text, "CLICKED")
         
     def test_required_file_input(self):
+        """
+        should create the preview image when file input value was changed and
+        save item in database when submit the form.
+        """
         itens = models.TestRequired.objects.all()
         self.assertEqual(len(itens), 0)
 
@@ -73,6 +81,10 @@ class RequiredWidgetTestCase(IUWTestCase):
         self.assertIsNotNone(item.image)
 
     def test_image_with_database_data(self):
+        """
+        should create the preview with the value from the database when got the field initialized
+        from database value.
+        """
         image_file = self.image_file
         item = models.TestRequired()
         with open(image_file, 'rb') as f:
@@ -100,6 +112,9 @@ class RequiredWidgetTestCase(IUWTestCase):
         self.assertIsNotNone(preview_button)
 
     def test_click_on_the_preview_image(self):
+        """
+        should emit the click event for the file input when click on the preview image.
+        """
         self.selenium.get(self.get_url(self.admin_add_url))
 
         form_row = self.selenium.find_element(By.CSS_SELECTOR, '.form-row.field-image')
@@ -125,6 +140,10 @@ class RequiredWidgetTestCase(IUWTestCase):
         self.assertEqual(self.selenium.switch_to.alert.text, "CLICKED")
 
     def test_click_on_the_preview_button(self):
+        """
+        when click on the preview button, should open the preview modal
+        with an img tag with the same src of the preview item.
+        """
         self.selenium.get(self.get_url(self.admin_add_url))
 
         form_row = self.selenium.find_element(By.CSS_SELECTOR, '.form-row.field-image')
@@ -135,6 +154,7 @@ class RequiredWidgetTestCase(IUWTestCase):
         previews = form_row.find_elements(By.CSS_SELECTOR, '.iuw-image-preview')
         self.assertEqual(len(previews), 1)
         preview = previews[0]
+        preview_img = preview.find_element(By.TAG_NAME, 'img')
 
         preview_button = preview.find_element(By.CSS_SELECTOR, '.iuw-preview-icon')
         preview_button.click()
@@ -145,8 +165,13 @@ class RequiredWidgetTestCase(IUWTestCase):
 
         img = preview_modal.find_element(By.TAG_NAME, 'img')
         self.assertIsNotNone(img)
+        self.assertEqual(img.get_attribute("src"), preview_img.get_attribute("src"))
 
     def test_click_on_the_preview_button_and_image_on_modal(self):
+        """
+        when click on the preview button and open the preview modal, click on the image
+        should not close the image preview modal.
+        """
         self.selenium.get(self.get_url(self.admin_add_url))
 
         form_row = self.selenium.find_element(By.CSS_SELECTOR, '.form-row.field-image')
@@ -171,6 +196,10 @@ class RequiredWidgetTestCase(IUWTestCase):
         self.assertEqual(preview_modal.get_attribute("class"), "iuw-modal visible")
 
     def test_click_on_the_preview_button_and_close_on_modal(self):
+        """
+        when click on the preview button and open the preview modal, click on the close
+        modal button should close the image preview modal.
+        """
         self.selenium.get(self.get_url(self.admin_add_url))
 
         form_row = self.selenium.find_element(By.CSS_SELECTOR, '.form-row.field-image')

@@ -12,6 +12,9 @@ class InlineEditorTestCase(IUWTestCase):
         return self.get_url("/admin/demo_application/inline/%s/change/" % id)
     
     def test_have_empty_marker(self):
+        """
+        The inline editor should have an empty marker when have no images.
+        """
         self.selenium.get(self.get_url(self.admin_add_url))
 
         root = self.selenium.find_element(By.CSS_SELECTOR, '.iuw-inline-root')
@@ -25,6 +28,10 @@ class InlineEditorTestCase(IUWTestCase):
         self.assertTrue(empty.is_displayed())
 
     def test_click_on_empty_marker(self):
+        """
+        Click on the empty marker should emit click event on the temporary
+        file input for choose file.
+        """
         self.selenium.get(self.get_url(self.admin_add_url))
 
         root = self.selenium.find_element(By.CSS_SELECTOR, '.iuw-inline-root')
@@ -43,6 +50,10 @@ class InlineEditorTestCase(IUWTestCase):
         self.assertEqual(self.selenium.switch_to.alert.text, "CLICKED")
 
     def test_send_images(self):
+        """
+        Should add itens to the inline editor when change the temporary file input value
+        and click on the form submit button should save the itens to the database.
+        """
         items = models.InlineItem.objects.all()
         self.assertEqual(len(items), 0)
 
@@ -81,6 +92,10 @@ class InlineEditorTestCase(IUWTestCase):
             self.assertIsNotNone(item.image)
 
     def test_remove_not_saved_inline(self):
+        """
+        Add image to the inline editor and click on remove it before saving the form
+        should remove it and should not save it to the database when submit the form.
+        """
         items = models.InlineItem.objects.all()
         self.assertEqual(len(items), 0)
 
@@ -109,6 +124,10 @@ class InlineEditorTestCase(IUWTestCase):
         self.assertEqual(len(items), 0)
 
     def test_initialize_inline_with_saved_data(self):
+        """
+        Opening the edit page for an item with saved subitens the inline editor
+        should be initialized with the data of the saved itens.
+        """
         inline = models.Inline.objects.create()
         
         item1 = models.InlineItem()
@@ -147,6 +166,11 @@ class InlineEditorTestCase(IUWTestCase):
             index = index + 1
 
     def test_remove_saved_items(self):
+        """
+        when click on the remove button for a saved item, should check the delete checkbox
+        for the related item and mark the related ite with deleted class and when submit
+        the form should be delete the itens from the database.
+        """
         inline = models.Inline.objects.create()
         
         item1 = models.InlineItem()
@@ -187,6 +211,10 @@ class InlineEditorTestCase(IUWTestCase):
         self.assertEqual(len(items), 0)
 
     def test_click_on_preview_image(self):
+        """
+        when click on the preview image should emit the click event on the
+        file input of this preview item.
+        """
         inline = models.Inline.objects.create()
         
         item1 = models.InlineItem()
@@ -217,6 +245,10 @@ class InlineEditorTestCase(IUWTestCase):
         self.assertEqual(self.selenium.switch_to.alert.text, "CLICKED")
 
     def test_click_on_add_image(self):
+        """
+        when click on the add image button should emit the click event of the temporary file
+        input of the inline editor.
+        """
         inline = models.Inline.objects.create()
         
         item1 = models.InlineItem()
@@ -246,6 +278,10 @@ class InlineEditorTestCase(IUWTestCase):
         self.assertEqual(self.selenium.switch_to.alert.text, "CLICKED")
 
     def test_click_on_preview_button(self):
+        """
+        when click on the preview button of an item, should open the preview modal
+        with an img tag with the same src of the preview item.
+        """
         inline = models.Inline.objects.create()
         
         item1 = models.InlineItem()
@@ -274,6 +310,10 @@ class InlineEditorTestCase(IUWTestCase):
         self.assertEqual(img.get_attribute("src"), preview_img.get_attribute("src"))
 
     def test_click_on_preview_button_and_image_on_modal(self):
+        """
+        when click on the preview button and open the preview modal, click on the image
+        should not close the image preview modal.
+        """
         inline = models.Inline.objects.create()
         
         item1 = models.InlineItem()
@@ -302,6 +342,10 @@ class InlineEditorTestCase(IUWTestCase):
         self.assertEqual(preview_modal.get_attribute("class"), "iuw-modal visible")
 
     def test_click_on_preview_button_and_close_on_modal(self):
+        """
+        when click on the preview button and open the preview modal, click on the close
+        modal button should close the image preview modal.
+        """
         inline = models.Inline.objects.create()
         
         item1 = models.InlineItem()

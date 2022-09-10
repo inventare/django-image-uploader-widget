@@ -6,6 +6,9 @@ class RequiredWidgetStackedInlineTestCase(IUWTestCase):
     admin_add_url = '/admin/demo_application/testrequiredinline/add/'
     
     def test_build_new_widget(self):
+        """
+        Test an basic flow of widget creation inside stacked inline.
+        """
         itens = models.TestRequiredInlineItem.objects.all()
         self.assertEqual(len(itens), 0)
 
