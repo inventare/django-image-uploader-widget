@@ -370,3 +370,46 @@ class InlineEditorTestCase(IUWTestCase):
         close_button.click()
 
         WebDriverWait(self.selenium, timeout=3).until(invisibility_of_element_located((By.CSS_SELECTOR, "#iuw-modal-element")));
+
+    def test_change_image_of_saved_item(self):
+        """
+        Opening the edit page for an item with saved subitens and change
+        the image of an subitem should save it.
+        """
+        inline = models.Inline.objects.create()
+        
+        item1 = models.InlineItem()
+        item1.parent = inline
+        with open(self.image_file, 'rb') as f:
+            item1.image.save("image.png", File(f))
+        item1.save()
+        
+        item2 = models.InlineItem()
+        item2.parent = inline
+        with open(self.image_file2, 'rb') as f:
+            item2.image.save("image2.png", File(f))
+        item2.save()
+
+        self.selenium.get(self.get_edit_url(inline.id))
+
+        root = self.selenium.find_element(By.CSS_SELECTOR, '.iuw-inline-root')
+        previews = root.find_elements(By.CSS_SELECTOR, '.inline-related:not(.empty-form):not(.deleted)')
+        self.assertEqual(len(previews), 2)
+
+        url1 = item1.image.url
+
+        preview = previews[0]
+        preview_img = preview.find_element(By.TAG_NAME, 'img')
+        preview_src = preview_img.get_attribute('src')
+        
+        file_input = preview.find_element(By.CSS_SELECTOR, 'input[type=file]')
+        file_input.send_keys(self.image_file)
+
+        self.assertNotEqual(preview_src, preview_img.get_attribute('src'))
+        
+        submit = self.selenium.find_element(By.CSS_SELECTOR, '#inline_form [type="submit"]')
+        submit.click()
+
+        item1 = models.InlineItem.objects.filter(pk=item1.pk).first()
+        self.assertNotEqual(item1.image.url, url1)
+        
