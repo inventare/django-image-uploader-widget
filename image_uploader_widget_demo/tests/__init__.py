@@ -5,3 +5,5 @@ from .required_widget import *
 from .required_widget_stacked_inline import *
 from .required_widget_tabular_inline import *
 from .inline_editor import *
+from .widget_customized import *
+from .inline_customized import *
