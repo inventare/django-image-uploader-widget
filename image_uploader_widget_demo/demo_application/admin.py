@@ -72,3 +72,7 @@ class CustomInlineEditor(ImageUploaderInline):
 @admin.register(models.CustomInline)
 class CustomInlineAdmin(admin.ModelAdmin):
     inlines = [CustomInlineEditor]
+
+@admin.register(models.CustomWidget)
+class CustomWidgetAdmin(admin.ModelAdmin):
+    form = forms.TestCustomForm

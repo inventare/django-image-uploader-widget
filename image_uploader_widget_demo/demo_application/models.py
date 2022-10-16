@@ -65,3 +65,9 @@ class CustomInline(models.Model):
 class CustomInlineItem(models.Model):
     parent = models.ForeignKey(CustomInline, related_name="items", on_delete=models.CASCADE)
     image = models.ImageField('Image')
+
+class CustomWidget(models.Model):
+    image = models.ImageField('Image')
+
+    class Meta:
+        verbose_name = 'Test Custom Widget'
