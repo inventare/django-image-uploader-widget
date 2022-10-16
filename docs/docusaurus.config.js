@@ -50,11 +50,6 @@ const config = {
         },
         items: [
           { type: 'doc', docId: 'intro', position: 'left', label: 'Documentation', },
-          {
-            type: 'docsVersionDropdown',
-            position: 'right',
-            dropdownActiveClassDisabled: true,
-          },
           { href: 'https://github.com/inventare/django-image-uploader-widget', label: 'GitHub', position: 'right', },
         ],
       },
