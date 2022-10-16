@@ -57,3 +57,11 @@ class Inline(models.Model):
 class InlineItem(models.Model):
     parent = models.ForeignKey(Inline, related_name="items", on_delete=models.CASCADE)
     image = models.ImageField('Image')
+
+class CustomInline(models.Model):
+    class Meta:
+        verbose_name = 'Test Customized Inline'
+
+class CustomInlineItem(models.Model):
+    parent = models.ForeignKey(CustomInline, related_name="items", on_delete=models.CASCADE)
+    image = models.ImageField('Image')
