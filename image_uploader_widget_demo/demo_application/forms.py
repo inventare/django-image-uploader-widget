@@ -14,10 +14,10 @@ class TestCustomForm(forms.ModelForm):
         model = CustomWidget
         widgets = {
             'image': ImageUploaderWidget(
-                drop_icon="<drop_icon>",
-                drop_text="<drop_text>",
-                empty_icon="<empty_icon>",
-                empty_text="<empty_text>",
+                drop_icon="@drop_icon@",
+                drop_text="@drop_text@",
+                empty_icon="@empty_icon@",
+                empty_text="@empty_text@",
             ),
         }
         fields = '__all__'

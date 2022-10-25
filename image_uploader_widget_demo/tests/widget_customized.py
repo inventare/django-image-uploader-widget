@@ -6,7 +6,7 @@ class WidgetCustomizedTestCase(TestCase):
         form = TestCustomForm()
         text = form.as_p()
 
-        self.assertTrue("&lt;drop_icon&gt;" in text)
-        self.assertTrue("&lt;drop_text&gt;" in text)
-        self.assertTrue("&lt;empty_icon&gt;" in text)
-        self.assertTrue("&lt;empty_text&gt;" in text)
+        self.assertTrue("@drop_icon@" in text)
+        self.assertTrue("@drop_text@" in text)
+        self.assertTrue("@empty_icon@" in text)
+        self.assertTrue("@empty_text@" in text)
