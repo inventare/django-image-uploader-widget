@@ -1,0 +1,29 @@
+
+msgid ""
+msgstr ""
+"Project-Id-Version: image_uploader_widget\n"
+"Report-Msgid-Bugs-To: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: es\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+msgid "Add image"
+msgstr "Añadir imagen"
+
+#: templates/admin/edit_inline/image_uploader.html:58
+msgid "Drop your images here or click to select..."
+msgstr "Suelte sus imágenes aquí o haga clic para seleccionar..."
+
+#: templates/admin/edit_inline/image_uploader.html:72
+msgid "Drop your images here..."
+msgstr "Suelte sus imagenes aquí..."
+
+#: templates/admin/widgets/image_uploader_widget.html:16
+msgid "Drop your image here..."
+msgstr "Suelta tu imagen aquí..."
+
+#: templates/admin/widgets/image_uploader_widget.html:30
+msgid "Drop your image here or click to select one..."
+msgstr "Suelta tu imagen aquí o haz clic para seleccionar una..."
