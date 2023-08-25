@@ -157,6 +157,6 @@ class SnapshotMixin:
         if diff.getbbox():
             fail = True
             
-        self._delete_compare_image(id)
         if fail:
             self._fail_match_snapshot(element, id)
+        self._delete_compare_image(id)

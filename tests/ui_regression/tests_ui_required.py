@@ -25,5 +25,5 @@ class RequiredWidgetTestCase(IUWTestCase):
         empty = self.get_empty_marker()
         ActionChains(self.selenium).move_to_element(empty).perform()
 
-        form_row = self.selenium.find_element(By.CSS_SELECTOR, '.form-row.field-image')
-        self.assertMatchSnapshot(form_row, 'required_widget_empty')
+        root = self.selenium.find_element(By.CSS_SELECTOR, '.form-row.field-image .iuw-root')
+        self.assertMatchSnapshot(root, 'required_widget_empty')

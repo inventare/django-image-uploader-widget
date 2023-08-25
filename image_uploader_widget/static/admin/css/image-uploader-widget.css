@@ -46,6 +46,7 @@ body {
   /* behaviour */
   user-select: none;
   /* sizing */
+  flex: 1;
   min-width: 300px;
   height: 200px;
   /* shape */
