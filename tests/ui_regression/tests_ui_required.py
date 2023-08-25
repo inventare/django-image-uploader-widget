@@ -15,23 +15,15 @@ class RequiredWidgetTestCase(IUWTestCase):
     def get_edit_url(self, id):
         return self.get_url_from_path("/admin/demo_application/testrequired/%s/change/" % id)
     
-    def await_transition(self):
-        pass
-
-    def test_empty_marker_click(self):
-        """
-        should emit click event for the file input of the widget when
-        click on the empty marker.
-        """
+    def get_empty_marker(self):
+        WebDriverWait(self.selenium, 10).until(element_to_be_clickable((By.CSS_SELECTOR, ".iuw-empty")))
+        return self.selenium.find_element(By.CSS_SELECTOR, '.iuw-empty')
+    
+    def test_ui_empty_marker(self):
         self.selenium.get(self.get_url_from_path(self.admin_add_url))
 
-        WebDriverWait(self.selenium, 10).until(element_to_be_clickable((By.CSS_SELECTOR, ".iuw-empty")))
-        #self.selenium.implicitly_wait(10)
-
-        empty = self.selenium.find_element(By.CSS_SELECTOR, '.iuw-empty')
+        empty = self.get_empty_marker()
         ActionChains(self.selenium).move_to_element(empty).perform()
 
         form_row = self.selenium.find_element(By.CSS_SELECTOR, '.form-row.field-image')
-
         self.assertMatchSnapshot(form_row, 'required_widget_empty')
-
