@@ -36,5 +36,8 @@ class IUWTestCase(AdminMixin, ImageMixin, SnapshotMixin, StaticLiveServerTestCas
     def get_widget_preview(self, root: WebElement):
         return root.find_element(By.CSS_SELECTOR, '.iuw-image-preview')
     
-    def get_preview_modal(self):
+    def get_preview_modal(self, black_overlay = False):
+        if black_overlay:
+            self.selenium.execute_script("document.getElementById('iuw-modal-element').style.background = '#000';")
+            
         return self.selenium.find_element(By.ID, 'iuw-modal-element')

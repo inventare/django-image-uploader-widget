@@ -66,7 +66,6 @@ class RequiredWidgetTestCase(IUWTestCase):
         preview_icon.click()
 
         self.waitFor(0.5)
-
-        modal = self.get_preview_modal()
-
+        
+        modal = self.get_preview_modal(black_overlay=True)
         self.assertMatchSnapshot(modal, 'test_ui_initialized_with_data_preview')
