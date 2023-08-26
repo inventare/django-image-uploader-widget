@@ -1,5 +1,6 @@
-import os, sys
+import os, sys, time
 from PIL import Image, ImageChops
+from selenium.webdriver import ActionChains
 from selenium.webdriver.remote.webelement import WebElement
 
 class SnapshotMixin:
@@ -164,6 +165,17 @@ class SnapshotMixin:
                     return False
 
         return True
+    
+    def waitFor(self, seconds: float) -> None:
+        time.sleep(seconds)
+
+    def hover(self, element: WebElement) -> None:
+        ActionChains(self.selenium).move_to_element(element).perform()
+
+    def hoverAndWait(self, element: WebElement, seconds: float) -> None:
+        self.hover(element)
+        if seconds > 0:
+            self.waitFor(seconds)
 
     def assertMatchSnapshot(self, element: WebElement, id: str) -> str:
         """

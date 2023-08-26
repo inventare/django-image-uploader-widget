@@ -1,9 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.core.files import File
-from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.expected_conditions import element_to_be_clickable
-from selenium.webdriver.support.wait import WebDriverWait
 from image_uploader_widget_demo.demo_application import models
 from utils.tests import IUWTestCase
 
@@ -15,48 +12,61 @@ class RequiredWidgetTestCase(IUWTestCase):
     def get_edit_url(self, id):
         return self.get_url_from_path("/admin/demo_application/testrequired/%s/change/" % id)
     
-    def get_empty_marker(self):
-        WebDriverWait(self.selenium, 10).until(element_to_be_clickable((By.CSS_SELECTOR, ".iuw-empty")))
-        return self.selenium.find_element(By.CSS_SELECTOR, '.iuw-empty')
+    def init_item(self):
+        item = models.TestRequired()
+        with open(self.image1, 'rb') as f:
+            item.image.save("image.png", File(f), False)
+        item.save()
+        return item
     
     def test_ui_empty_marker(self):
         self.selenium.get(self.get_url_from_path(self.admin_add_url))
 
-        empty = self.get_empty_marker()
-        ActionChains(self.selenium).move_to_element(empty).perform()
+        self.get_widget_empty_marker()
+        self.waitFor(0.4)
 
-        root = self.selenium.find_element(By.CSS_SELECTOR, '.form-row.field-image .iuw-root')
+        root = self.get_widget_root()
         self.assertMatchSnapshot(root, 'required_widget_empty')
 
-    def test_ui_initialized_with_data(self):
-        item = models.TestRequired()
-        with open(self.image1, 'rb') as f:
-            item.image.save("image.png", File(f))
-        item.save()
+    def test_ui_empty_marker_hovered(self):
+        self.selenium.get(self.get_url_from_path(self.admin_add_url))
 
+        empty = self.get_widget_empty_marker()
+        self.hoverAndWait(empty, 0.4)
+
+        root = self.get_widget_root()
+        self.assertMatchSnapshot(root, 'required_widget_empty_hovered')
+
+    def test_ui_initialized_with_data(self):
+        item = self.init_item()
         self.selenium.get(self.get_edit_url(item.id))
 
-        root = self.selenium.find_element(By.CSS_SELECTOR, '.form-row.field-image .iuw-root')
-
-        previews = root.find_elements(By.CSS_SELECTOR, '.iuw-image-preview')
-        preview = previews[0]
-        ActionChains(self.selenium).move_to_element(preview).perform()
+        root = self.get_widget_root()
+        preview = self.get_widget_preview(root)
+        self.hover(preview)
 
         self.assertMatchSnapshot(root, 'required_widget_init_with_data')
 
     def test_ui_initialized_with_data_hover_preview(self):
-        item = models.TestRequired()
-        with open(self.image1, 'rb') as f:
-            item.image.save("image.png", File(f))
-        item.save()
-
+        item = self.init_item()
         self.selenium.get(self.get_edit_url(item.id))
 
         root = self.selenium.find_element(By.CSS_SELECTOR, '.form-row.field-image .iuw-root')
-        previews = root.find_elements(By.CSS_SELECTOR, '.iuw-preview-icon')
-        preview = previews[0]
-        ActionChains(self.selenium).move_to_element(preview).perform()
-        import time
-        time.sleep(0.4)
+        preview_icon = root.find_element(By.CSS_SELECTOR, '.iuw-preview-icon')
+        self.hoverAndWait(preview_icon, 0.4)
 
         self.assertMatchSnapshot(root, 'required_widget_init_with_data_preview_hovered')
+
+    def test_ui_initialized_with_data_preview(self):
+        item = self.init_item()
+        self.selenium.get(self.get_edit_url(item.id))
+
+        root = self.selenium.find_element(By.CSS_SELECTOR, '.form-row.field-image .iuw-root')
+        preview_icon = root.find_element(By.CSS_SELECTOR, '.iuw-preview-icon')
+        preview_icon.click()
+
+        self.waitFor(0.5)
+
+        modal = self.get_preview_modal()
+
+        self.assertMatchSnapshot(modal, 'test_ui_initialized_with_data_preview')
