@@ -27,3 +27,36 @@ class RequiredWidgetTestCase(IUWTestCase):
 
         root = self.selenium.find_element(By.CSS_SELECTOR, '.form-row.field-image .iuw-root')
         self.assertMatchSnapshot(root, 'required_widget_empty')
+
+    def test_ui_initialized_with_data(self):
+        item = models.TestRequired()
+        with open(self.image1, 'rb') as f:
+            item.image.save("image.png", File(f))
+        item.save()
+
+        self.selenium.get(self.get_edit_url(item.id))
+
+        root = self.selenium.find_element(By.CSS_SELECTOR, '.form-row.field-image .iuw-root')
+
+        previews = root.find_elements(By.CSS_SELECTOR, '.iuw-image-preview')
+        preview = previews[0]
+        ActionChains(self.selenium).move_to_element(preview).perform()
+
+        self.assertMatchSnapshot(root, 'required_widget_init_with_data')
+
+    def test_ui_initialized_with_data_hover_preview(self):
+        item = models.TestRequired()
+        with open(self.image1, 'rb') as f:
+            item.image.save("image.png", File(f))
+        item.save()
+
+        self.selenium.get(self.get_edit_url(item.id))
+
+        root = self.selenium.find_element(By.CSS_SELECTOR, '.form-row.field-image .iuw-root')
+        previews = root.find_elements(By.CSS_SELECTOR, '.iuw-preview-icon')
+        preview = previews[0]
+        ActionChains(self.selenium).move_to_element(preview).perform()
+        import time
+        time.sleep(0.4)
+
+        self.assertMatchSnapshot(root, 'required_widget_init_with_data_preview_hovered')

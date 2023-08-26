@@ -8,6 +8,10 @@ class SnapshotMixin:
     TestCase and selenium based testes.
     """
 
+    pixel_threshold_red = 3
+    pixel_threshold_green = 3
+    pixel_threshold_blue = 3
+
     def _get_snapshot_filename(self, id: str) -> str:
         """
         Returns the snapshot file name to an unique id.
@@ -135,6 +139,32 @@ class SnapshotMixin:
         self._delete_snapshot(id)
         self._create_snapshot_image(element, id)
 
+    def _validate_difference_threshold(self, diff: Image):
+        """
+        Check pixel-by-pixel if the difference image has more difference
+        that the threshold's defined at the class.
+
+        :Args:
+            - diff: the difference image, gots from ImageChops.difference(img1, img2)
+        """
+        data = diff.load()
+
+        for x in range(0, diff.width):
+            for y in range(0, diff.height):
+                pixel = data[x, y]
+                r, g, b = pixel
+                if r > self.pixel_threshold_red:
+                    print("Difference in RED: %s at X: %s, Y: %s" % (r, x, y))
+                    return False
+                if g > self.pixel_threshold_green:
+                    print("Difference in GREEN: %s at X: %s, Y: %s" % (g, x, y))
+                    return False
+                if b > self.pixel_threshold_blue:
+                    print("Difference in BLUE: %s at X: %s, Y: %s" % (b, x, y))
+                    return False
+
+        return True
+
     def assertMatchSnapshot(self, element: WebElement, id: str) -> str:
         """
         Takes an screenshot and compare with saved, or save at first time, an
@@ -154,9 +184,10 @@ class SnapshotMixin:
 
         fail = False
         diff = ImageChops.difference(image, comparation_image)
-        if diff.getbbox():
+        if diff.getbbox() and not self._validate_difference_threshold(diff):
             fail = True
-            
+
         if fail:
             self._fail_match_snapshot(element, id)
+
         self._delete_compare_image(id)

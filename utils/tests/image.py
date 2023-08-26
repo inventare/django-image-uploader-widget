@@ -9,7 +9,7 @@ class ImageMixin:
     @property
     def image1(self):
         """gets the file path of the image1."""
-        base_dir = os.path.dirname(os.path.dirname(__file__))
+        base_dir = os.path.dirname(__file__)
         mocks_dir = os.path.join(base_dir, "mocks")
         image = os.path.join(mocks_dir, "image.png")
         return image
@@ -17,7 +17,7 @@ class ImageMixin:
     @property
     def image2(self):
         """gets the file path of the image2."""
-        base_dir = os.path.dirname(os.path.dirname(__file__))
+        base_dir = os.path.dirname(__file__)
         mocks_dir = os.path.join(base_dir, "mocks")
         image = os.path.join(mocks_dir, "image2.png")
         return image
