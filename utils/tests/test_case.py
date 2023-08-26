@@ -36,6 +36,12 @@ class IUWTestCase(AdminMixin, ImageMixin, SnapshotMixin, StaticLiveServerTestCas
     def get_widget_preview(self, root: WebElement):
         return root.find_element(By.CSS_SELECTOR, '.iuw-image-preview')
     
+    def get_widget_preview_icon(self, root: WebElement):
+        return root.find_element(By.CSS_SELECTOR, '.iuw-preview-icon')
+    
+    def get_widget_delete_icon(self, root: WebElement):
+        return root.find_element(By.CSS_SELECTOR, '.iuw-delete-icon')
+    
     def get_preview_modal(self, black_overlay = False):
         if black_overlay:
             self.selenium.execute_script("document.getElementById('iuw-modal-element').style.background = '#000';")

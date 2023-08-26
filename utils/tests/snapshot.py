@@ -166,16 +166,24 @@ class SnapshotMixin:
 
         return True
     
-    def waitFor(self, seconds: float) -> None:
+    def wait(self, seconds: float) -> None:
         time.sleep(seconds)
 
     def hover(self, element: WebElement) -> None:
         ActionChains(self.selenium).move_to_element(element).perform()
 
-    def hoverAndWait(self, element: WebElement, seconds: float) -> None:
+    def click(self, element: WebElement) -> None:
+        ActionChains(self.selenium).click(element).perform()
+
+    def hover_and_wait(self, element: WebElement, seconds: float) -> None:
         self.hover(element)
         if seconds > 0:
-            self.waitFor(seconds)
+            self.wait(seconds)
+
+    def click_and_wait(self, element: WebElement, seconds: float) -> None:
+        self.click(element)
+        if seconds > 0:
+            self.wait(seconds)
 
     def assertMatchSnapshot(self, element: WebElement, id: str) -> str:
         """
