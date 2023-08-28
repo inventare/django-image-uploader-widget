@@ -33,6 +33,9 @@ class IUWTestCase(AdminMixin, ImageMixin, SnapshotMixin, StaticLiveServerTestCas
         WebDriverWait(self.selenium, 10).until(element_to_be_clickable((By.CSS_SELECTOR, selector)))
         return self.selenium.find_element(By.CSS_SELECTOR, selector)
     
+    def get_widget_form_row(self):
+        return self.selenium.find_element(By.CSS_SELECTOR, '.form-row.field-image')
+
     def get_widget_root(self):
         return self.selenium.find_element(By.CSS_SELECTOR, '.form-row.field-image .iuw-root')
     
@@ -50,3 +53,12 @@ class IUWTestCase(AdminMixin, ImageMixin, SnapshotMixin, StaticLiveServerTestCas
             self.selenium.execute_script("document.getElementById('iuw-modal-element').style.background = '#000';")
             
         return self.selenium.find_element(By.ID, 'iuw-modal-element')
+
+    def inject_input_file_clicked(self):
+        injected_javascript = (
+            'const callback = arguments[0];'
+            'const input = document.querySelector(".form-row.field-image input[type=file]");'
+            'input.addEventListener("click", (e) => { e.preventDefault(); alert("CLICKED"); });'
+            'callback();'
+        )
+        self.selenium.execute_async_script(injected_javascript)
