@@ -28,6 +28,16 @@ class OptionaldWidgetTestCase(IUWTestCase):
         root = self.get_widget_root()
         self.assertMatchSnapshot(root, 'wo_test_ui_empty_marker')
 
+    def test_ui_empty_marker_dark(self):
+        self.dark_mode()
+        self.selenium.get(self.get_url_from_path(self.admin_add_url))
+
+        self.get_widget_empty_marker()
+        self.wait(0.4)
+
+        root = self.get_widget_root()
+        self.assertMatchSnapshot(root, 'wo_test_ui_empty_marker_dark')
+
     def test_ui_empty_marker_hovered(self):
         self.selenium.get(self.get_url_from_path(self.admin_add_url))
 
@@ -36,6 +46,16 @@ class OptionaldWidgetTestCase(IUWTestCase):
 
         root = self.get_widget_root()
         self.assertMatchSnapshot(root, 'wo_test_ui_empty_marker_hovered')
+
+    def test_ui_empty_marker_hovered_dark(self):
+        self.dark_mode()
+        self.selenium.get(self.get_url_from_path(self.admin_add_url))
+
+        empty = self.get_widget_empty_marker()
+        self.hover_and_wait(empty, 0.4)
+
+        root = self.get_widget_root()
+        self.assertMatchSnapshot(root, 'wo_test_ui_empty_marker_hovered_dark')
 
     def test_ui_initialized_with_data(self):
         item = self.init_item()
@@ -47,6 +67,17 @@ class OptionaldWidgetTestCase(IUWTestCase):
 
         self.assertMatchSnapshot(root, 'wo_test_ui_initialized_with_data')
 
+    def test_ui_initialized_with_data_dark(self):
+        self.dark_mode()
+        item = self.init_item()
+        self.selenium.get(self.get_edit_url(item.id))
+
+        root = self.get_widget_root()
+        preview = self.get_widget_preview(root)
+        self.hover(preview)
+
+        self.assertMatchSnapshot(root, 'wo_test_ui_initialized_with_data_dark')
+
     def test_ui_initialized_with_data_hover_preview(self):
         item = self.init_item()
         self.selenium.get(self.get_edit_url(item.id))
@@ -56,6 +87,17 @@ class OptionaldWidgetTestCase(IUWTestCase):
         self.hover_and_wait(preview_icon, 0.4)
 
         self.assertMatchSnapshot(root, 'wo_test_ui_initialized_with_data_hover_preview')
+
+    def test_ui_initialized_with_data_hover_preview_dark(self):
+        self.dark_mode()
+        item = self.init_item()
+        self.selenium.get(self.get_edit_url(item.id))
+
+        root = self.get_widget_root()
+        preview_icon = self.get_widget_preview_icon(root)
+        self.hover_and_wait(preview_icon, 0.4)
+
+        self.assertMatchSnapshot(root, 'wo_test_ui_initialized_with_data_hover_preview_dark')
 
     def test_ui_initialized_with_data_hover_remove(self):
         item = self.init_item()
@@ -67,6 +109,17 @@ class OptionaldWidgetTestCase(IUWTestCase):
 
         self.assertMatchSnapshot(root, 'wo_test_ui_initialized_with_data_hover_remove')
 
+    def test_ui_initialized_with_data_hover_remove_dark(self):
+        self.dark_mode()
+        item = self.init_item()
+        self.selenium.get(self.get_edit_url(item.id))
+
+        root = self.get_widget_root()
+        delete_icon = self.get_widget_delete_icon(root)
+        self.hover_and_wait(delete_icon, 0.4)
+
+        self.assertMatchSnapshot(root, 'wo_test_ui_initialized_with_data_hover_remove_dark')
+
     def test_ui_initialized_with_data_preview(self):
         item = self.init_item()
         self.selenium.get(self.get_edit_url(item.id))
@@ -77,3 +130,15 @@ class OptionaldWidgetTestCase(IUWTestCase):
         
         modal = self.get_preview_modal(black_overlay=True)
         self.assertMatchSnapshot(modal, 'wo_test_ui_initialized_with_data_preview')
+
+    def test_ui_initialized_with_data_preview_dark(self):
+        self.dark_mode()
+        item = self.init_item()
+        self.selenium.get(self.get_edit_url(item.id))
+
+        root = self.get_widget_root()
+        preview_icon = self.get_widget_preview_icon(root)
+        self.click_and_wait(preview_icon, 0.5)
+        
+        modal = self.get_preview_modal(black_overlay=True)
+        self.assertMatchSnapshot(modal, 'wo_test_ui_initialized_with_data_preview_dark')
