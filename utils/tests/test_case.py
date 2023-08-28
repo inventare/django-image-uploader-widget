@@ -14,7 +14,7 @@ class IUWTestCase(AdminMixin, ImageMixin, SnapshotMixin, StaticLiveServerTestCas
 
     def setUp(self):
         chrome_options = Options()
-        
+
         if self.headless:
             chrome_options.add_argument('--headless')
 
@@ -24,6 +24,9 @@ class IUWTestCase(AdminMixin, ImageMixin, SnapshotMixin, StaticLiveServerTestCas
         self.selenium.get(self.get_url_from_path('/admin/login'))
 
         self.login()
+
+    def dark_mode(self):
+        self.selenium.execute_cdp_cmd('Emulation.setEmulatedMedia', {"features": [{"name": "prefers-color-scheme", "value": "dark"}]})
 
     def get_widget_empty_marker(self):
         selector = ".form-row.field-image .iuw-empty"
