@@ -26,6 +26,13 @@ jobs:
     services:
       selenium:
         image: selenium/standalone-chrome
+      
+      postgres:
+        image: postgres:15-alpine
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_PASSWORD: postgres
 
     steps:
     - name: Clone Repository
@@ -56,3 +63,10 @@ jobs:
 
     - name: Run Tests
       run: python manage.py test
+      env:
+        DATABASE_USE_POSTGRES: 1
+        POSTGRES_PORT: 5432
+        POSTGRES_HOST: postgres
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: postgres
+        POSTGRES_DATABASE: postgres
