@@ -1,3 +1,4 @@
+import uuid
 from selenium.webdriver.common.by import By
 from django.contrib.auth import get_user_model
 
@@ -20,20 +21,24 @@ class AdminMixin:
         Create an root user to login inside the django-admin.
         """
         User = get_user_model()
-        return User.objects.create_superuser('admin', 'admin@admin.com', 'admin')
+        username = str(uuid.uuid4()).replace('-', '')
+        email = '%s@example.com' % username
+        password = username
+        user = User.objects.create_superuser(username, email, password)
+        return user, username, password
     
     def login(self):
         """
         Navigate to login page, fill the form and submit the login credentials.
         """
-        self._create_root_user()
+        _, username, password = self._create_root_user()
 
         self.selenium.get(self.get_url_from_path('/admin/login'))
         
-        username = self.selenium.find_element(By.ID, "id_username")
-        password = self.selenium.find_element(By.ID, "id_password")
+        username_input = self.selenium.find_element(By.ID, "id_username")
+        password_input = self.selenium.find_element(By.ID, "id_password")
         submit = self.selenium.find_element(By.XPATH, "//input[@type='submit']")
 
-        username.send_keys('admin')
-        password.send_keys('admin')
+        username_input.send_keys(username)
+        password_input.send_keys(password)
         submit.click()
