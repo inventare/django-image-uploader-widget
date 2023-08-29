@@ -65,6 +65,7 @@ WSGI_APPLICATION = "image_uploader_widget_demo.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
+print(os.environ.get("DATABASE_USE_POSTGRES", "0"))
 if os.environ.get("DATABASE_USE_POSTGRES", "0") == "1":
     DATABASES = {
         "default": {
@@ -76,6 +77,7 @@ if os.environ.get("DATABASE_USE_POSTGRES", "0") == "1":
             "PORT": os.environ.get("POSTGRES_PORT"),
         }
     }
+    print(DATABASES)
 else:
     DATABASES = {
         "default": {
