@@ -44,6 +44,7 @@ INSTALLED_APPS = (
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.postgres",
     "image_uploader_widget",
     "image_uploader_widget_demo.demo_application",
 )
