@@ -3,19 +3,21 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support.expected_conditions import invisibility_of_element_located
 from image_uploader_widget_demo.demo_application import models
-from .base import IUWTestCase
+from utils.tests import IUWTestCase
 
 class InlineEditorTestCase(IUWTestCase):
-    admin_add_url = '/admin/demo_application/inline/add/'
+    @property
+    def admin_add_url(self):
+        return self.get_url_from_path('/admin/demo_application/inline/add/')
 
     def get_edit_url(self, id):
-        return self.get_url("/admin/demo_application/inline/%s/change/" % id)
+        return self.get_url_from_path("/admin/demo_application/inline/%s/change/" % id)
     
     def test_have_empty_marker(self):
         """
         The inline editor should have an empty marker when have no images.
         """
-        self.selenium.get(self.get_url(self.admin_add_url))
+        self.selenium.get(self.admin_add_url)
 
         root = self.selenium.find_element(By.CSS_SELECTOR, '.iuw-inline-root')
         empty = root.find_element(By.CSS_SELECTOR, '.iuw-empty')
@@ -32,7 +34,7 @@ class InlineEditorTestCase(IUWTestCase):
         Click on the empty marker should emit click event on the temporary
         file input for choose file.
         """
-        self.selenium.get(self.get_url(self.admin_add_url))
+        self.selenium.get(self.admin_add_url)
 
         root = self.selenium.find_element(By.CSS_SELECTOR, '.iuw-inline-root')
         empty = root.find_element(By.CSS_SELECTOR, '.iuw-empty')
@@ -57,7 +59,7 @@ class InlineEditorTestCase(IUWTestCase):
         items = models.InlineItem.objects.all()
         self.assertEqual(len(items), 0)
 
-        self.selenium.get(self.get_url(self.admin_add_url))
+        self.selenium.get(self.admin_add_url)
 
         root = self.selenium.find_element(By.CSS_SELECTOR, '.iuw-inline-root')
         temp_file = root.find_element(By.CSS_SELECTOR, '.temp_file')
@@ -65,12 +67,12 @@ class InlineEditorTestCase(IUWTestCase):
         previews = root.find_elements(By.CSS_SELECTOR, '.inline-related:not(.empty-form):not(.deleted)')
         self.assertEqual(len(previews), 0)
 
-        temp_file.send_keys(self.image_file)
+        temp_file.send_keys(self.image1)
 
         previews = root.find_elements(By.CSS_SELECTOR, '.inline-related:not(.empty-form):not(.deleted)')
         self.assertEqual(len(previews), 1)
         
-        temp_file.send_keys(self.image_file2)
+        temp_file.send_keys(self.image2)
 
         previews = root.find_elements(By.CSS_SELECTOR, '.inline-related:not(.empty-form):not(.deleted)')
         self.assertEqual(len(previews), 2)
@@ -99,12 +101,12 @@ class InlineEditorTestCase(IUWTestCase):
         items = models.InlineItem.objects.all()
         self.assertEqual(len(items), 0)
 
-        self.selenium.get(self.get_url(self.admin_add_url))
+        self.selenium.get(self.admin_add_url)
 
         root = self.selenium.find_element(By.CSS_SELECTOR, '.iuw-inline-root')
         temp_file = root.find_element(By.CSS_SELECTOR, '.temp_file')
 
-        temp_file.send_keys(self.image_file)
+        temp_file.send_keys(self.image1)
 
         previews = root.find_elements(By.CSS_SELECTOR, '.inline-related:not(.empty-form):not(.deleted)')
         self.assertEqual(len(previews), 1)
@@ -132,13 +134,13 @@ class InlineEditorTestCase(IUWTestCase):
         
         item1 = models.InlineItem()
         item1.parent = inline
-        with open(self.image_file, 'rb') as f:
+        with open(self.image1, 'rb') as f:
             item1.image.save("image.png", File(f))
         item1.save()
         
         item2 = models.InlineItem()
         item2.parent = inline
-        with open(self.image_file2, 'rb') as f:
+        with open(self.image2, 'rb') as f:
             item2.image.save("image2.png", File(f))
         item2.save()
 
@@ -175,13 +177,13 @@ class InlineEditorTestCase(IUWTestCase):
         
         item1 = models.InlineItem()
         item1.parent = inline
-        with open(self.image_file, 'rb') as f:
+        with open(self.image1, 'rb') as f:
             item1.image.save("image.png", File(f))
         item1.save()
         
         item2 = models.InlineItem()
         item2.parent = inline
-        with open(self.image_file2, 'rb') as f:
+        with open(self.image2, 'rb') as f:
             item2.image.save("image2.png", File(f))
         item2.save()
 
@@ -219,7 +221,7 @@ class InlineEditorTestCase(IUWTestCase):
         
         item1 = models.InlineItem()
         item1.parent = inline
-        with open(self.image_file, 'rb') as f:
+        with open(self.image1, 'rb') as f:
             item1.image.save("image.png", File(f))
         item1.save()
         
@@ -253,7 +255,7 @@ class InlineEditorTestCase(IUWTestCase):
         
         item1 = models.InlineItem()
         item1.parent = inline
-        with open(self.image_file, 'rb') as f:
+        with open(self.image1, 'rb') as f:
             item1.image.save("image.png", File(f))
         item1.save()
         
@@ -286,7 +288,7 @@ class InlineEditorTestCase(IUWTestCase):
         
         item1 = models.InlineItem()
         item1.parent = inline
-        with open(self.image_file, 'rb') as f:
+        with open(self.image1, 'rb') as f:
             item1.image.save("image.png", File(f))
         item1.save()
         
@@ -318,7 +320,7 @@ class InlineEditorTestCase(IUWTestCase):
         
         item1 = models.InlineItem()
         item1.parent = inline
-        with open(self.image_file, 'rb') as f:
+        with open(self.image1, 'rb') as f:
             item1.image.save("image.png", File(f))
         item1.save()
         
@@ -350,7 +352,7 @@ class InlineEditorTestCase(IUWTestCase):
         
         item1 = models.InlineItem()
         item1.parent = inline
-        with open(self.image_file, 'rb') as f:
+        with open(self.image1, 'rb') as f:
             item1.image.save("image.png", File(f))
         item1.save()
         
@@ -380,13 +382,13 @@ class InlineEditorTestCase(IUWTestCase):
         
         item1 = models.InlineItem()
         item1.parent = inline
-        with open(self.image_file, 'rb') as f:
+        with open(self.image1, 'rb') as f:
             item1.image.save("image.png", File(f))
         item1.save()
         
         item2 = models.InlineItem()
         item2.parent = inline
-        with open(self.image_file2, 'rb') as f:
+        with open(self.image2, 'rb') as f:
             item2.image.save("image2.png", File(f))
         item2.save()
 
@@ -403,7 +405,7 @@ class InlineEditorTestCase(IUWTestCase):
         preview_src = preview_img.get_attribute('src')
         
         file_input = preview.find_element(By.CSS_SELECTOR, 'input[type=file]')
-        file_input.send_keys(self.image_file)
+        file_input.send_keys(self.image1)
 
         self.assertNotEqual(preview_src, preview_img.get_attribute('src'))
         
@@ -412,4 +414,3 @@ class InlineEditorTestCase(IUWTestCase):
 
         item1 = models.InlineItem.objects.filter(pk=item1.pk).first()
         self.assertNotEqual(item1.image.url, url1)
-        

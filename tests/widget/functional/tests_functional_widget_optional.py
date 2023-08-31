@@ -4,32 +4,35 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.expected_conditions import invisibility_of_element_located
 from selenium.webdriver.support.wait import WebDriverWait
 from image_uploader_widget_demo.demo_application import models
-from .base import IUWTestCase
+from utils.tests import IUWTestCase
 
 User = get_user_model()
 
-class NonRequiredWidgetTestCase(IUWTestCase):
-    admin_add_url = '/admin/demo_application/testnonrequired/add/'
+class OptionalWidgetTestCase(IUWTestCase):
+    @property
+    def admin_add_url(self):
+        return self.get_url_from_path('/admin/demo_application/testnonrequired/add/')
 
     def get_edit_url(self, id):
-        return self.get_url("/admin/demo_application/testnonrequired/%s/change/" % id)
+        return self.get_url_from_path("/admin/demo_application/testnonrequired/%s/change/" % id)
 
+    def init_item(self):
+        item = models.TestNonRequired()
+        with open(self.image2, 'rb') as f:
+            item.image.save("image.png", File(f), False)
+        item.save()
+        return item
+    
     def test_empty_marker_click(self):
         """
         The empty marker must be visible and the file input click event should be
         emited when click on the empty marker.
         """
-        self.selenium.get(self.get_url(self.admin_add_url))
+        self.selenium.get(self.admin_add_url)
 
         form_row = self.selenium.find_element(By.CSS_SELECTOR, '.form-row.field-image')
 
-        injected_javascript = (
-            'const callback = arguments[0];'
-            'const input = document.querySelector(".form-row.field-image input[type=file]");'
-            'input.addEventListener("click", (e) => { e.preventDefault(); alert("CLICKED"); });'
-            'callback();'
-        )
-        self.selenium.execute_async_script(injected_javascript)
+        self.inject_input_file_clicked()
 
         empty_marker = form_row.find_element(By.CSS_SELECTOR, '.iuw-empty')
         self.assertTrue(empty_marker.is_displayed())
@@ -45,7 +48,7 @@ class NonRequiredWidgetTestCase(IUWTestCase):
         itens = models.TestNonRequired.objects.all()
         self.assertEqual(len(itens), 0)
 
-        self.selenium.get(self.get_url(self.admin_add_url))
+        self.selenium.get(self.admin_add_url)
 
         form_row = self.selenium.find_element(By.CSS_SELECTOR, '.form-row.field-image')
 
@@ -56,7 +59,7 @@ class NonRequiredWidgetTestCase(IUWTestCase):
 
         self.assertEqual(file_input.get_attribute('value'), "")
 
-        file_input.send_keys(self.image_file)
+        file_input.send_keys(self.image1)
 
         self.assertEqual(file_input.get_attribute('value'), "C:\\fakepath\\image.png")
 
@@ -90,16 +93,16 @@ class NonRequiredWidgetTestCase(IUWTestCase):
         itens = models.TestNonRequired.objects.all()
         self.assertEqual(len(itens), 0)
         
-        self.selenium.get(self.get_url(self.admin_add_url))
+        self.selenium.get(self.admin_add_url)
         
         form_row = self.selenium.find_element(By.CSS_SELECTOR, '.form-row.field-image')
         file_input = form_row.find_element(By.CSS_SELECTOR, 'input[type=file]')
         
         self.assertEqual(file_input.get_attribute('value'), "")
         
-        file_input.send_keys(self.image_file)
+        file_input.send_keys(self.image2)
 
-        self.assertEqual(file_input.get_attribute('value'), "C:\\fakepath\\image.png")
+        self.assertEqual(file_input.get_attribute('value'), "C:\\fakepath\\image2.png")
 
         previews = form_row.find_elements(By.CSS_SELECTOR, '.iuw-image-preview')
         self.assertEqual(len(previews), 1)
@@ -119,11 +122,7 @@ class NonRequiredWidgetTestCase(IUWTestCase):
         Should create the preview item from the database data when gots editing
         an item.
         """
-        image_file = self.image_file
-        item = models.TestNonRequired()
-        with open(image_file, 'rb') as f:
-            item.image.save("image.png", File(f))
-        item.save()
+        item = self.init_item()
 
         self.selenium.get(self.get_edit_url(item.id))
 
@@ -152,11 +151,7 @@ class NonRequiredWidgetTestCase(IUWTestCase):
         Should check the delete checkbox when click on the remove button for a
         saved image item and submit the form should remove it from the database.
         """
-        image_file = self.image_file
-        item = models.TestNonRequired()
-        with open(image_file, 'rb') as f:
-            item.image.save("image.png", File(f))
-        item.save()
+        item = self.init_item()
 
         self.selenium.get(self.get_edit_url(item.id))
 
@@ -188,20 +183,14 @@ class NonRequiredWidgetTestCase(IUWTestCase):
         """
         Should emit the click event for the file input when click on the preview image.
         """
-        self.selenium.get(self.get_url(self.admin_add_url))
+        self.selenium.get(self.admin_add_url)
 
         form_row = self.selenium.find_element(By.CSS_SELECTOR, '.form-row.field-image')
         previews = form_row.find_elements(By.CSS_SELECTOR, '.iuw-image-preview')
         file_input = form_row.find_element(By.CSS_SELECTOR, 'input[type=file]')
-        file_input.send_keys(self.image_file)
+        file_input.send_keys(self.image1)
         
-        injected_javascript = (
-            'const callback = arguments[0];'
-            'const input = document.querySelector(".form-row.field-image input[type=file]");'
-            'input.addEventListener("click", (e) => { e.preventDefault(); alert("CLICKED"); });'
-            'callback();'
-        )
-        self.selenium.execute_async_script(injected_javascript)
+        self.inject_input_file_clicked()
 
         previews = form_row.find_elements(By.CSS_SELECTOR, '.iuw-image-preview')
         self.assertEqual(len(previews), 1)
@@ -217,12 +206,12 @@ class NonRequiredWidgetTestCase(IUWTestCase):
         when click on the preview button, should open the preview modal
         with an img tag with the same src of the preview item.
         """
-        self.selenium.get(self.get_url(self.admin_add_url))
+        self.selenium.get(self.admin_add_url)
 
         form_row = self.selenium.find_element(By.CSS_SELECTOR, '.form-row.field-image')
         previews = form_row.find_elements(By.CSS_SELECTOR, '.iuw-image-preview')
         file_input = form_row.find_element(By.CSS_SELECTOR, 'input[type=file]')
-        file_input.send_keys(self.image_file)
+        file_input.send_keys(self.image2)
         
         previews = form_row.find_elements(By.CSS_SELECTOR, '.iuw-image-preview')
         self.assertEqual(len(previews), 1)
@@ -243,12 +232,12 @@ class NonRequiredWidgetTestCase(IUWTestCase):
         when click on the preview button and open the preview modal, click on the image
         should not close the image preview modal.
         """
-        self.selenium.get(self.get_url(self.admin_add_url))
+        self.selenium.get(self.admin_add_url)
 
         form_row = self.selenium.find_element(By.CSS_SELECTOR, '.form-row.field-image')
         previews = form_row.find_elements(By.CSS_SELECTOR, '.iuw-image-preview')
         file_input = form_row.find_element(By.CSS_SELECTOR, 'input[type=file]')
-        file_input.send_keys(self.image_file)
+        file_input.send_keys(self.image1)
         
         previews = form_row.find_elements(By.CSS_SELECTOR, '.iuw-image-preview')
         self.assertEqual(len(previews), 1)
@@ -271,12 +260,12 @@ class NonRequiredWidgetTestCase(IUWTestCase):
         when click on the preview button and open the preview modal, click on the close
         modal button should close the image preview modal.
         """
-        self.selenium.get(self.get_url(self.admin_add_url))
+        self.selenium.get(self.admin_add_url)
 
         form_row = self.selenium.find_element(By.CSS_SELECTOR, '.form-row.field-image')
         previews = form_row.find_elements(By.CSS_SELECTOR, '.iuw-image-preview')
         file_input = form_row.find_element(By.CSS_SELECTOR, 'input[type=file]')
-        file_input.send_keys(self.image_file)
+        file_input.send_keys(self.image2)
         
         previews = form_row.find_elements(By.CSS_SELECTOR, '.iuw-image-preview')
         self.assertEqual(len(previews), 1)
