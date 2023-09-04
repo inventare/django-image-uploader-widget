@@ -6,13 +6,17 @@ sidebar_position: 1
 
 To maintain the integrity of the features of this project we have written some integration tests to grant that main features of the widget and inline admin is really good.
 
-:::note Why not unit tests?
-In the decision to write the tests we opted for writing only integration tests using the selenium. And the reason for it is: our project uses much more JavaScript for web browser than Python code for back-end and runs in high coupling with the django-admin. In this context, unit tests are expendable.
-:::
+## Functional Tests
 
-:::note Some unit tests
-In the note block above i talked about not using unit test cases, and in the decisions of the issue [#77](https://github.com/inventare/django-image-uploader-widget/issues/77) we decided to add one unit test for the translation of the widget ([tests/widget_customized.py](https://github.com/inventare/django-image-uploader-widget/blob/main/image_uploader_widget_demo/tests/widget_customized.py#L5)).
-:::
+In the decision to write the tests we opted for writing only integration tests using the selenium. And the reason for it is: our project uses much more JavaScript for web browser than Python code for back-end and runs in high coupling with the django-admin. In this context, unit tests are expendable.
+
+## Some unit tests
+
+In the note block above i talked about not using unit test cases, and in the decisions of the issue [#77](https://github.com/inventare/django-image-uploader-widget/issues/77) we decided to add one unit test for the translation of the widget ([tests/widget/functional/tests_functional_widget_custom.py](https://github.com/inventare/django-image-uploader-widget/blob/main/tests/widget/functional/tests_functional_widget_custom.py#L5)).
+
+## UI Regression Tests
+
+In some versions of django, specially in some django 4.x versions, the style of the widget was broken. The behaviour is described in the issue [#96](https://github.com/inventare/django-image-uploader-widget/issues/96#issuecomment-1690740705). Due this behaviour, we decided to implements some **UI Regression Tests** and make some fixes to solve this problem.
 
 ## Some Tests Decisions and Workarounds
 
@@ -24,4 +28,4 @@ For easy testing, we used the **demo** project `image_uploader_widget_demo` for 
 
 ## Test Cases
 
-You can read (or contribute, if you want to improve this project) the test cases inside the `image_uploader_widget_demo` inside the github repository [here](https://github.com/inventare/django-image-uploader-widget/tree/main/image_uploader_widget_demo/tests).
+You can read (or contribute, if you want to improve this project) the test cases inside the `/tests` path inside the github repository [here](https://github.com/inventare/django-image-uploader-widget/tree/main/tests).
