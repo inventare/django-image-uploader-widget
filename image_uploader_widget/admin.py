@@ -10,6 +10,7 @@ class ImageUploaderInline(admin.StackedInline):
     empty_icon = ""
     drop_icon = ""
     add_icon = ""
+    accept = "image/*"
 
     def get_add_image_text(self):
         return self.add_image_text
@@ -28,6 +29,9 @@ class ImageUploaderInline(admin.StackedInline):
 
     def get_add_icon(self):
         return self.add_icon
+    
+    def get_accept(self):
+        return self.accept
 
     def get_formset(self, request, obj=None, **kwargs):
         item = super(ImageUploaderInline, self).get_formset(request, obj, **kwargs)
@@ -37,6 +41,7 @@ class ImageUploaderInline(admin.StackedInline):
         item.empty_icon = self.get_empty_icon()
         item.drop_icon = self.get_drop_icon()
         item.add_icon = self.get_add_icon()
+        item.accept = self.get_accept()
         return item
 
     @property

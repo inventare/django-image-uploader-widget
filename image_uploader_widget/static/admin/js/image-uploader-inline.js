@@ -360,7 +360,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const tempFileInput = document.createElement('input');
         tempFileInput.setAttribute('type', 'file');
         tempFileInput.classList.add('temp_file');
-        tempFileInput.setAttribute('accept', 'image/*');
+        tempFileInput.setAttribute('accept', inlineGroup.getAttribute('data-accept') || 'image/*');
         tempFileInput.style.display = 'none';
         editor.tempFileInput = tempFileInput;
         editor.tempFileInput.addEventListener('change', handleTempFileInputChange);
