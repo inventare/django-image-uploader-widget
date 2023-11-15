@@ -1,11 +1,11 @@
 from selenium.webdriver.common.by import By
-from image_uploader_widget_demo.demo_application import models
+from tests import models
 from utils.tests import IUWTestCase
 
 class OptionalWidgetStackedInlineTestCase(IUWTestCase):
     @property
     def admin_add_url(self):
-        path = '/admin/demo_application/testnonrequiredinline/add/'
+        path = '/testnonrequiredinline/add/'
         return self.get_url_from_path(path)
     
     def test_build_new_widget(self):

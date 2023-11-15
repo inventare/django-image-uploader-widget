@@ -3,6 +3,7 @@ include LICENSE
 recursive-exclude image_uploader_widget_demo *
 recursive-exclude tests *
 recursive-exclude utils *
+recursive-exclude core *
 recursive-include image_uploader_widget *
 recursive-include image_uploader_widget/static *
 recursive-include image_uploader_widget/templates *

@@ -1,18 +1,16 @@
 import django
 from django.core.files import File
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support.expected_conditions import invisibility_of_element_located
-from image_uploader_widget_demo.demo_application import models
+from tests import models
 from utils.tests import IUWTestCase
 
 class InlineEditorUIRegressionTestCase(IUWTestCase):
     @property
     def admin_add_url(self):
-        return self.get_url_from_path('/admin/demo_application/inline/add/')
+        return self.get_url_from_path('/inline/add/')
 
     def get_edit_url(self, id):
-        return self.get_url_from_path("/admin/demo_application/inline/%s/change/" % id)
+        return self.get_url_from_path("/inline/%s/change/" % id)
     
     def test_empty_marker(self):
         self.selenium.get(self.admin_add_url)

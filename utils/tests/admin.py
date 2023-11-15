@@ -9,11 +9,12 @@ class AdminMixin:
 
     def get_url_from_path(self, path: str) -> str:
         """
-        Gets an url from the live-server url and the path name.
+        Gets an url from the live-server url and the test app path name.
 
         :Args:
-            - path: the path to gets the url.
+            - path: the path to gets the url, relative to the app name.
         """
+        path = "/admin/tests%s" % path
         return "%s%s" % (self.live_server_url, path)
     
     def _create_root_user(self):

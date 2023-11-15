@@ -2,16 +2,16 @@ import django
 from django.contrib.auth import get_user_model
 from django.core.files import File
 from selenium.webdriver.common.by import By
-from image_uploader_widget_demo.demo_application import models
+from tests import models
 from utils.tests import IUWTestCase
 
 User = get_user_model()
 
 class RequiredWidgetTestCase(IUWTestCase):
-    admin_add_url = '/admin/demo_application/testrequired/add/'
+    admin_add_url = '/testrequired/add/'
 
     def get_edit_url(self, id):
-        return self.get_url_from_path("/admin/demo_application/testrequired/%s/change/" % id)
+        return self.get_url_from_path("/testrequired/%s/change/" % id)
     
     def init_item(self):
         item = models.TestRequired()

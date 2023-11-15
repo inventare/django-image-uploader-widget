@@ -3,7 +3,7 @@ from django.core.files import File
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.expected_conditions import invisibility_of_element_located
 from selenium.webdriver.support.wait import WebDriverWait
-from image_uploader_widget_demo.demo_application import models
+from tests import models
 from utils.tests import IUWTestCase
 
 User = get_user_model()
@@ -11,10 +11,10 @@ User = get_user_model()
 class OptionalWidgetTestCase(IUWTestCase):
     @property
     def admin_add_url(self):
-        return self.get_url_from_path('/admin/demo_application/testnonrequired/add/')
+        return self.get_url_from_path('/testnonrequired/add/')
 
     def get_edit_url(self, id):
-        return self.get_url_from_path("/admin/demo_application/testnonrequired/%s/change/" % id)
+        return self.get_url_from_path("/testnonrequired/%s/change/" % id)
 
     def init_item(self):
         item = models.TestNonRequired()
