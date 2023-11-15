@@ -1,3 +1,4 @@
+from django.test.utils import tag
 from django.contrib.auth import get_user_model
 from django.core.files import File
 from selenium.common.exceptions import NoSuchElementException
@@ -9,6 +10,7 @@ from utils.tests import IUWTestCase
 
 User = get_user_model()
 
+@tag('functional')
 class RequiredWidgetTestCase(IUWTestCase):
     @property
     def admin_add_url(self):

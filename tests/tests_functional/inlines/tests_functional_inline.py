@@ -1,3 +1,4 @@
+from django.test import tag
 from django.core.files import File
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
@@ -5,6 +6,7 @@ from selenium.webdriver.support.expected_conditions import invisibility_of_eleme
 from tests import models
 from utils.tests import IUWTestCase
 
+@tag('functional')
 class InlineEditorTestCase(IUWTestCase):
     @property
     def admin_add_url(self):

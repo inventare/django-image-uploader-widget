@@ -1,9 +1,11 @@
 import django
+from django.test import tag
 from django.core.files import File
 from selenium.webdriver.common.by import By
 from tests import models
 from utils.tests import IUWTestCase
 
+@tag("ui-regression")
 class InlineEditorUIRegressionTestCase(IUWTestCase):
     @property
     def admin_add_url(self):
@@ -17,7 +19,7 @@ class InlineEditorUIRegressionTestCase(IUWTestCase):
 
         root = self.selenium.find_element(By.CSS_SELECTOR, '.iuw-inline-root')
         
-        self.wait(0.4)
+        self.wait(0.3)
 
         self.assertMatchSnapshot(root, 'in_test_empty_marker')
 
@@ -27,7 +29,7 @@ class InlineEditorUIRegressionTestCase(IUWTestCase):
         root = self.selenium.find_element(By.CSS_SELECTOR, '.iuw-inline-root')
         empty = root.find_element(By.CSS_SELECTOR, '.iuw-empty')
 
-        self.hover_and_wait(empty, 0.4)
+        self.hover_and_wait(empty, 0.3)
 
         self.assertMatchSnapshot(root, 'in_test_empty_marker_hover')
 
@@ -72,7 +74,7 @@ class InlineEditorUIRegressionTestCase(IUWTestCase):
         previews = root.find_elements(By.CSS_SELECTOR, '.inline-related:not(.empty-form):not(.deleted)')
         preview = previews[0]
 
-        self.hover_and_wait(preview, 0.4)
+        self.hover_and_wait(preview, 0.3)
         
         self.assertMatchSnapshot(root, 'in_test_with_images_hover_preview')
     
@@ -99,7 +101,7 @@ class InlineEditorUIRegressionTestCase(IUWTestCase):
 
         preview_button = preview.find_element(By.CSS_SELECTOR, '.iuw-preview-icon')
 
-        self.hover_and_wait(preview_button, 0.4)
+        self.hover_and_wait(preview_button, 0.3)
         
         self.assertMatchSnapshot(root, 'in_test_hover_preview_icon')
 
@@ -125,7 +127,7 @@ class InlineEditorUIRegressionTestCase(IUWTestCase):
         preview = previews[0]
 
         preview_button = preview.find_element(By.CSS_SELECTOR, '.iuw-preview-icon')
-        self.click_and_wait(preview_button, 0.5)
+        self.click_and_wait(preview_button, 0.3)
 
         modal = self.get_preview_modal(black_overlay=True)
         
@@ -154,7 +156,7 @@ class InlineEditorUIRegressionTestCase(IUWTestCase):
 
         remove_button = preview.find_element(By.CSS_SELECTOR, '.iuw-delete-icon')
 
-        self.hover_and_wait(remove_button, 0.4)
+        self.hover_and_wait(remove_button, 0.3)
         
         self.assertMatchSnapshot(root, 'in_test_hover_delete_icon')
 
@@ -177,7 +179,7 @@ class InlineEditorUIRegressionTestCase(IUWTestCase):
 
         root = self.selenium.find_element(By.CSS_SELECTOR, '.iuw-inline-root')
         add_button = root.find_element(By.CSS_SELECTOR, '.iuw-add-image-btn')
-        self.hover_and_wait(add_button, 0.4)
+        self.hover_and_wait(add_button, 0.3)
         
         self.assertMatchSnapshot(root, 'in_test_hover_add_button')
 

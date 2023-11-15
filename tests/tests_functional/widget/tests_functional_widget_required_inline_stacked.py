@@ -1,18 +1,20 @@
+from django.test.utils import tag
 from selenium.webdriver.common.by import By
 from tests import models
 from utils.tests import IUWTestCase
 
-class OptionalWidgetStackedInlineTestCase(IUWTestCase):
+@tag('functional')
+class RequiredWidgetStackedInlineTestCase(IUWTestCase):
     @property
     def admin_add_url(self):
-        path = '/testnonrequiredinline/add/'
+        path = '/testrequiredinline/add/'
         return self.get_url_from_path(path)
     
     def test_build_new_widget(self):
         """
         Test an basic flow of widget creation inside stacked inline.
         """
-        itens = models.TestNonRequiredInlineItem.objects.all()
+        itens = models.TestRequiredInlineItem.objects.all()
         self.assertEqual(len(itens), 0)
 
         self.selenium.get(self.admin_add_url)
@@ -41,16 +43,14 @@ class OptionalWidgetStackedInlineTestCase(IUWTestCase):
             preview = iuw.find_element(By.CSS_SELECTOR, '.iuw-image-preview')
             img = preview.find_element(By.TAG_NAME, 'img')
             preview_button = preview.find_element(By.CSS_SELECTOR, '.iuw-preview-icon')
-            delete_button = preview.find_element(By.CSS_SELECTOR, '.iuw-delete-icon')
             self.assertTrue(preview.is_displayed())
             self.assertIsNotNone(img)
             self.assertIsNotNone(preview_button)
-            self.assertIsNotNone(delete_button)
 
-        submit = self.selenium.find_element(By.CSS_SELECTOR, '#testnonrequiredinline_form [type="submit"]')
+        submit = self.selenium.find_element(By.CSS_SELECTOR, '#testrequiredinline_form [type="submit"]')
         submit.click()
 
-        itens = models.TestNonRequiredInlineItem.objects.all()
+        itens = models.TestRequiredInlineItem.objects.all()
         self.assertEqual(len(itens), 2)
         for item in itens:
             self.assertIsNotNone(item.image)

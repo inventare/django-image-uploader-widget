@@ -1,7 +1,8 @@
-from utils.tests import IUWTestCase
+from django.test import tag, TestCase
 from tests.forms import TestCustomForm
 
-class WidgetCustomTestCase(IUWTestCase):
+@tag('unit')
+class WidgetCustomTestCase(TestCase):
     def test_render_custom_icons_and_texts(self):
         form = TestCustomForm()
         text = form.as_p()
