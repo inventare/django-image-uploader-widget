@@ -17,7 +17,7 @@ setup(
     url='https://github.com/inventare/django-image-uploader-widget',
     license='MIT',
     packages=find_packages(
-        exclude = ("image_uploader_widget_demo.*", "image_uploader_widget_demo", )
+        exclude = ("tests.*", "tests", )
     ),
     include_package_data=True,
     zip_safe=False,

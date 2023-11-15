@@ -46,7 +46,7 @@ INSTALLED_APPS = (
     "django.contrib.staticfiles",
     "django.contrib.postgres",
     "image_uploader_widget",
-    "image_uploader_widget_demo.demo_application",
+    "tests",
 )
 
 MIDDLEWARE = [
@@ -59,9 +59,9 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "image_uploader_widget_demo.urls"
+ROOT_URLCONF = "tests.urls"
 
-WSGI_APPLICATION = "image_uploader_widget_demo.wsgi.application"
+WSGI_APPLICATION = "tests.wsgi.application"
 
 
 # Database
