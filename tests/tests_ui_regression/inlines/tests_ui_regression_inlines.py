@@ -184,6 +184,7 @@ class InlineEditorUIRegressionTestCase(IUWTestCase):
         self.assertMatchSnapshot(root, 'in_test_hover_add_button')
 
     def test_ui_initialized_toggle_dark_theme(self):
+        self.light_mode()
         major, minor, _, _, _ = django.VERSION
         if major < 4 or minor < 2:
             # Theme toggle is added in django 4.2

@@ -153,6 +153,7 @@ class OptionaldWidgetTestCase(IUWTestCase):
         self.light_mode()
 
     def test_ui_initialized_toggle_dark_theme(self):
+        self.light_mode()
         major, minor, _, _, _ = django.VERSION
         if major < 4 or minor < 2:
             # Theme toggle is added in django 4.2
