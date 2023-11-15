@@ -40,6 +40,7 @@ class RequiredWidgetTestCase(IUWTestCase):
 
         empty_marker.click()
         self.assertEqual(self.selenium.switch_to.alert.text, "CLICKED")
+        self.selenium.switch_to.alert.accept()
         
     def test_required_file_input(self):
         """
@@ -122,6 +123,7 @@ class RequiredWidgetTestCase(IUWTestCase):
         img.click()
         
         self.assertEqual(self.selenium.switch_to.alert.text, "CLICKED")
+        self.selenium.switch_to.alert.accept()
 
     def test_click_on_the_preview_button(self):
         """

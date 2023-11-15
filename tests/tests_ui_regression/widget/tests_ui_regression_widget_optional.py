@@ -40,6 +40,7 @@ class OptionaldWidgetTestCase(IUWTestCase):
 
         root = self.get_widget_root()
         self.assertMatchSnapshot(root, 'wo_test_ui_empty_marker_dark')
+        self.light_mode()
 
     def test_ui_empty_marker_hovered(self):
         self.selenium.get(self.get_url_from_path(self.admin_add_url))
@@ -59,6 +60,7 @@ class OptionaldWidgetTestCase(IUWTestCase):
 
         root = self.get_widget_root()
         self.assertMatchSnapshot(root, 'wo_test_ui_empty_marker_hovered_dark')
+        self.light_mode()
 
     def test_ui_initialized_with_data(self):
         item = self.init_item()
@@ -80,6 +82,7 @@ class OptionaldWidgetTestCase(IUWTestCase):
         self.hover(preview)
 
         self.assertMatchSnapshot(root, 'wo_test_ui_initialized_with_data_dark')
+        self.light_mode()
 
     def test_ui_initialized_with_data_hover_preview(self):
         item = self.init_item()
@@ -101,6 +104,7 @@ class OptionaldWidgetTestCase(IUWTestCase):
         self.hover_and_wait(preview_icon, 0.4)
 
         self.assertMatchSnapshot(root, 'wo_test_ui_initialized_with_data_hover_preview_dark')
+        self.light_mode()
 
     def test_ui_initialized_with_data_hover_remove(self):
         item = self.init_item()
@@ -122,6 +126,7 @@ class OptionaldWidgetTestCase(IUWTestCase):
         self.hover_and_wait(delete_icon, 0.4)
 
         self.assertMatchSnapshot(root, 'wo_test_ui_initialized_with_data_hover_remove_dark')
+        self.light_mode()
 
     def test_ui_initialized_with_data_preview(self):
         item = self.init_item()
@@ -145,6 +150,7 @@ class OptionaldWidgetTestCase(IUWTestCase):
         
         modal = self.get_preview_modal(black_overlay=True)
         self.assertMatchSnapshot(modal, 'wo_test_ui_initialized_with_data_preview_dark')
+        self.light_mode()
 
     def test_ui_initialized_toggle_dark_theme(self):
         major, minor, _, _, _ = django.VERSION
@@ -183,3 +189,4 @@ class OptionaldWidgetTestCase(IUWTestCase):
         self.click_and_wait(toggle, 0.3)
         
         self.assertMatchSnapshot(root, 'wo_test_ui_initialized_toggle_dark_theme_inverted2')
+        self.light_mode()

@@ -246,3 +246,5 @@ class InlineEditorUIRegressionTestCase(IUWTestCase):
         self.click_and_wait(toggle, 0.3)
         
         self.assertMatchSnapshot(root, 'in_test_ui_initialized_toggle_dark_theme_inverted2')
+
+        self.light_mode()
