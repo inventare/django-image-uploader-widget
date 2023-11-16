@@ -172,13 +172,12 @@ class OptionaldWidgetTestCase(IUWTestCase):
         self.assertMatchSnapshot(root, 'wo_test_ui_initialized_toggle_dark_theme2')
 
     def test_ui_initialized_toggle_dark_theme_inverted(self):
-        self.dark_mode()
-
         major, minor, _, _, _ = django.VERSION
         if major < 4 or minor < 2:
             # Theme toggle is added in django 4.2
             # https://docs.djangoproject.com/en/4.2/releases/4.2/#django-contrib-admin
             return
+        self.dark_mode()
 
         item = self.init_item()
         self.selenium.get(self.get_edit_url(item.id))
