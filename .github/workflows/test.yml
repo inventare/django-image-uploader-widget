@@ -24,16 +24,13 @@ jobs:
             django-version: '4.2'
 
     services:
-      selenium:
-        image: selenium/standalone-chrome
-      
       postgres:
         image: postgres:15-alpine
         ports:
           - 5432:5432
         env:
           POSTGRES_PASSWORD: postgres
-        options: >-
+        options:
           --health-cmd pg_isready
           --health-interval 10s
           --health-timeout 5s
@@ -53,22 +50,15 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         pip install psycopg2
+        pip install playwright
         pip install selenium
         pip install django==${{ matrix.django-version }}
         
-    - name: Prepare Selenium
-      # https://github.com/marketplace/actions/setup-chromedriver
-      uses: nanasess/setup-chromedriver@master
-
-    - name: Launch Browser
-      run: |
-        google-chrome --version
-        export DISPLAY=:99
-        chromedriver --url-base=/wd/hub &
-        sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 & # optional, disables headless mode
+    - name: Ensure browsers are installed
+      run: python -m playwright install --with-deps
 
     - name: Run Tests
-      run: python manage.py test
+      run: python manage.py test --tag playwright
       env:
         DATABASE_USE_POSTGRES: 1
         POSTGRES_PORT: 5432

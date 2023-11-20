@@ -5,28 +5,40 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support.expected_conditions import element_to_be_clickable
+from selenium.common.exceptions import NoAlertPresentException
+from django.contrib.admin.tests import AdminSeleniumTestCase
 from .admin import AdminMixin
 from .image import ImageMixin
 from .snapshot import SnapshotMixin
 
 class IUWTestCase(AdminMixin, ImageMixin, SnapshotMixin, StaticLiveServerTestCase):
-    headless = True
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
 
-    def setUp(self):
         chrome_options = Options()
-
-        if self.headless:
-            chrome_options.add_argument('--headless')
-
+        chrome_options.add_argument('--headless')
         chrome_options.add_argument("--window-size=2560,1440")
 
-        self.selenium = webdriver.Chrome(options=chrome_options)
-        self.selenium.get(self.get_url_from_path('/admin/login'))
-
+        cls.selenium = webdriver.Chrome(options=chrome_options)
+    
+    def setUp(self) -> None:
+        self.light_mode()
+        path = "%s%s" % (self.live_server_url, "/admin/login")
+        self.selenium.get(path)
         self.login()
+
+    @classmethod
+    def tearDownClass(cls):
+        super().tearDownClass()
+        
+        cls.selenium.close()
 
     def dark_mode(self):
         self.selenium.execute_cdp_cmd('Emulation.setEmulatedMedia', {"features": [{"name": "prefers-color-scheme", "value": "dark"}]})
+
+    def light_mode(self):
+        self.selenium.execute_cdp_cmd('Emulation.setEmulatedMedia', {"features": [{"name": "prefers-color-scheme", "value": "default"}]})
 
     def get_widget_empty_marker(self):
         selector = ".form-row.field-image .iuw-empty"
