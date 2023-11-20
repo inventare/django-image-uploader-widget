@@ -33,7 +33,7 @@ jobs:
           - 5432:5432
         env:
           POSTGRES_PASSWORD: postgres
-        options: >-
+        options:
           --health-cmd pg_isready
           --health-interval 10s
           --health-timeout 5s
@@ -68,7 +68,7 @@ jobs:
         sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 & # optional, disables headless mode
 
     - name: Run Tests
-      run: python manage.py test
+      run: python manage.py test --tag playwright
       env:
         DATABASE_USE_POSTGRES: 1
         POSTGRES_PORT: 5432
