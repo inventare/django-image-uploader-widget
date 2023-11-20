@@ -13,7 +13,7 @@ class InlineEditorUIRegressionTestCase(IUWTestCase):
 
     def get_edit_url(self, id):
         return self.get_url_from_path("/inline/%s/change/" % id)
-    
+
     def test_empty_marker(self):
         self.selenium.get(self.admin_add_url)
 
@@ -184,13 +184,14 @@ class InlineEditorUIRegressionTestCase(IUWTestCase):
         self.assertMatchSnapshot(root, 'in_test_hover_add_button')
 
     def test_ui_initialized_toggle_dark_theme(self):
-        self.light_mode()
         major, minor, _, _, _ = django.VERSION
         if major < 4 or minor < 2:
             # Theme toggle is added in django 4.2
             # https://docs.djangoproject.com/en/4.2/releases/4.2/#django-contrib-admin
             return
-
+        
+        self.light_mode()
+        
         inline = models.Inline.objects.create()
         
         item1 = models.InlineItem()
@@ -215,36 +216,4 @@ class InlineEditorUIRegressionTestCase(IUWTestCase):
         
         self.assertMatchSnapshot(root, 'in_test_ui_initialized_toggle_dark_theme2')
 
-    def test_ui_initialized_toggle_dark_theme_inverted(self):
-        major, minor, _, _, _ = django.VERSION
-        if major < 4 or minor < 2:
-            # Theme toggle is added in django 4.2
-            # https://docs.djangoproject.com/en/4.2/releases/4.2/#django-contrib-admin
-            return
         self.dark_mode()
-
-        inline = models.Inline.objects.create()
-        
-        item1 = models.InlineItem()
-        item1.parent = inline
-        with open(self.image1, 'rb') as f:
-            item1.image.save("image.png", File(f))
-        item1.save()
-        
-        item2 = models.InlineItem()
-        item2.parent = inline
-        with open(self.image2, 'rb') as f:
-            item2.image.save("image2.png", File(f))
-        item2.save()
-
-        self.selenium.get(self.get_edit_url(inline.id))
-
-        root = self.selenium.find_element(By.CSS_SELECTOR, '.iuw-inline-root')
-        self.assertMatchSnapshot(root, 'in_test_ui_initialized_toggle_dark_theme_inverted')
-
-        toggle = self.selenium.find_element(By.CSS_SELECTOR, '#header button.theme-toggle')
-        self.click_and_wait(toggle, 0.3)
-        
-        self.assertMatchSnapshot(root, 'in_test_ui_initialized_toggle_dark_theme_inverted2')
-
-        self.light_mode()

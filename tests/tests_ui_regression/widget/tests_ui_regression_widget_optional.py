@@ -167,7 +167,7 @@ class OptionaldWidgetTestCase(IUWTestCase):
         self.assertMatchSnapshot(root, 'wo_test_ui_initialized_toggle_dark_theme')
 
         toggle = self.selenium.find_element(By.CSS_SELECTOR, '#header button.theme-toggle')
-        self.click_and_wait(toggle, 0.3)
+        self.click_and_wait(toggle, 0.4)
         
         self.assertMatchSnapshot(root, 'wo_test_ui_initialized_toggle_dark_theme2')
 

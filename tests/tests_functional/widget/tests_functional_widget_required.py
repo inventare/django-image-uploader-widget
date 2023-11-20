@@ -27,6 +27,7 @@ class RequiredWidgetTestCase(IUWTestCase):
         item.save()
         return item
     
+    @tag("rewrited-in-playwright")
     def test_empty_marker_click(self):
         """
         should emit click event for the file input of the widget when
@@ -42,6 +43,7 @@ class RequiredWidgetTestCase(IUWTestCase):
         self.assertEqual(self.selenium.switch_to.alert.text, "CLICKED")
         self.selenium.switch_to.alert.accept()
         
+    @tag("rewrited-in-playwright")
     def test_required_file_input(self):
         """
         should create the preview image when file input value was changed and
@@ -78,6 +80,7 @@ class RequiredWidgetTestCase(IUWTestCase):
         item = itens[0]
         self.assertIsNotNone(item.image)
 
+    @tag("rewrited-in-playwright")
     def test_image_with_database_data(self):
         """
         should create the preview with the value from the database when got the field initialized
