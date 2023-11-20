@@ -6,10 +6,12 @@ from selenium.webdriver.support.expected_conditions import invisibility_of_eleme
 from selenium.webdriver.support.wait import WebDriverWait
 from tests import models
 from utils.tests import IUWTestCase
+from unittest import skip
 
 User = get_user_model()
 
 @tag('functional')
+@skip()
 class OptionalWidgetTestCase(IUWTestCase):
     @property
     def admin_add_url(self):

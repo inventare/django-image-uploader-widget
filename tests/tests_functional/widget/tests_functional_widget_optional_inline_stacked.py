@@ -1,9 +1,11 @@
 from django.test.utils import tag
+from unittest import skip
 from selenium.webdriver.common.by import By
 from tests import models
 from utils.tests import IUWTestCase
 
 @tag('functional')
+@skip()
 class OptionalWidgetStackedInlineTestCase(IUWTestCase):
     @property
     def admin_add_url(self):

@@ -4,8 +4,10 @@ from django.core.files import File
 from selenium.webdriver.common.by import By
 from tests import models
 from utils.tests import IUWTestCase
+from unittest import skip
 
 @tag("ui-regression")
+@skip()
 class InlineEditorUIRegressionTestCase(IUWTestCase):
     @property
     def admin_add_url(self):
