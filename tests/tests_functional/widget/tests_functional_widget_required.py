@@ -18,13 +18,33 @@ class WidgetRequiredTests(TestCase):
         super().goto_change_page(item.id)
         return item
 
-    def test_empty_marker_click(self):
+    def test_should_fire_click_on_file_input_when_click_on_empty_marker(self):
+        """
+        Should fire click event on file input when click on the empty marker.
+
+        The test flow is:
+            - Navigate to Widget Add Page
+            - Click on the empty marker
+            - Assert if click event is fired on input file.
+        """
         self.goto_add_page()
         self.inject_input_file_clicked()
         self.page.query_selector('.form-row.field-image .iuw-empty').click()
         self.assert_input_file_clicked()
 
-    def test_required_file_input(self):
+    def test_should_create_preview_and_upload_file(self):
+        """
+        Should show create a preview when select file and upload it when submit.
+
+        The test flow is:
+            - Navigate to Widget Add Page.
+            - Assert if none preview is present.
+            - Add file to file input.
+            - Assert if the preview is added to the widget.
+            - Submit the form.
+            - Assert if success message is present.
+            - Validate created instance.
+        """
         self.goto_add_page()
 
         form_row = self.page.query_selector('.form-row.field-image')
@@ -43,14 +63,24 @@ class WidgetRequiredTests(TestCase):
         self.assertIsNotNone(preview_button)
 
         self.submit_form('#testrequired_form')
-
         self.assert_success_message()
+
         itens = models.TestRequired.objects.all()
         self.assertEqual(len(itens), 1)
         item = itens[0]
         self.assertIsNotNone(item.image)
 
-    def test_image_with_database_data(self):
+    def test_should_intiialized_with_preview_when_editing(self):
+        """
+        Should initialized with the preview when open the edit page.
+
+        The test flow is:
+            - Navigate to Widget Change Page.
+            - Assert if preview is found.
+            - Assert the preview data-raw attribute.
+            - Assert if the empty marker is hidden.
+            - Assert if the preview button is visible.
+        """
         item = self.goto_change_page()
 
         root = self.find_widget_root()
@@ -69,7 +99,17 @@ class WidgetRequiredTests(TestCase):
         self.assertTrue(item.image.url in img.get_attribute('src'))
         self.assertIsNotNone(preview_button)
 
-    def test_click_on_the_preview_image(self):
+    def test_should_fire_click_on_file_input_when_click_on_the_preview_image(self):
+        """
+        Should fire click event on file input when click on the preview image.
+
+        The test flow is:
+            - Navigate to Widget Add Page.
+            - Assert if Preview is not present.
+            - Choice a image.
+            - Click on the preview image.
+            - Assert if click event is fired on input file.
+        """
         self.goto_add_page()
 
         form_row = self.find_widget_form_row()
@@ -86,7 +126,18 @@ class WidgetRequiredTests(TestCase):
         img.click()
         self.assert_input_file_clicked()
         
-    def test_click_on_the_preview_button(self):
+    def test_should_open_preview_modal_when_click_on_preview_button(self):
+        """
+        Should open the preview modal when click on the preview button.
+
+        The test flow is:
+            - Navigate to Widget Add Page.
+            - Assert if preview is not present.
+            - Choice a image.
+            - Assert if preview is present.
+            - Click on the preview button on the preview image.
+            - Assert if the preview modal is visible.
+        """
         self.goto_add_page()
 
         form_row = self.find_widget_form_row()
@@ -104,7 +155,21 @@ class WidgetRequiredTests(TestCase):
         
         self.assert_preview_modal(preview_img)
 
-    def test_click_on_the_preview_button_and_image_on_modal(self):
+    def test_should_not_close_preview_modal_when_click_image_inside_it(self):
+        """
+        Should not close the preview modal when click on the image inside it.
+
+        The test flow is:
+            - Navigate to Widget Add Page.
+            - Assert if preview is not present.
+            - Choice a image.
+            - Assert if preview is present.
+            - Click on the preview button on the preview image.
+            - Assert if the preview modal is visible.
+            - Click on the image inside preview modal.
+            - Wait for 0.5 ms.
+            - Assert if the preview modal is visible.
+        """
         self.goto_add_page()
 
         form_row = self.find_widget_form_row()
@@ -121,8 +186,30 @@ class WidgetRequiredTests(TestCase):
         preview_button.click()
 
         self.assert_preview_modal(preview_img)
+        preview_modal = self.get_preview_modal(True, 3000)
+
+        img = preview_modal.query_selector('img')
+        img.click()
+
+        self.wait(0.5)
+
+        self.assertEqual(preview_modal.get_attribute("class"), "iuw-modal visible")
         
-    def test_click_on_the_preview_button_and_close_on_modal(self):
+    def test_should_close_preview_modal_when_click_on_close_button_inside_it(self):
+        """
+        Should close the preview modal when click on close button inside it.
+
+        The test flow is:
+            - Navigate to Widget Add Page.
+            - Assert if preview is not present.
+            - Choice a image.
+            - Assert if preview is present.
+            - Click on the preview button on the preview image.
+            - Assert if the preview modal is visible.
+            - Click on the image inside preview modal.
+            - Click on the close button.
+            - Assert if the preview modal is not visible.
+        """
         self.goto_add_page()
 
         form_row = self.find_widget_form_row()

@@ -1,5 +1,6 @@
 import uuid
 import os
+import time
 from django.test import tag
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from playwright.sync_api import sync_playwright, expect
@@ -114,8 +115,16 @@ class TestCase(StaticLiveServerTestCase):
         alert = self.page.wait_for_selector('.messagelist .success', timeout=3000)
         self.assertIsNotNone(alert)
 
+    def get_preview_modal(self, visible=True, timout=3000):
+        class_name = ''
+        if visible:
+            class_name = '.visible'
+
+        preview_modal = self.page.wait_for_selector(f'#iuw-modal-element{class_name}', timeout=timout)
+        return preview_modal
+
     def assert_preview_modal(self, preview_img):
-        preview_modal = self.page.wait_for_selector('#iuw-modal-element.visible', timeout=3000)
+        preview_modal = self.get_preview_modal(True, 3000)
         self.assertIsNotNone(preview_modal)
         self.assertEqual(preview_modal.get_attribute('class'), 'iuw-modal visible')
 
@@ -124,9 +133,13 @@ class TestCase(StaticLiveServerTestCase):
         self.assertEqual(img.get_attribute("src"), preview_img.get_attribute("src"))
 
     def assert_preview_modal_close(self):
-        preview_modal = self.page.query_selector('#iuw-modal-element.visible')
+        preview_modal = self.get_preview_modal(True, 0)
         close_button = preview_modal.query_selector('.iuw-modal-close')
         close_button.click()
 
         locator = self.page.locator('#iuw-modal-element')
         expect(locator).not_to_be_visible(timeout=3000)
+    
+    def wait(self, seconds: float) -> None:
+        time.sleep(seconds)
+
