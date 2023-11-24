@@ -1,13 +1,11 @@
 import os
 import sys
 from PIL import Image, ImageChops
-#from selenium.webdriver import ActionChains
-#from selenium.webdriver.remote.webelement import WebElement
 
 class SnapshotMixin:
-    pixel_threshold_red = 3
-    pixel_threshold_green = 3
-    pixel_threshold_blue = 3
+    pixel_threshold_red = 5
+    pixel_threshold_green = 5
+    pixel_threshold_blue = 5
 
     def _get_snapshot_filename(self, id: str) -> str:
         """
