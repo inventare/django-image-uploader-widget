@@ -50,6 +50,11 @@ class IUWMixin:
             element = self.page
         return element.query_selector('.iuw-preview-icon')
     
+    def find_delete_icon(self, element=None):
+        if not element:
+            element = self.page
+        return element.query_selector('.iuw-delete-icon')
+
     def get_preview_modal(self, visible=True, timout=3000, black_overlay=False):
         class_name = ''
         if visible:
