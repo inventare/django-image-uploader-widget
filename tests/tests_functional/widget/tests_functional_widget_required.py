@@ -2,7 +2,7 @@ from django.test import tag
 from django.core.files import File
 from tests import models, TestCase
 
-@tag('playwright')
+@tag('playwright', 'functional')
 class WidgetRequiredTests(TestCase):
     model = 'testrequired'
 
@@ -28,9 +28,9 @@ class WidgetRequiredTests(TestCase):
             - Assert if click event is fired on input file.
         """
         self.goto_add_page()
-        self.inject_input_file_clicked()
-        self.page.query_selector('.form-row.field-image .iuw-empty').click()
-        self.assert_input_file_clicked()
+
+        with self.assert_input_file_clicked():
+            self.page.query_selector('.form-row.field-image .iuw-empty').click()
 
     def test_should_create_preview_and_upload_file(self):
         """
@@ -118,13 +118,11 @@ class WidgetRequiredTests(TestCase):
         file_input = form_row.query_selector('input[type=file]')
         file_input.set_input_files(self.image2)
 
-        self.inject_input_file_clicked()
-
-        preview = self.find_widget_preview(form_row)
-        self.assertIsNotNone(preview)
-        img = preview.query_selector('img')
-        img.click()
-        self.assert_input_file_clicked()
+        with self.assert_input_file_clicked():
+            preview = self.find_widget_preview(form_row)
+            self.assertIsNotNone(preview)
+            img = preview.query_selector('img')
+            img.click()
         
     def test_should_open_preview_modal_when_click_on_preview_button(self):
         """
