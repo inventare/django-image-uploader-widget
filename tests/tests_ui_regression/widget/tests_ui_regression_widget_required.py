@@ -28,7 +28,7 @@ class RequiredWidgetUIRegressionTests(TestCase):
     def test_ui_empty_marker(self):
         self.goto_add_page()
         self.wait_for_empty_marker()
-        self.wait(0.4)
+        self.wait(0.5)
 
         root = self.find_widget_root()
         self.assertMatchSnapshot(root, 'wr_test_ui_empty_marker')
@@ -50,7 +50,7 @@ class RequiredWidgetUIRegressionTests(TestCase):
         
         empty = self.find_empty_marker()
         empty.hover()
-        self.wait(0.4)
+        self.wait(0.5)
 
         root = self.find_widget_root()
         self.assertMatchSnapshot(root, 'wr_test_ui_empty_marker_hovered')
@@ -93,7 +93,7 @@ class RequiredWidgetUIRegressionTests(TestCase):
         root = self.find_widget_root()
         preview_icon = self.find_preview_icon(root)
         preview_icon.hover()
-        self.wait(0.4)
+        self.wait(0.5)
         self.assertMatchSnapshot(root, 'wr_test_ui_initialized_with_data_hover_preview')
 #
 #    def test_ui_initialized_with_data_hover_preview_dark(self):

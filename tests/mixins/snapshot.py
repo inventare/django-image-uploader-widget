@@ -32,6 +32,16 @@ class SnapshotMixin:
         snapshots_dir = './snapshots'
         return os.path.join(snapshots_dir, "compare_%s.png" % id)
     
+    def _get_failure_filename(self, id: str) -> str:
+        """
+        Returns the comparison file name to an unique id.
+
+        :Args:
+            - id: an unique id to gets the comparison file name.
+        """
+        snapshots_dir = './failures'
+        return os.path.join(snapshots_dir, "compare_%s.png" % id)
+    
     def _create_snapshot_image(self, element, id: str):
         """
         Takes an screenshot of the element and stores it as snaptshot.
