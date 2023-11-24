@@ -1,38 +1,38 @@
 import django
-#from django.contrib.auth import get_user_model
-#from django.core.files import File
-#from django.test.utils import tag
+from django.contrib.auth import get_user_model
+from django.core.files import File
+from django.test.utils import tag
 #from selenium.webdriver.common.by import By
-#from tests import models
-#from utils.tests import IUWTestCase
-#from unittest import skip
-#
-#User = get_user_model()
-#
-#@tag("ui-regression")
-#@skip()
-#class RequiredWidgetTestCase(IUWTestCase):
-#    admin_add_url = '/testrequired/add/'
-#
-#    def get_edit_url(self, id):
-#        return self.get_url_from_path("/testrequired/%s/change/" % id)
-#    
-#    def init_item(self):
-#        item = models.TestRequired()
-#        with open(self.image1, 'rb') as f:
-#            item.image.save("image.png", File(f), False)
-#        item.save()
-#        return item
-#    
-#    def test_ui_empty_marker(self):
-#        self.selenium.get(self.get_url_from_path(self.admin_add_url))
-#
-#        self.get_widget_empty_marker()
-#        self.wait(0.4)
-#
-#        root = self.get_widget_root()
-#        self.assertMatchSnapshot(root, 'wr_test_ui_empty_marker')
-#
+from tests import models
+from unittest import skip
+from tests import TestCase
+
+User = get_user_model()
+
+@tag("ui-regression", "playwright")
+class RequiredWidgetUIRegressionTests(TestCase):
+    model = 'testrequired'
+
+    def init_item(self):
+        item = models.TestRequired()
+        with open(self.image1, 'rb') as f:
+            item.image.save("image.png", File(f), False)
+        item.save()
+        return item
+    
+    def goto_change_page(self):
+        item = self.init_item()
+        super().goto_change_page(item.id)
+        return item
+    
+    def test_ui_empty_marker(self):
+        self.goto_add_page()
+        self.wait_for_empty_marker()
+        self.wait(0.4)
+
+        root = self.find_widget_root()
+        self.assertMatchSnapshot(root, 'wr_test_ui_empty_marker')
+
 #    def test_ui_empty_marker_dark(self):
 #        self.dark_mode()
 #        self.selenium.get(self.get_url_from_path(self.admin_add_url))
@@ -44,15 +44,17 @@ import django
 #        self.assertMatchSnapshot(root, 'wr_test_ui_empty_marker_dark')
 #        self.light_mode()
 #
-#    def test_ui_empty_marker_hovered(self):
-#        self.selenium.get(self.get_url_from_path(self.admin_add_url))
-#
-#        empty = self.get_widget_empty_marker()
-#        self.hover_and_wait(empty, 0.4)
-#
-#        root = self.get_widget_root()
-#        self.assertMatchSnapshot(root, 'wr_test_ui_empty_marker_hovered')
-#
+    def test_ui_empty_marker_hovered(self):
+        self.goto_add_page()
+        self.wait_for_empty_marker()
+        
+        empty = self.find_empty_marker()
+        empty.hover()
+        self.wait(0.4)
+
+        root = self.find_widget_root()
+        self.assertMatchSnapshot(root, 'wr_test_ui_empty_marker_hovered')
+
 #    def test_ui_empty_marker_hovered_dark(self):
 #        self.dark_mode()
 #        self.selenium.get(self.get_url_from_path(self.admin_add_url))
@@ -64,15 +66,14 @@ import django
 #        self.assertMatchSnapshot(root, 'wr_test_ui_empty_marker_hovered_dark')
 #        self.light_mode()
 #
-#    def test_ui_initialized_with_data(self):
-#        item = self.init_item()
-#        self.selenium.get(self.get_edit_url(item.id))
-#
-#        root = self.get_widget_root()
-#        preview = self.get_widget_preview(root)
-#        self.hover(preview)
-#
-#        self.assertMatchSnapshot(root, 'wr_test_ui_initialized_with_data')
+    
+    def test_ui_initialized_with_data(self):
+        self.goto_change_page()
+
+        root = self.find_widget_root()
+        preview = self.find_widget_preview(root)
+        preview.hover()
+        self.assertMatchSnapshot(root, 'wr_test_ui_initialized_with_data')
 #
 #    def test_ui_initialized_with_data_dark(self):
 #        self.dark_mode()
@@ -86,15 +87,14 @@ import django
 #        self.assertMatchSnapshot(root, 'wr_test_ui_initialized_with_data_dark')
 #        self.light_mode()
 #
-#    def test_ui_initialized_with_data_hover_preview(self):
-#        item = self.init_item()
-#        self.selenium.get(self.get_edit_url(item.id))
-#
-#        root = self.get_widget_root()
-#        preview_icon = self.get_widget_preview_icon(root)
-#        self.hover_and_wait(preview_icon, 0.4)
-#
-#        self.assertMatchSnapshot(root, 'wr_test_ui_initialized_with_data_hover_preview')
+    def test_ui_initialized_with_data_hover_preview(self):
+        self.goto_change_page()
+
+        root = self.find_widget_root()
+        preview_icon = self.find_preview_icon(root)
+        preview_icon.hover()
+        self.wait(0.4)
+        self.assertMatchSnapshot(root, 'wr_test_ui_initialized_with_data_hover_preview')
 #
 #    def test_ui_initialized_with_data_hover_preview_dark(self):
 #        self.dark_mode()
@@ -108,16 +108,16 @@ import django
 #        self.assertMatchSnapshot(root, 'wr_test_ui_initialized_with_data_hover_preview_dark')
 #        self.light_mode()
 #
-#    def test_ui_initialized_with_data_preview(self):
-#        item = self.init_item()
-#        self.selenium.get(self.get_edit_url(item.id))
-#
-#        root = self.get_widget_root()
-#        preview_icon = self.get_widget_preview_icon(root)
-#        self.click_and_wait(preview_icon, 0.5)
-#        
-#        modal = self.get_preview_modal(black_overlay=True)
-#        self.assertMatchSnapshot(modal, 'wr_test_ui_initialized_with_data_preview')
+    def test_ui_initialized_with_data_preview(self):
+        self.goto_change_page()
+
+        root = self.find_widget_root()
+        preview_icon = self.find_preview_icon(root)
+        preview_icon.click()
+        self.wait(0.5)
+        
+        modal = self.get_preview_modal(black_overlay=True)
+        self.assertMatchSnapshot(modal, 'wr_test_ui_initialized_with_data_preview')
 #
 #    def test_ui_initialized_with_data_preview_dark(self):
 #        self.dark_mode()
