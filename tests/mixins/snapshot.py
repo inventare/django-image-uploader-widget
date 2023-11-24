@@ -1,16 +1,13 @@
 import os
 import sys
-import time
 from PIL import Image, ImageChops
 #from selenium.webdriver import ActionChains
 #from selenium.webdriver.remote.webelement import WebElement
 
 class SnapshotMixin:
-    """
     pixel_threshold_red = 3
     pixel_threshold_green = 3
     pixel_threshold_blue = 3
-    """
 
     def _get_snapshot_filename(self, id: str) -> str:
         """
@@ -210,8 +207,7 @@ class SnapshotMixin:
 
         fail = False
         diff = ImageChops.difference(image, comparation_image)
-        #if diff.getbbox() and not self._validate_difference_threshold(diff):
-        if diff.getbbox():
+        if diff.getbbox() and not self._validate_difference_threshold(diff):
             fail = True
 
         if fail:
