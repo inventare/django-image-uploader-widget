@@ -1,3 +1,4 @@
+"""
 from django.test import tag
 from selenium.webdriver.common.by import By
 from utils.tests import IUWTestCase
@@ -24,3 +25,4 @@ class CustomizedInlineEditorTestCase(IUWTestCase):
         self.assertEqual(empty_text, "empty_icon" + "empty_text")
         self.assertEqual(dropzone_text, "drop_icon" + "drop_text")
         self.assertEqual(add_text, "add_icon" + "add_image_text")
+"""

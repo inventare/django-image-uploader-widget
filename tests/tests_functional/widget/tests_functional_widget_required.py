@@ -34,7 +34,7 @@ class WidgetRequiredTests(TestCase):
 
     def test_should_create_preview_and_upload_file(self):
         """
-        Should show create a preview when select file and upload it when submit.
+        Should create a preview when select file and upload it when submit.
 
         The test flow is:
             - Navigate to Widget Add Page.
