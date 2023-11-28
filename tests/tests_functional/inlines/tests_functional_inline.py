@@ -2,11 +2,11 @@ from django.test import tag
 from django.core.files import File
 from tests import models, TestCase
 
-@tag('functional', "playwright", 'AAAQ')
-class InlineEditorTestCase(TestCase):
+@tag('functional', "playwright")
+class InlineEditorTests(TestCase):
     model = "inline"
 
-    def init_item(self):
+    def init_item(self, only_one=False):
         inline = models.Inline.objects.create()
         
         self.item1 = models.InlineItem()
@@ -15,16 +15,17 @@ class InlineEditorTestCase(TestCase):
             self.item1.image.save("image.png", File(f))
         self.item1.save()
         
-        self.item2 = models.InlineItem()
-        self.item2.parent = inline
-        with open(self.image2, 'rb') as f:
-            self.item2.image.save("image2.png", File(f))
-        self.item2.save()
+        if not only_one:
+            self.item2 = models.InlineItem()
+            self.item2.parent = inline
+            with open(self.image2, 'rb') as f:
+                self.item2.image.save("image2.png", File(f))
+            self.item2.save()
 
         return inline
     
-    def goto_change_page(self):
-        item = self.init_item()
+    def goto_change_page(self, only_one=False):
+        item = self.init_item(only_one)
         super().goto_change_page(item.id)
         return item
 
@@ -239,172 +240,135 @@ class InlineEditorTestCase(TestCase):
             img = preview.query_selector('img')
             img.click()
 
-    # def test_click_on_add_image(self):
-    #     """
-    #     when click on the add image button should emit the click event of the temporary file
-    #     input of the inline editor.
-    #     """
-    #     inline = models.Inline.objects.create()
+    def test_should_fire_temp_file_click_when_click_on_add_button(self):
+        """
+        Should fire temporary file input click when click on the add button.
         
-    #     item1 = models.InlineItem()
-    #     item1.parent = inline
-    #     with open(self.image1, 'rb') as f:
-    #         item1.image.save("image.png", File(f))
-    #     item1.save()
+        The test flow is:
+            - Go to change page.
+            - Assert if the one preview is present.
+            - Assert if the add button is visible.
+            - Click on the add button.
+            - Assert if the click event is fired on temp input.
+        """
+        self.goto_change_page(only_one=True)
+
+        root = self.find_inline_root()
+        previews = self.find_inline_previews(root)
+        self.assertEqual(len(previews), 1)
+
+        with self.assert_input_file_clicked(".temp_file"):
+            add_button = self.find_add_button(root)
+            self.assertTrue(add_button.is_visible())
+            add_button.click()
+
+    def test_should_open_preview_modal_when_click_preview_button(self):
+        """
+        Should open the preview modal when click on the preview button.
+
+        The test flow is:
+            - Navigate to Change Page.
+            - Assert if one preview is present.
+            - Click on the preview button on the preview image.
+            - Assert if the preview modal is visible.
+        """
+        self.goto_change_page(only_one=True)
         
-    #     self.selenium.get(self.get_edit_url(inline.id))
+        root = self.find_inline_root()
+        previews = self.find_inline_previews(root)
+        self.assertEqual(len(previews), 1)
 
-    #     root = self.selenium.find_element(By.CSS_SELECTOR, '.iuw-inline-root')
-    #     previews = root.find_elements(By.CSS_SELECTOR, '.inline-related:not(.empty-form):not(.deleted)')
-    #     self.assertEqual(len(previews), 1)
+        preview = previews[0]
+        preview_img = preview.query_selector('img')
+        self.find_preview_icon(preview).click()
+        self.assert_preview_modal(preview_img)
 
-    #     injected_javascript = (
-    #         'const callback = arguments[0];'
-    #         'const input = document.querySelector(".temp_file");'
-    #         'input.addEventListener("click", (e) => { e.preventDefault(); alert("CLICKED"); });'
-    #         'callback();'
-    #     )
-    #     self.selenium.execute_async_script(injected_javascript)
-
-    #     add_button = root.find_element(By.CSS_SELECTOR, '.iuw-add-image-btn')
-    #     self.assertTrue(add_button.is_displayed())
-    #     add_button.click()
-
-    #     self.assertEqual(self.selenium.switch_to.alert.text, "CLICKED")
-    #     self.selenium.switch_to.alert.accept()
-
-    # def test_click_on_preview_button(self):
-    #     """
-    #     when click on the preview button of an item, should open the preview modal
-    #     with an img tag with the same src of the preview item.
-    #     """
-    #     inline = models.Inline.objects.create()
+    def test_should_not_close_preview_modal_when_click_image(self):
+        """
+        Should not close the preview modal when click on the image on preview modal.
         
-    #     item1 = models.InlineItem()
-    #     item1.parent = inline
-    #     with open(self.image1, 'rb') as f:
-    #         item1.image.save("image.png", File(f))
-    #     item1.save()
+        The test flow is:
+            - Navigate to Change Page.
+            - Assert if one preview is present.
+            - Click on the preview button on the preview image.
+            - Assert if the preview modal is visible.
+            - Click on the image inside preview modal.
+            - Wait for 0.5s.
+            - Assert if the preview modal is visible.
+        """
+        self.goto_change_page(only_one=True)
         
-    #     self.selenium.get(self.get_edit_url(inline.id))
+        root = self.find_inline_root()
+        previews = self.find_inline_previews(root)
+        self.assertEqual(len(previews), 1)
 
-    #     root = self.selenium.find_element(By.CSS_SELECTOR, '.iuw-inline-root')
-    #     previews = root.find_elements(By.CSS_SELECTOR, '.inline-related:not(.empty-form):not(.deleted)')
-    #     self.assertEqual(len(previews), 1)
+        preview = previews[0]
+        preview_img = preview.query_selector('img')
+        self.find_preview_icon(preview).click()
+        self.assert_preview_modal(preview_img)
 
-    #     preview = previews[0]
-    #     preview_img = preview.find_element(By.TAG_NAME, 'img')
-    #     preview_button = preview.find_element(By.CSS_SELECTOR, '.iuw-preview-icon')
-    #     preview_button.click()
+        preview_modal = self.get_preview_modal(True, 3000)
+        img = preview_modal.query_selector('img')
+        img.click()
+        self.wait(0.5)
+        self.assertEqual(preview_modal.get_attribute("class"), "iuw-modal visible")
+
+    def test_should_close_preview_modal_when_click_close_button(self):
+        """
+        Should close the preview modal when click on the close button.
         
-    #     preview_modal = WebDriverWait(self.selenium, timeout=3).until(lambda d: d.find_element(By.CSS_SELECTOR, "#iuw-modal-element.visible"))
-    #     self.assertIsNotNone(preview_modal)
-    #     self.assertEqual(preview_modal.get_attribute('class'), 'iuw-modal visible')
+        The test flow is:
+            - Navigate to Change Page.
+            - Assert if one preview is present.
+            - Click on the preview button on the preview image.
+            - Assert if the preview modal is visible.
+            - Click on the close button of the modal.
+            - Assert if the preview modal is hidden.
+        """
+        self.goto_change_page(only_one=True)
 
-    #     img = preview_modal.find_element(By.TAG_NAME, 'img')
-    #     self.assertIsNotNone(img)
-    #     self.assertEqual(img.get_attribute("src"), preview_img.get_attribute("src"))
+        root = self.find_inline_root()
+        previews = self.find_inline_previews(root)
+        self.assertEqual(len(previews), 1)
 
-    # def test_click_on_preview_button_and_image_on_modal(self):
-    #     """
-    #     when click on the preview button and open the preview modal, click on the image
-    #     should not close the image preview modal.
-    #     """
-    #     inline = models.Inline.objects.create()
+        preview = previews[0]
+        preview_img = preview.query_selector('img')
+        self.find_preview_icon(preview).click()
+        self.assert_preview_modal(preview_img)
+        self.assert_preview_modal_close()
+
+    def test_should_change_image_of_item_when_change_image_on_inline(self):
+        """
+        Should change the image of a item when change image by inline and save.
         
-    #     item1 = models.InlineItem()
-    #     item1.parent = inline
-    #     with open(self.image1, 'rb') as f:
-    #         item1.image.save("image.png", File(f))
-    #     item1.save()
+        The test flow is:
+            - Navigate to Change Page.
+            - Assert if two previews is present.
+            - Change the image of the first preview item.
+            - Assert if the preview src was changed.
+            - Submit the form.
+            - Assert success message.
+            - Assert if the image was changed on model entity.
+        """
+        self.goto_change_page()
+
+        root = self.find_inline_root()
+        previews = self.find_inline_previews(root)
+        self.assertEqual(len(previews), 2)
+
+        url1 = self.item1.image.url
+
+        preview = previews[0]
+        preview_img = preview.query_selector('img')
+        preview_src = preview_img.get_attribute('src')
         
-    #     self.selenium.get(self.get_edit_url(inline.id))
+        file_input = preview.query_selector('input[type=file]')
+        file_input.set_input_files(self.image1)
 
-    #     root = self.selenium.find_element(By.CSS_SELECTOR, '.iuw-inline-root')
-    #     previews = root.find_elements(By.CSS_SELECTOR, '.inline-related:not(.empty-form):not(.deleted)')
-    #     self.assertEqual(len(previews), 1)
-
-    #     preview = previews[0]
-    #     preview_button = preview.find_element(By.CSS_SELECTOR, '.iuw-preview-icon')
-    #     preview_button.click()
+        self.assertNotEqual(preview_src, preview_img.get_attribute('src'))
         
-    #     preview_modal = WebDriverWait(self.selenium, timeout=3).until(lambda d: d.find_element(By.CSS_SELECTOR, "#iuw-modal-element.visible"))
+        self.submit_form('#inline_form')
+        self.assert_success_message()
 
-    #     img = preview_modal.find_element(By.TAG_NAME, 'img')
-    #     img.click()
-
-    #     self.selenium.implicitly_wait(0.5)
-
-    #     self.assertEqual(preview_modal.get_attribute("class"), "iuw-modal visible")
-
-    # def test_click_on_preview_button_and_close_on_modal(self):
-    #     """
-    #     when click on the preview button and open the preview modal, click on the close
-    #     modal button should close the image preview modal.
-    #     """
-    #     inline = models.Inline.objects.create()
-        
-    #     item1 = models.InlineItem()
-    #     item1.parent = inline
-    #     with open(self.image1, 'rb') as f:
-    #         item1.image.save("image.png", File(f))
-    #     item1.save()
-        
-    #     self.selenium.get(self.get_edit_url(inline.id))
-
-    #     root = self.selenium.find_element(By.CSS_SELECTOR, '.iuw-inline-root')
-    #     previews = root.find_elements(By.CSS_SELECTOR, '.inline-related:not(.empty-form):not(.deleted)')
-    #     self.assertEqual(len(previews), 1)
-
-    #     preview = previews[0]
-    #     preview_button = preview.find_element(By.CSS_SELECTOR, '.iuw-preview-icon')
-    #     preview_button.click()
-        
-    #     preview_modal = WebDriverWait(self.selenium, timeout=3).until(lambda d: d.find_element(By.CSS_SELECTOR, "#iuw-modal-element.visible"))
-
-    #     close_button = preview_modal.find_element(By.CSS_SELECTOR, '.iuw-modal-close')
-    #     close_button.click()
-
-    #     WebDriverWait(self.selenium, timeout=3).until(invisibility_of_element_located((By.CSS_SELECTOR, "#iuw-modal-element")));
-
-    # def test_change_image_of_saved_item(self):
-    #     """
-    #     Opening the edit page for an item with saved subitens and change
-    #     the image of an subitem should save it.
-    #     """
-    #     inline = models.Inline.objects.create()
-        
-    #     item1 = models.InlineItem()
-    #     item1.parent = inline
-    #     with open(self.image1, 'rb') as f:
-    #         item1.image.save("image.png", File(f))
-    #     item1.save()
-        
-    #     item2 = models.InlineItem()
-    #     item2.parent = inline
-    #     with open(self.image2, 'rb') as f:
-    #         item2.image.save("image2.png", File(f))
-    #     item2.save()
-
-    #     self.selenium.get(self.get_edit_url(inline.id))
-
-    #     root = self.selenium.find_element(By.CSS_SELECTOR, '.iuw-inline-root')
-    #     previews = root.find_elements(By.CSS_SELECTOR, '.inline-related:not(.empty-form):not(.deleted)')
-    #     self.assertEqual(len(previews), 2)
-
-    #     url1 = item1.image.url
-
-    #     preview = previews[0]
-    #     preview_img = preview.find_element(By.TAG_NAME, 'img')
-    #     preview_src = preview_img.get_attribute('src')
-        
-    #     file_input = preview.find_element(By.CSS_SELECTOR, 'input[type=file]')
-    #     file_input.send_keys(self.image1)
-
-    #     self.assertNotEqual(preview_src, preview_img.get_attribute('src'))
-        
-    #     submit = self.selenium.find_element(By.CSS_SELECTOR, '#inline_form [type="submit"]')
-    #     submit.click()
-
-    #     item1 = models.InlineItem.objects.filter(pk=item1.pk).first()
-    #     self.assertNotEqual(item1.image.url, url1)
+        item1 = models.InlineItem.objects.filter(pk=self.item1.pk).first()
+        self.assertNotEqual(item1.image.url, url1)
