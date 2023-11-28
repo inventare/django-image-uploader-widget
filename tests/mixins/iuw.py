@@ -1,14 +1,17 @@
 from playwright.sync_api import expect
 
 class _AssertInputFileClicked:
-    def __init__(self, test_case):
+    def __init__(self, test_case, input_selector=".form-row.field-image input[type=file]", index=0):
         self.test_case = test_case
+        self.input_selector = input_selector
+        self.index = index
 
     def __enter__(self):
         injected_javascript = (
             'async () => {'
             '   window.result = false;'
-            f'   const input = document.querySelector("{self.test_case.input_selector}");'
+            f'  const inputs = document.querySelectorAll("{self.input_selector}");'
+            f'  const input = inputs[{self.index}];'
             '   input.addEventListener("click", (e) => { e.preventDefault(); window.result = true; });'
             '};'
         )
@@ -20,10 +23,8 @@ class _AssertInputFileClicked:
 
 
 class IUWMixin:
-    input_selector = ".form-row.field-image input[type=file]"
-
-    def assert_input_file_clicked(self):
-        return _AssertInputFileClicked(self)
+    def assert_input_file_clicked(self, input_selector=".form-row.field-image input[type=file]", index=0):
+        return _AssertInputFileClicked(self, input_selector, index)
     
     def find_widget_form_row(self, element=None):
         if not element:
@@ -35,10 +36,25 @@ class IUWMixin:
             element = self.page
         return element.query_selector('.form-row.field-image .iuw-root')
     
+    def find_inline_root(self, element=None):
+        if not element:
+            element = self.page
+        return element.query_selector('.iuw-inline-root')
+    
     def find_widget_preview(self, element=None):
         if not element:
             element = self.page
         return element.query_selector('.iuw-image-preview')
+    
+    def find_inline_previews(self, element=None):
+        if not element:
+            element = self.page
+        return element.query_selector_all('.inline-related:not(.empty-form):not(.deleted)')
+    
+    def find_deleted_inline_previews(self, element=None):
+        if not element:
+            element = self.page
+        return element.query_selector_all('.inline-related:not(.empty-form).deleted')
     
     def find_empty_marker(self, element=None):
         if not element:
@@ -54,7 +70,12 @@ class IUWMixin:
         if not element:
             element = self.page
         return element.query_selector('.iuw-delete-icon')
-
+    
+    def find_add_button(self, element=None):
+        if not element:
+            element = self.page
+        return element.query_selector('.iuw-add-image-btn')
+    
     def get_preview_modal(self, visible=True, timout=3000, black_overlay=False):
         class_name = ''
         if visible:
