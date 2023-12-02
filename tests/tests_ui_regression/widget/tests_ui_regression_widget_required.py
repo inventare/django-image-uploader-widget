@@ -1,11 +1,8 @@
 import django
-from django.contrib.auth import get_user_model
 from django.core.files import File
 from django.test.utils import tag
 from tests import models
 from tests import TestCase
-
-User = get_user_model()
 
 @tag("ui-regression", "playwright")
 class RequiredWidgetUIRegressionTests(TestCase):
