@@ -1,10 +1,10 @@
 import django
 from django.core.files import File
 from django.test.utils import tag
-from tests import models, TestCase
+from tests import models, test_case
 
 @tag("ui-regression", "playwright")
-class RequiredWidgetUIRegressionTests(TestCase):
+class RequiredWidgetUIRegressionTests(test_case.IUWTestCase):
     model = 'testrequired'
 
     def init_item(self):

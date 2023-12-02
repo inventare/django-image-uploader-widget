@@ -1,9 +1,9 @@
 from django.test import tag
 from django.core.files import File
-from tests import models, TestCase
+from tests import models, test_case
 
 @tag('functional', "playwright")
-class InlineEditorTests(TestCase):
+class InlineEditorTests(test_case.IUWTestCase):
     model = "inline"
 
     def init_item(self, only_one=False):
