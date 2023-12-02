@@ -1,9 +1,9 @@
 from django.test import tag
 from django.core.files import File
-from tests import models, TestCase
+from tests import models, test_case
 
 @tag('playwright', 'functional')
-class WidgetRequiredTests(TestCase):
+class WidgetRequiredTests(test_case.IUWTestCase):
     model = 'testrequired'
 
     def init_item(self):
