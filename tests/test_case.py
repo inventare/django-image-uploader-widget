@@ -193,6 +193,11 @@ class IUWTestCase(StaticLiveServerTestCase):
             element = self.page
         return element.query_selector('.iuw-add-image-btn')
     
+    def find_drop_zone(self, element=None):
+        if not element:
+            element = self.page
+        return element.query_selector('.iuw-drop-label')
+    
     def get_preview_modal(self, visible=True, timout=3000, black_overlay=False):
         class_name = ''
         if visible:
