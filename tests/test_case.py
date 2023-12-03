@@ -51,7 +51,7 @@ class IUWTestCase(StaticLiveServerTestCase):
     def image1(self):
         """Get the file path of the image1."""
         base_dir = os.path.dirname(os.path.dirname(__file__))
-        mocks_dir = os.path.join(base_dir, "utils", "tests", "mocks")
+        mocks_dir = os.path.join(base_dir, "mocks")
         image = os.path.join(mocks_dir, "image.png")
         return image
     
@@ -59,7 +59,7 @@ class IUWTestCase(StaticLiveServerTestCase):
     def image2(self):
         """Get the file path of the image2."""
         base_dir = os.path.dirname(os.path.dirname(__file__))
-        mocks_dir = os.path.join(base_dir, "utils", "tests", "mocks")
+        mocks_dir = os.path.join(base_dir, "mocks")
         image = os.path.join(mocks_dir, "image2.png")
         return image
 
