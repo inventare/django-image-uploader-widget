@@ -51,7 +51,6 @@ jobs:
         pip install -r requirements.txt
         pip install psycopg2
         pip install playwright
-        pip install selenium
         pip install django==${{ matrix.django-version }}
         
     - name: Ensure browsers are installed
