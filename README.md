@@ -2,11 +2,15 @@
 
 A beautiful image uploader widget for django/django-admin.
 
-![Beautiful image uploader widget](https://raw.githubusercontent.com/inventare/django-image-uploader-widget/main/docs/static/img/beautiful.gif)
+![Widget-Dark](https://raw.githubusercontent.com/inventare/django-image-uploader-widget/main/docs/static/img/widget_dark.png#gh-dark-mode-only)![Widget-Light](https://raw.githubusercontent.com/inventare/django-image-uploader-widget/main/docs/static/img/widget_light.png#gh-light-mode-only)
 
-![Multiple behaviours](https://raw.githubusercontent.com/inventare/django-image-uploader-widget/main/docs/static/img/click.gif)
+![Widget-Dark-Image](https://raw.githubusercontent.com/inventare/django-image-uploader-widget/main/docs/static/img/widget_dark_image.png#gh-dark-mode-only)![Widget-Light-Image](https://raw.githubusercontent.com/inventare/django-image-uploader-widget/main/docs/static/img/widget_light_image.png#gh-light-mode-only)
 
-![Multiple files handling](https://raw.githubusercontent.com/inventare/django-image-uploader-widget/main/docs/static/img/inline_multiple.gif)
+![Behaviour-Dark](https://raw.githubusercontent.com/inventare/django-image-uploader-widget/main/docs/static/img/behaviour_dark.gif#gh-dark-mode-only)![Behaviour-Light](https://raw.githubusercontent.com/inventare/django-image-uploader-widget/main/docs/static/img/behaviour_light.gif#gh-light-mode-only)
+
+---
+
+![Theme-Toggle](https://raw.githubusercontent.com/inventare/django-image-uploader-widget/main/docs/static/img/behaviour_theme_toggle.gif)
 
 ## Documentation
 
@@ -24,19 +28,32 @@ Add to installed apps, in `settings.py`:
 
 ```python
 INSTALLED_APPS = [
-    'my_app.apps.MyAppConfig',
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'django.forms',
+    # ...
     'image_uploader_widget',
+    # ...
 ]
 ```
 
 ##  Usage
+
+### With Admin
+
+```python
+# admin.py
+from django.contrib import admin
+from django.db import models
+from image_uploader_widget.widgets import ImageUploaderWidget
+from .models import YourModel
+
+
+@admin.register(YourModel)
+class YourModelAdmin(admin.ModelAdmin):
+    formfield_overrides = {
+        models.ImageField: {'widget': ImageUploaderWidget},
+    }
+```
+
+### With ModelForm
 
 ```python
 # forms.py
