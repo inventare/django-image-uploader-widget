@@ -1,16 +1,26 @@
 # django-image-uploader-widget
 
-A beautiful image uploader widget for django/django-admin.
+## Introduction
+
+A beautiful image uploader widget for **django** and **django-admin**.
+
+### Basic Preview
 
 ![Widget-Dark](https://raw.githubusercontent.com/inventare/django-image-uploader-widget/main/docs/static/img/widget_dark.png#gh-dark-mode-only)![Widget-Light](https://raw.githubusercontent.com/inventare/django-image-uploader-widget/main/docs/static/img/widget_light.png#gh-light-mode-only)
 
 ![Widget-Dark-Image](https://raw.githubusercontent.com/inventare/django-image-uploader-widget/main/docs/static/img/widget_dark_image.png#gh-dark-mode-only)![Widget-Light-Image](https://raw.githubusercontent.com/inventare/django-image-uploader-widget/main/docs/static/img/widget_light_image.png#gh-light-mode-only)
 
+### Widget Behaviour
+
 ![Behaviour-Dark](https://raw.githubusercontent.com/inventare/django-image-uploader-widget/main/docs/static/img/behaviour_dark.gif#gh-dark-mode-only)![Behaviour-Light](https://raw.githubusercontent.com/inventare/django-image-uploader-widget/main/docs/static/img/behaviour_light.gif#gh-light-mode-only)
 
----
+### Theme Toggle With Django 4.2+
 
 ![Theme-Toggle](https://raw.githubusercontent.com/inventare/django-image-uploader-widget/main/docs/static/img/behaviour_theme_toggle.gif)
+
+### Django-Admin Inline Widget for Multiple Files Handling
+
+![Admin-Behaviour-Dark](https://raw.githubusercontent.com/inventare/django-image-uploader-widget/main/docs/static/img/behaviour_inline_dark.gif#gh-dark-mode-only)![Admin-Behaviour-Light](https://raw.githubusercontent.com/inventare/django-image-uploader-widget/main/docs/static/img/behaviour_inline_light.gif#gh-light-mode-only)
 
 ## Documentation
 
