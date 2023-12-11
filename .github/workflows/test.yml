@@ -21,6 +21,9 @@ jobs:
             django-version: '5.0'
           - python-version: '3.9'
             django-version: '5.0'
+          # exclude django 3.2 not supported python versions
+          - python-version: '3.12'
+            django-version: '3.2'
 
     services:
       postgres:
