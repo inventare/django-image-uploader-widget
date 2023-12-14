@@ -11,6 +11,14 @@ class ImageUploaderInline(admin.StackedInline):
     drop_icon = ""
     add_icon = ""
     accept = "image/*"
+    use_order = False
+    order_fields = ["order"]
+
+    def get_use_order(self, request):
+        return self.use_order
+
+    def get_order_fields(self, request):
+        return self.order_fields
 
     def get_add_image_text(self):
         return self.add_image_text
@@ -32,6 +40,19 @@ class ImageUploaderInline(admin.StackedInline):
     
     def get_accept(self):
         return self.accept
+    
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+        
+        use_order = self.get_use_order(request)
+        if not use_order:
+            return queryset
+        
+        fields = self.get_order_fields(request)
+        if isinstance(fields, str):
+            return queryset.order_by(fields)
+        
+        return queryset.order_by(*fields)
 
     def get_formset(self, request, obj=None, **kwargs):
         item = super(ImageUploaderInline, self).get_formset(request, obj, **kwargs)
