@@ -67,7 +67,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function updatePreviewState(editor, element, url) {
         if (!url) {
-            const inputs = element.querySelectorAll('input[type=hidden], input[type=checkbox], input[type=file]');
+            const inputOrder = editor.orderField ? ' , .field-' + editor.orderField + ' input' : '';
+            const inputs = element.querySelectorAll('input[type=hidden], input[type=checkbox], input[type=file]' + inputOrder);
             for (const item of inputs) {
                 item.parentElement.removeChild(item);
             }
@@ -174,9 +175,38 @@ document.addEventListener('DOMContentLoaded', function() {
         fileInput.click();
     }
 
+    function getNextOrder(editor) {
+        const inputOrdersSelector = '.inline-related:not(.empty-form) input[name$="' + editor.orderField + '"]';
+        const inputs = editor.element.querySelectorAll(inputOrdersSelector)
+        console.log(inputs);
+        if (!inputs.length) {
+            return 1;
+        }
+
+        let currentOrder = 1;
+        for (const input of inputs) {
+            const order = parseInt(input.value);
+            if ((order + 1) > currentOrder) {
+                currentOrder = order + 1;
+            }
+        }
+
+        return currentOrder;
+    }
+
     function handleAddFile(editor, file) {
+        let newOrder = 1;
+        if (editor.orderField) {
+            newOrder = getNextOrder(editor);
+        }
+
         const row = getFromEmptyTemplate(editor);
 
+        if (editor.orderField) {
+            const orderField = row.querySelector('input[name$="' + editor.orderField + '"]');
+            orderField.value = newOrder;
+        }
+        
         if (!!file) {
             const rowFileInput = row.querySelector('input[type=file]');
             
@@ -342,6 +372,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const inlineFormset = JSON.parse(inlineGroup.getAttribute('data-inline-formset'));
         const id = inlineGroup.id;
         element.setAttribute('data-editor', id);
+        const orderField = inlineGroup.getAttribute('data-order-field')
 
         const editor = {
             id: id,
@@ -355,6 +386,7 @@ document.addEventListener('DOMContentLoaded', function() {
             next: 0,
             maxCount: 0,
             addImageButton: element.querySelector('.iuw-add-image-btn'),
+            orderField: orderField,
         };
 
         const tempFileInput = document.createElement('input');

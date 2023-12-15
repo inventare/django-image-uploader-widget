@@ -58,6 +58,15 @@ class InlineItem(models.Model):
     parent = models.ForeignKey(Inline, related_name="items", on_delete=models.CASCADE)
     image = models.ImageField('Image')
 
+class OrderedInline(models.Model):
+    class Meta:
+        verbose_name = 'Test With Ordered Inline'
+
+class OrderedInlineItem(models.Model):
+    parent = models.ForeignKey(OrderedInline, related_name="items", on_delete=models.CASCADE)
+    image = models.ImageField('Image')
+    order = models.PositiveIntegerField('Order', default=1)
+
 class CustomInline(models.Model):
     class Meta:
         verbose_name = 'Test Customized Inline'
