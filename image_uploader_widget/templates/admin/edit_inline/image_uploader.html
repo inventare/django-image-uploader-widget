@@ -6,6 +6,9 @@
     data-inline-type="image-uploader"
     data-inline-formset="{{ inline_admin_formset.inline_formset_data }}"
     data-accept="{{ inline_admin_formset.formset.accept }}"
+    {% if inline_admin_formset.formset.order_field %}
+        data-order-field="{{inline_admin_formset.formset.order_field}}"
+    {% endif %}
 >
     {% if inline_admin_formset.formset.max_num == 1 %}
         <label>{{ inline_admin_formset.opts.verbose_name|capfirst }}:</label>

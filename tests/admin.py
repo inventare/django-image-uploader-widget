@@ -1,5 +1,5 @@
 from django.contrib import admin
-from image_uploader_widget.admin import ImageUploaderInline
+from image_uploader_widget.admin import ImageUploaderInline, OrderedImageUploaderInline
 from . import models
 from . import forms
 
@@ -53,6 +53,13 @@ class InlineEditor(ImageUploaderInline):
 @admin.register(models.Inline)
 class InlineAdmin(admin.ModelAdmin):
     inlines = [InlineEditor]
+
+class OrderedInlineEditor(OrderedImageUploaderInline):
+    model = models.OrderedInlineItem
+
+@admin.register(models.OrderedInline)
+class OrderedInlineAdmin(admin.ModelAdmin):
+    inlines = [OrderedInlineEditor]
 
 class CustomInlineEditor(ImageUploaderInline):
     model = models.CustomInlineItem

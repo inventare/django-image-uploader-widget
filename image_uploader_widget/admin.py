@@ -57,3 +57,20 @@ class ImageUploaderInline(admin.StackedInline):
                 ]
             }
         )
+
+class OrderedImageUploaderInline(ImageUploaderInline):
+    template = 'admin/edit_inline/ordered_image_uploader.html'
+    order_field = "order"
+
+    def get_order_field(self, request):
+        return self.order_field
+    
+    def get_formset(self, request, obj=None, **kwargs):
+        item = super(OrderedImageUploaderInline, self).get_formset(request, obj, **kwargs)
+        item.order_field = self.get_order_field(request)
+        return item
+
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+        field = self.get_order_field(request)
+        return queryset.order_by(field)
