@@ -93,7 +93,8 @@ html[data-theme="dark"] {
   /* add button */
 }
 .iuw-inline-root input[type=file],
-.iuw-inline-root input[type=checkbox] {
+.iuw-inline-root input[type=checkbox],
+.iuw-inline-root input[type=number] {
   display: none;
 }
 .iuw-inline-root .iuw-empty {

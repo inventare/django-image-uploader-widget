@@ -80,10 +80,11 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
             - Assert if One preview item is present on page.
             - Select second file.
             - Assert if Two preview items is present on page.
-            - Assert image, preview and delete icon on each of preview itens.
+            - Assert image, order, preview and delete icon on each of preview itens.
             - Submit the form.
             - Assert admin success message.
             - Assert the itens on the database.
+            - Assert the saved itens order.
         """
         self.assertEqual(len(models.OrderedInlineItem.objects.all()), 0)
         self.goto_add_page()
@@ -102,10 +103,13 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
         previews = self.find_inline_previews(root)
         self.assertEqual(len(previews), 2)
         
-        for preview in previews:
+        for index, preview in enumerate(previews):
             img = preview.query_selector('img')
             preview_button = self.find_preview_icon(preview)
             remove_button = self.find_delete_icon(preview)
+            order_input = self.find_inline_order(preview)
+            self.assertFalse(order_input.is_visible())
+            self.assertEqual(order_input.input_value(), str(index + 1))
             self.assertIsNotNone(img)
             self.assertIsNotNone(preview_button)
             self.assertIsNotNone(remove_button)
@@ -113,10 +117,11 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
         self.submit_form('#orderedinline_form')
         self.assert_success_message()
 
-        items = models.OrderedInlineItem.objects.all()
+        items = models.OrderedInlineItem.objects.order_by('id').all()
         self.assertEqual(len(items), 2)
-        for item in items:
+        for index, item in enumerate(items):
             self.assertIsNotNone(item.image)
+            self.assertEqual(str(item.order), str(index + 1))
 
     def test_should_remove_preview_and_not_save_when_not_saved(self):
         """
@@ -351,6 +356,7 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
             - Submit the form.
             - Assert success message.
             - Assert if the image was changed on model entity.
+            - Assert if order is not changed.
         """
         self.goto_change_page()
 
@@ -363,6 +369,11 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
         preview = previews[0]
         preview_img = preview.query_selector('img')
         preview_src = preview_img.get_attribute('src')
+        order_field = self.find_inline_order(preview)
+        order = order_field.input_value()
+
+        order_field_other = self.find_inline_order(previews[1])
+        order_other = order_field_other.input_value()
         
         file_input = preview.query_selector('input[type=file]')
         file_input.set_input_files(self.image1)
@@ -374,3 +385,7 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
 
         item1 = models.OrderedInlineItem.objects.filter(pk=self.item1.pk).first()
         self.assertNotEqual(item1.image.url, url1)
+        self.assertEqual(str(item1.order), str(order))
+
+        item2 = models.OrderedInlineItem.objects.filter(pk=self.item2.pk).first()
+        self.assertEqual(str(item2.order), str(order_other))

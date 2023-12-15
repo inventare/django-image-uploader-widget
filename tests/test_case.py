@@ -168,6 +168,11 @@ class IUWTestCase(StaticLiveServerTestCase):
             element = self.page
         return element.query_selector_all('.inline-related:not(.empty-form):not(.deleted)')
     
+    def find_inline_order(self, element=None):
+        if not element:
+            element = self.page
+        return element.query_selector('input[name$="order"]')
+    
     def find_deleted_inline_previews(self, element=None):
         if not element:
             element = self.page
