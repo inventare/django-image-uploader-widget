@@ -326,11 +326,6 @@ document.addEventListener('DOMContentLoaded', function() {
             .sort(function(a, b) {
                 return a.order - b.order;
             });
-        /*
-        const withoutDragging = items.filter(function(item) {
-            return item.item !== dragging;
-        });
-        */
         
         const prevItems = items.filter(function (item, index){
             if (item.item === dragging) {
@@ -459,6 +454,38 @@ document.addEventListener('DOMContentLoaded', function() {
         editor.next = elements.length;
         editor.management.totalForms.value = editor.next.toString();
         editor.addImageButton.classList.toggle('visible-by-number', editor.maxCount - editor.next > 0);
+
+        if (!editor.orderField) {
+            return;
+        }
+        const orderSelector = 'input[name$="' + editor.orderField + '"]';
+        Array
+            .from(editor.element.querySelectorAll('.inline-related:not(.empty-form):not(.deleted)'))
+            .map(function(item){
+                const orderField = item.querySelector(orderSelector);
+
+                return {
+                    item: item,
+                    order: parseInt(orderField.value),
+                };
+            })
+            .sort(function(a, b) {
+                return a.order - b.order;
+            })
+            .map(function(item, index) {
+                return {
+                    item: item.item,
+                    order: index + 1,
+                }
+            })
+            .forEach(function(item){
+                const orderField = item.item.querySelector(orderSelector);
+                orderField.value = item.order;
+                
+                const parent = item.item.parentElement;
+                parent.removeChild(item.item);
+                parent.insertBefore(item.item, editor.addImageButton);
+            });
     }
 
     function bindEvents(editor) {
