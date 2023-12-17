@@ -217,10 +217,11 @@ html[data-theme="dark"] {
   cursor: pointer;
   /* positioning */
   position: relative;
-  /* childs */
+  transition: opacity 0.2s ease-in;
 }
 .iuw-inline-root .inline-related.dragging {
-  filter: blur(5px);
+  opacity: 0.1;
+  filter: blur(2px);
 }
 .iuw-inline-root .inline-related img {
   /* sizing */
