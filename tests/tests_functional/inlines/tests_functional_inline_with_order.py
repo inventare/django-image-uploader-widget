@@ -404,7 +404,7 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
         
         elements = root.query_selector_all('.inline-related:not(.empty-form):not(.deleted), .iuw-add-image-btn')
         classes = list(map(lambda x: x.get_attribute('class'), elements))
-        self.assertEquals(classes.pop(), 'iuw-add-image-btn visible-by-number')
+        self.assertEqual(classes.pop(), 'iuw-add-image-btn visible-by-number')
     
     def test_should_reorder_two_items_from_first_to_last(self):
         self.assertEqual(len(models.OrderedInlineItem.objects.all()), 0)
@@ -448,7 +448,7 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
 
         elements = root.query_selector_all('.inline-related:not(.empty-form):not(.deleted), .iuw-add-image-btn')
         classes = list(map(lambda x: x.get_attribute('class'), elements))
-        self.assertEquals(classes.pop(), 'iuw-add-image-btn visible-by-number')
+        self.assertEqual(classes.pop(), 'iuw-add-image-btn visible-by-number')
 
         self.submit_form('#orderedinline_form')
         self.assert_success_message()
@@ -503,7 +503,7 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
 
         elements = root.query_selector_all('.inline-related:not(.empty-form):not(.deleted), .iuw-add-image-btn')
         classes = list(map(lambda x: x.get_attribute('class'), elements))
-        self.assertEquals(classes.pop(), 'iuw-add-image-btn visible-by-number')
+        self.assertEqual(classes.pop(), 'iuw-add-image-btn visible-by-number')
 
         self.submit_form('#orderedinline_form')
         self.assert_success_message()
@@ -572,7 +572,7 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
 
         elements = root.query_selector_all('.inline-related:not(.empty-form):not(.deleted), .iuw-add-image-btn')
         classes = list(map(lambda x: x.get_attribute('class'), elements))
-        self.assertEquals(classes.pop(), 'iuw-add-image-btn visible-by-number')
+        self.assertEqual(classes.pop(), 'iuw-add-image-btn visible-by-number')
 
         self.submit_form('#orderedinline_form')
         self.assert_success_message()
@@ -648,7 +648,7 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
 
         elements = root.query_selector_all('.inline-related:not(.empty-form):not(.deleted), .iuw-add-image-btn')
         classes = list(map(lambda x: x.get_attribute('class'), elements))
-        self.assertEquals(classes.pop(), 'iuw-add-image-btn visible-by-number')
+        self.assertEqual(classes.pop(), 'iuw-add-image-btn visible-by-number')
 
         self.submit_form('#orderedinline_form')
         self.assert_success_message()
@@ -720,7 +720,7 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
 
         elements = root.query_selector_all('.inline-related:not(.empty-form):not(.deleted), .iuw-add-image-btn')
         classes = list(map(lambda x: x.get_attribute('class'), elements))
-        self.assertEquals(classes.pop(), 'iuw-add-image-btn visible-by-number')
+        self.assertEqual(classes.pop(), 'iuw-add-image-btn visible-by-number')
 
         self.submit_form('#orderedinline_form')
         self.assert_success_message()
