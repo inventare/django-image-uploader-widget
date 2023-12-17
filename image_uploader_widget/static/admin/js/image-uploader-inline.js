@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', function() {
         row.setAttribute('data-candelete', 'true');
         row.id = editor.inlineFormset.options.prefix + '-' + editor.next;
 
-        template.parentElement.insertBefore(row, template);
+        template.parentElement.insertBefore(row, editor.addImageButton);
 
         return row;
     }
@@ -87,6 +87,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const related = element.closest('.inline-related');
 
         related.addEventListener('click', handleItemPreviewClick);
+        if (editor.orderField) {
+            related.addEventListener('dragstart', handleItemPreviewDragStart);
+            related.addEventListener('dragend', handleItemPreviewDragEnd);
+        }
+        
         related.querySelector('input[type=file]').addEventListener('change', handleItemPreviewFileChange);
         
         if (related.getAttribute('data-candelete') === 'true') {
@@ -112,6 +117,20 @@ document.addEventListener('DOMContentLoaded', function() {
         if (deleteIcon) {
             element.appendChild(deleteIcon);
         }
+    }
+
+    function handleItemPreviewDragStart(e) {
+        this.classList.add("dragging");
+        const editor = getEditor(this);
+        const widget = editor.element;
+        widget.setAttribute('dragging-element', this.id);
+    }
+
+    function handleItemPreviewDragEnd(e) {
+        this.classList.remove("dragging");
+        const editor = getEditor(this);
+        const widget = editor.element;
+        widget.removeAttribute('dragging-element');
     }
 
     function handleItemPreviewFileChange(e) {
@@ -178,7 +197,6 @@ document.addEventListener('DOMContentLoaded', function() {
     function getNextOrder(editor) {
         const inputOrdersSelector = '.inline-related:not(.empty-form) input[name$="' + editor.orderField + '"]';
         const inputs = editor.element.querySelectorAll(inputOrdersSelector)
-        console.log(inputs);
         if (!inputs.length) {
             return 1;
         }
@@ -246,6 +264,10 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         DRAGGING_EDITOR = editor;
+
+        if (editor.element.getAttribute('dragging-element')) {
+            return;
+        }
         editor.element.classList.add('drop-zone');
     }
 
@@ -267,6 +289,83 @@ document.addEventListener('DOMContentLoaded', function() {
         DRAGGING_EDITOR = null;
     }
 
+    function getElementNewPosition(editor, dragging, x, y) {
+        const items = editor.element.querySelectorAll('.inline-related:not(.empty-form):not(.deleted)');
+        let index = 0;
+        for (const item of items) {
+            const rc = item.getBoundingClientRect();
+            if (x > rc.left && x < rc.right && y > rc.top && y <= rc.bottom) {
+                if (item === dragging) {
+                    // not dragged
+                    return null;
+                }
+
+                const isRight = x > (rc.left + rc.width / 2);
+                if (isRight) {
+                    return index;
+                }
+                return index - 1;
+            }
+            index = index + 1;
+        }
+        return -1;
+    }
+
+    function reorderItems(editor, dragging, newPosition) {
+        const orderSelector = 'input[name$="' + editor.orderField + '"]';
+        const items = Array
+            .from(editor.element.querySelectorAll('.inline-related:not(.empty-form):not(.deleted)'))
+            .map(function(item){
+                const orderField = item.querySelector(orderSelector);
+
+                return {
+                    item: item,
+                    order: parseInt(orderField.value),
+                };
+            })
+            .sort(function(a, b) {
+                return a.order - b.order;
+            });
+        /*
+        const withoutDragging = items.filter(function(item) {
+            return item.item !== dragging;
+        });
+        */
+        
+        const prevItems = items.filter(function (item, index){
+            if (item.item === dragging) {
+                return false;
+            }
+
+            return index <= newPosition;
+        });
+        const postItems = items.filter(function (item, index){
+            if (item.item === dragging) {
+                return false;
+            }
+            return index > newPosition;
+        });
+
+        [...prevItems, { item: dragging, order: 0 }, ...postItems]
+            .map(function(item, index) {
+                return {
+                    item: item.item,
+                    order: index + 1,
+                }
+            })
+            .forEach(function(item){
+                const orderField = item.item.querySelector(orderSelector);
+                orderField.value = item.order;
+                
+                const parent = item.item.parentElement;
+                parent.removeChild(item.item);
+                parent.insertBefore(item.item, editor.addImageButton);
+            });
+
+        dragging.classList.remove("dragging");
+        editor.element.removeAttribute('dragging-element');
+    }
+
     function handleDrop(e) {
         e.preventDefault();
         
@@ -276,6 +375,16 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         DRAGGING_EDITOR = null;
         editor.element.classList.remove('drop-zone');
+
+        if (editor.element.getAttribute('dragging-element')) {
+            const draggingElement = document.getElementById(editor.element.getAttribute('dragging-element'));
+            editor.element.removeAttribute('dragging-element');
+            const x = e.pageX;
+            const y = e.pageY;
+            const newIndex = getElementNewPosition(editor, draggingElement, x, y);
+            reorderItems(editor, draggingElement, newIndex);
+            return;
+        }
 
         if (!e.dataTransfer.files.length) {
             return;

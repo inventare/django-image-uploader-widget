@@ -219,6 +219,9 @@ html[data-theme="dark"] {
   position: relative;
   /* childs */
 }
+.iuw-inline-root .inline-related.dragging {
+  filter: blur(5px);
+}
 .iuw-inline-root .inline-related img {
   /* sizing */
   width: 100%;
