@@ -198,6 +198,11 @@ class IUWTestCase(StaticLiveServerTestCase):
             element = self.page
         return element.query_selector('.iuw-add-image-btn')
     
+    def find_drop_label(self, element=None):
+        if not element:
+            element = self.page
+        return element.query_selector('.iuw-drop-label')
+
     def find_drop_zone(self, element=None):
         if not element:
             element = self.page

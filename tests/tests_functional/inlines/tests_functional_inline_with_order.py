@@ -624,6 +624,7 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
         preview1, preview2, preview3 = previews
         preview1.hover()
         self.page.mouse.down()
+        self.assertFalse(self.find_drop_label().is_visible())
         preview2.hover(position={ 'x': 100, 'y': 10 })
         self.page.mouse.up()
 
@@ -634,6 +635,7 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
         # Reorder 3 to 1
         preview3.hover()
         self.page.mouse.down()
+        self.assertFalse(self.find_drop_label().is_visible())
         preview1.hover(position={ 'x': 40, 'y': 10 })
         self.page.mouse.up()
 
@@ -659,7 +661,6 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
         self.assertIsNotNone(item1.image)
         self.assertEqual(str(item1.order), '2')
 
-    @tag('qt')
     def test_should_reorder_and_delete_item(self):
         self.assertEqual(len(models.OrderedInlineItem.objects.all()), 0)
         self.goto_add_page()
@@ -697,11 +698,13 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
         preview1, preview2, preview3 = previews
         preview1.hover()
         self.page.mouse.down()
+        self.assertFalse(self.find_drop_label().is_visible())
         preview2.hover(position={ 'x': 100, 'y': 10 })
         self.page.mouse.up()
         # Reorder 3 to 1 (now 2)
         preview3.hover()
         self.page.mouse.down()
+        self.assertFalse(self.find_drop_label().is_visible())
         preview2.hover(position={ 'x': 40, 'y': 10 })
         self.page.mouse.up()
 
@@ -729,3 +732,60 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
         self.assertEqual(str(item3.order), '1')
         self.assertIsNotNone(item1.image)
         self.assertEqual(str(item1.order), '2')
+
+    def test_drop_label_leave(self):
+        self.goto_add_page()
+
+        root = self.find_inline_root()
+        drop_label = self.find_drop_label()
+
+        self.assertFalse(drop_label.is_visible())
+        
+        data_transfer = self.page.evaluate_handle('() => new DataTransfer()')
+        root.dispatch_event('dragenter', { 'dataTransfer': data_transfer })
+        self.wait(0.5)
+
+        self.assertTrue(drop_label.is_visible())
+
+        root.dispatch_event('dragleave', { 'dataTransfer': data_transfer })
+        self.wait(0.5)
+
+        self.assertFalse(drop_label.is_visible())
+
+    def test_drop_label_drop(self):
+        self.goto_add_page()
+
+        root = self.find_inline_root()
+        drop_label = self.find_drop_label()
+
+        self.assertFalse(drop_label.is_visible())
+        
+        data_transfer = self.page.evaluate_handle('() => new DataTransfer()')
+        root.dispatch_event('dragenter', { 'dataTransfer': data_transfer })
+        self.wait(0.5)
+
+        self.assertTrue(drop_label.is_visible())
+
+        root.dispatch_event('drop', { 'dataTransfer': data_transfer })
+        self.wait(0.5)
+
+        self.assertFalse(drop_label.is_visible())
+
+    def test_drop_label_end(self):
+        self.goto_add_page()
+
+        root = self.find_inline_root()
+        drop_label = self.find_drop_label()
+
+        self.assertFalse(drop_label.is_visible())
+        
+        data_transfer = self.page.evaluate_handle('() => new DataTransfer()')
+        root.dispatch_event('dragenter', { 'dataTransfer': data_transfer })
+        self.wait(0.5)
+
+        self.assertTrue(drop_label.is_visible())
+
+        root.dispatch_event('dragend', { 'dataTransfer': data_transfer })
+        self.wait(0.5)
+
+        self.assertFalse(drop_label.is_visible())
