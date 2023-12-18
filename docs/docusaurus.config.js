@@ -27,6 +27,15 @@ const config = {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
           editUrl: 'https://github.com/inventare/django-image-uploader-widget/blob/main/docs/',
+          docs: {
+            lastVersion: 'current',
+            versions: {
+              current: {
+                label: '0.4.0',
+                path: '0.4.0',
+              },
+            },
+          },      
         },
         blog: {
           showReadingTime: true,
@@ -50,6 +59,12 @@ const config = {
         },
         items: [
           { type: 'doc', docId: 'intro', position: 'left', label: 'Documentation', },
+          {
+            type: 'docsVersionDropdown',
+            position: 'right',
+            dropdownItemsAfter: [{to: '/versions', label: 'All versions'}],
+            dropdownActiveClassDisabled: true,
+          },
           { href: 'https://github.com/inventare/django-image-uploader-widget', label: 'GitHub', position: 'right', },
         ],
       },
