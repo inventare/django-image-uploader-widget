@@ -4,6 +4,10 @@ sidebar_position: 2
 
 # Ordered Images Admin
 
+:::success Versioning
+Introduced at the 0.4.1 version.
+:::
+
 The first thing needed to understand the ordered version of the `ImageUploaderInline` is read the [inline tutorial](./tutorial.md). This page has a documentation of how to extend the `ImageUploaderInline` with order field to allow to reorder, by clicking and dragging, the images inside the inline.
 
 ![Behaviour of drag and drop reorder](/img/behaviour_reorder.gif)
