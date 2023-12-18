@@ -225,3 +225,60 @@ class WidgetRequiredTests(test_case.IUWTestCase):
         
         self.assert_preview_modal(preview_img)
         self.assert_preview_modal_close()
+
+    def test_drop_label_leave(self):
+        self.goto_add_page()
+
+        root = self.find_widget_root()
+        drop_label = self.find_drop_label()
+
+        self.assertFalse(drop_label.is_visible())
+        
+        data_transfer = self.page.evaluate_handle('() => new DataTransfer()')
+        root.dispatch_event('dragenter', { 'dataTransfer': data_transfer })
+        self.wait(0.5)
+
+        self.assertTrue(drop_label.is_visible())
+
+        root.dispatch_event('dragleave', { 'dataTransfer': data_transfer })
+        self.wait(0.5)
+
+        self.assertFalse(drop_label.is_visible())
+
+    def test_drop_label_drop(self):
+        self.goto_add_page()
+
+        root = self.find_widget_root()
+        drop_label = self.find_drop_label()
+
+        self.assertFalse(drop_label.is_visible())
+        
+        data_transfer = self.page.evaluate_handle('() => new DataTransfer()')
+        root.dispatch_event('dragenter', { 'dataTransfer': data_transfer })
+        self.wait(0.5)
+
+        self.assertTrue(drop_label.is_visible())
+
+        root.dispatch_event('drop', { 'dataTransfer': data_transfer })
+        self.wait(0.5)
+
+        self.assertFalse(drop_label.is_visible())
+
+    def test_drop_label_end(self):
+        self.goto_add_page()
+
+        root = self.find_widget_root()
+        drop_label = self.find_drop_label()
+
+        self.assertFalse(drop_label.is_visible())
+        
+        data_transfer = self.page.evaluate_handle('() => new DataTransfer()')
+        root.dispatch_event('dragenter', { 'dataTransfer': data_transfer })
+        self.wait(0.5)
+
+        self.assertTrue(drop_label.is_visible())
+
+        root.dispatch_event('dragend', { 'dataTransfer': data_transfer })
+        self.wait(0.5)
+
+        self.assertFalse(drop_label.is_visible())

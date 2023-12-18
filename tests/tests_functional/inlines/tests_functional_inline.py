@@ -372,3 +372,60 @@ class InlineEditorTests(test_case.IUWTestCase):
 
         item1 = models.InlineItem.objects.filter(pk=self.item1.pk).first()
         self.assertNotEqual(item1.image.url, url1)
+
+    def test_drop_label_leave(self):
+        self.goto_add_page()
+
+        root = self.find_inline_root()
+        drop_label = self.find_drop_label()
+
+        self.assertFalse(drop_label.is_visible())
+        
+        data_transfer = self.page.evaluate_handle('() => new DataTransfer()')
+        root.dispatch_event('dragenter', { 'dataTransfer': data_transfer })
+        self.wait(0.5)
+
+        self.assertTrue(drop_label.is_visible())
+
+        root.dispatch_event('dragleave', { 'dataTransfer': data_transfer })
+        self.wait(0.5)
+
+        self.assertFalse(drop_label.is_visible())
+
+    def test_drop_label_drop(self):
+        self.goto_add_page()
+
+        root = self.find_inline_root()
+        drop_label = self.find_drop_label()
+
+        self.assertFalse(drop_label.is_visible())
+        
+        data_transfer = self.page.evaluate_handle('() => new DataTransfer()')
+        root.dispatch_event('dragenter', { 'dataTransfer': data_transfer })
+        self.wait(0.5)
+
+        self.assertTrue(drop_label.is_visible())
+
+        root.dispatch_event('drop', { 'dataTransfer': data_transfer })
+        self.wait(0.5)
+
+        self.assertFalse(drop_label.is_visible())
+
+    def test_drop_label_end(self):
+        self.goto_add_page()
+
+        root = self.find_inline_root()
+        drop_label = self.find_drop_label()
+
+        self.assertFalse(drop_label.is_visible())
+        
+        data_transfer = self.page.evaluate_handle('() => new DataTransfer()')
+        root.dispatch_event('dragenter', { 'dataTransfer': data_transfer })
+        self.wait(0.5)
+
+        self.assertTrue(drop_label.is_visible())
+
+        root.dispatch_event('dragend', { 'dataTransfer': data_transfer })
+        self.wait(0.5)
+
+        self.assertFalse(drop_label.is_visible())
