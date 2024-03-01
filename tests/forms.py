@@ -1,6 +1,8 @@
 from django import forms
+from django.contrib.postgres.forms import SplitArrayWidget
 from image_uploader_widget.widgets import ImageUploaderWidget
-from .models import CustomWidget
+from image_uploader_widget.postgres.widget import ImageUploaderArrayWidget
+from .models import CustomWidget, TestWithArrayField
 
 class TestForm(forms.ModelForm):
     class Meta:
@@ -21,3 +23,11 @@ class TestCustomForm(forms.ModelForm):
             ),
         }
         fields = '__all__'
+
+class TestWithArrayFieldForm(forms.ModelForm):
+    class Meta:
+        model = TestWithArrayField
+        fields = "__all__"
+        widgets = {
+            'images': ImageUploaderArrayWidget(),
+        }
