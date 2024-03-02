@@ -43,15 +43,11 @@ class ImageUploaderArrayWidget(SplitArrayWidget):
         return default_storage.url(path)
 
     def get_files_from_value(self, value: Any) -> str | None:
-        value = super().format_value(value)
-        if isinstance(value, str):
-            splited = value.split(',')
-            return [self._get_image(name) for name in splited]
-        return value
+        return [self._get_image(name) for name in value]
 
     def get_context(self, name, value, attrs = None):
-        value = self.get_files_from_value(value)
-        value = value or []
+        value_raw = value or []
+        value = self.get_files_from_value([*value_raw])
         self.size = len(value)
         
         context = super(ImageUploaderArrayWidget, self).get_context(name, value, attrs)
@@ -60,8 +56,8 @@ class ImageUploaderArrayWidget(SplitArrayWidget):
 
         for i in range(0, len(value)):
             context['widget']['subwidgets'][i]['value'] = value[i]
+            context['widget']['subwidgets'][i]['value_raw'] = value_raw[i]
 
-        print(context)
 
         return {
             **context,
@@ -83,7 +79,28 @@ class ImageUploaderArrayWidget(SplitArrayWidget):
                 "drop_icon": self.get_drop_icon(),
             }
         }
+    
+    def value_from_datadict(self, data, files, name):
+        total_forms = int(data.get('images-TOTAL_FORMS'))
+        result = []
+        for i in range(0, total_forms):
+            image_file = files.get(f'images-{i}-image')
+            image_raw = data.get(f'images-{i}-RAW')
+            image_delete = data.get(f'images-{i}-DELETE')
+            if image_delete:
+                continue
 
+            if image_file:
+                result = [*result, image_file]
+            else:
+                result = [*result, image_raw]
+
+        return result
+
+    @property
+    def needs_multipart_form(self):
+        return True
+    
     @property
     def media(self):
         return forms.Media(

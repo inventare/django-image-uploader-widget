@@ -35,6 +35,13 @@
                     />
 
                     <input
+                        type="hidden"
+                        name="{{ inline_admin_formset.formset.prefix }}-{{ forloop.counter0 }}-RAW"
+                        id="id_{{ inline_admin_formset.formset.prefix }}-{{ forloop.counter0 }}-RAW"
+                        value="{{ item.value_raw }}"
+                    />
+
+                    <input
                         type="checkbox"
                         name="{{ inline_admin_formset.formset.prefix }}-{{ forloop.counter0 }}-DELETE"
                         id="id_{{ inline_admin_formset.formset.prefix }}-{{ forloop.counter0 }}-DELETE"
