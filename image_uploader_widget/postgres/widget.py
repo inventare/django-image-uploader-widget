@@ -2,6 +2,7 @@ import json
 from typing import Any
 from django import forms
 from django.contrib.postgres.forms import SplitArrayWidget
+from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.core.files.storage import default_storage
 
 class ImageUploaderArrayWidget(SplitArrayWidget):
@@ -40,6 +41,8 @@ class ImageUploaderArrayWidget(SplitArrayWidget):
         super().__init__(widget, 0, **kwargs)
 
     def _get_image(self, path):
+        if isinstance(path, InMemoryUploadedFile):
+            return None
         return default_storage.url(path)
 
     def get_files_from_value(self, value: Any) -> str | None:
@@ -47,7 +50,7 @@ class ImageUploaderArrayWidget(SplitArrayWidget):
 
     def get_context(self, name, value, attrs = None):
         value_raw = value or []
-        value = self.get_files_from_value([*value_raw])
+        value = list(filter(None, self.get_files_from_value([*value_raw])))
         self.size = len(value)
         
         context = super(ImageUploaderArrayWidget, self).get_context(name, value, attrs)

@@ -84,7 +84,7 @@ class CustomWidget(models.Model):
         verbose_name = 'Test Custom Widget'
 
 class TestWithArrayField(models.Model):
-    images = ImageListField(blank=True, null=True)
+    images = ImageListField(blank=True, null=True, upload_to='admin_test')
 
     class Meta:
         verbose_name = 'Test With Array Field'

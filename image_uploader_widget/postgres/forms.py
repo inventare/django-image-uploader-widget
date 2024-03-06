@@ -7,31 +7,18 @@ from .widget import ImageUploaderArrayWidget
 
 class ImageListFormField(forms.Field):
     default_error_messages = {
-        "item_invalid": _("Item %(nth)s in the array did not validate:"),
+        "item_invalid": _("Item %(name)s in the array did not validate:"),
     }
-
-    def __init__(self, *, remove_trailing_nulls=False, **kwargs):
+    
+    def __init__(self, **kwargs):
         kwargs.pop('base_field')
-        self.max_length = kwargs.pop('max_length') or 255
+        self.max_length = kwargs.pop('max_length') or 150
 
         self.required = False
-        self.base_field = forms.ImageField(max_length=255)
-        self.remove_trailing_nulls = remove_trailing_nulls
+        self.base_field = forms.ImageField(max_length=self.max_length)
         widget = ImageUploaderArrayWidget()
         kwargs.setdefault("widget", widget)
         super().__init__(**kwargs)
-
-    def _remove_trailing_nulls(self, values):
-        index = None
-        if self.remove_trailing_nulls:
-            for i, value in reversed(list(enumerate(values))):
-                if value in self.base_field.empty_values:
-                    index = i
-                else:
-                    break
-            if index is not None:
-                values = values[:index]
-        return values, index
 
     def to_python(self, value):
         value = super().to_python(value)
@@ -49,23 +36,23 @@ class ImageListFormField(forms.Field):
                 cleaned_data.append(item)
                 continue
 
+            file_name = item.name
             try:
-                cleaned_data.append(self.base_field.clean(item))
+                cleaned_item = self.base_field.clean(item)
+                cleaned_data.append(cleaned_item)
             except ValidationError as error:
                 errors.append(
                     prefix_validation_error(
                         error,
                         self.error_messages["item_invalid"],
                         code="item_invalid",
-                        params={"nth": index + 1},
+                        params={ "name": file_name },
                     )
                 )
                 cleaned_data.append(None)
             else:
                 errors.append(None)
-        cleaned_data, null_index = self._remove_trailing_nulls(cleaned_data)
-        if null_index is not None:
-            errors = errors[:null_index]
+
         errors = list(filter(None, errors))
         if errors:
             raise ValidationError(list(chain.from_iterable(errors)))
@@ -78,7 +65,6 @@ class ImageListFormField(forms.Field):
         except ValidationError:
             pass
         else:
-            data, _ = self._remove_trailing_nulls(data)
             if initial in self.empty_values and data in self.empty_values:
                 return False
         return super().has_changed(initial, data)

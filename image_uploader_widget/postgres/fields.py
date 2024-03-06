@@ -1,20 +1,26 @@
 import datetime
+from typing import Optional
 import posixpath
 from django.db.models import ImageField
 from django.contrib.postgres.fields import ArrayField
 from django.db.models.fields.files import FieldFile
-from django.core.files.storage import default_storage
+from django.core.files.storage import default_storage, Storage
 from django.core.files.utils import validate_file_name
 from .forms import ImageListFormField
 
 class ImageListField(ArrayField):
-    def __init__(self, *args, **kwargs):
-        # TODO: fix this
-        self.max_length = 255
-        #self.storage = TODO: storage or default_storage
-        self.storage = default_storage
-        kwargs['base_field'] = ImageField(max_length=255)
-        self.upload_to = ""
+    def __init__(
+        self,
+        *args,
+        max_length: int = 150,
+        storage: Optional[Storage] = None,
+        upload_to: str = "",
+        **kwargs
+    ):
+        self.max_length = max_length
+        self.storage = storage or default_storage
+        self.upload_to = upload_to or ""
+        kwargs['base_field'] = ImageField(max_length=max_length)
         super().__init__(
             *args,
             **kwargs,
@@ -27,6 +33,8 @@ class ImageListField(ArrayField):
             {
                 "base_field": self.base_field.clone(),
                 "size": self.size,
+                "max_length": self.max_length,
+                "upload_to": self.upload_to,
             }
         )
         return name, path, args, kwargs
