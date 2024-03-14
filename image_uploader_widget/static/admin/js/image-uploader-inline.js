@@ -250,6 +250,15 @@ document.addEventListener('DOMContentLoaded', function() {
             clonedInput = editor.tempFileInput.cloneNode(true)
             clonedInput.className = className;
             clonedInput.setAttribute('name', name || '');
+
+            //
+            // TODO: Safari not clone files inside the input.
+            //
+            //
+            const dataTransferList = new DataTransfer();
+            dataTransferList.items.add(file);
+            clonedInput.files = dataTransferList.files;
+
             parent.appendChild(clonedInput);
         }
 
