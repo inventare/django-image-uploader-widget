@@ -1,5 +1,4 @@
 from django.db import models
-from django.contrib.postgres.fields import ArrayField
 
 class TestNonRequired(models.Model):
     image = models.ImageField('Image', null=True, blank=True)
@@ -81,9 +80,3 @@ class CustomWidget(models.Model):
 
     class Meta:
         verbose_name = 'Test Custom Widget'
-
-class TestWithArrayField(models.Model):
-    images = ArrayField(models.ImageField())
-
-    class Meta:
-        verbose_name = 'Test With Array Field'
