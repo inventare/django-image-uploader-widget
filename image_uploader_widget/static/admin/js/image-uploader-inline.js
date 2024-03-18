@@ -259,6 +259,8 @@ document.addEventListener('DOMContentLoaded', function() {
             dataTransferList.items.add(file);
             clonedInput.files = dataTransferList.files;
 
+            editor.tempFileInput.value = null
+
             parent.appendChild(clonedInput);
         }
 
