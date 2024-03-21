@@ -25,7 +25,6 @@ class ImageListFormField(forms.Field):
         return [self.base_field.to_python(item) for item in value]
 
     def clean(self, value):
-        print("ON CLEAN")
         cleaned_data = []
         errors = []
         
@@ -59,7 +58,6 @@ class ImageListFormField(forms.Field):
         return cleaned_data
 
     def has_changed(self, initial, data):
-        print("OIE?")
         try:
             data = self.to_python(data)
         except ValidationError:

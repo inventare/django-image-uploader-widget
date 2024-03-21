@@ -1,5 +1,4 @@
 from django.db import models
-from django.contrib.postgres.fields.array import ArrayField
 from image_uploader_widget.postgres.fields import ImageListField
 
 class TestNonRequired(models.Model):

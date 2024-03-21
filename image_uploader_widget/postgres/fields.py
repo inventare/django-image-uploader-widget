@@ -17,10 +17,10 @@ class ImageListField(ArrayField):
         upload_to: str = "",
         **kwargs
     ):
-        self.max_length = max_length
+        self.max_length = max_length or 150
         self.storage = storage or default_storage
         self.upload_to = upload_to or ""
-        kwargs['base_field'] = ImageField(max_length=max_length)
+        kwargs['base_field'] = ImageField(max_length=self.max_length, upload_to=upload_to)
         super().__init__(
             *args,
             **kwargs,
@@ -56,13 +56,9 @@ class ImageListField(ArrayField):
         return self.storage.generate_filename(filename)
     
     def _get_file(self, instance, file):
-        print("VAMOS PEGAR O ARQUIVO")
-        print(type(file))
         if isinstance(file, str):
-            print("CAIU AQUI")
             return FieldFile(instance, self, file)
         
-        print("OIE")
         field_file = FieldFile(instance, self, file.name)
         field_file.file = file
         field_file._committed = False
@@ -76,8 +72,6 @@ class ImageListField(ArrayField):
             if file and not file._committed:
                 file.save(file.name, file.file, save=False)
 
-        print("PRE_SAVE??")
-        print(value)
         return value
     
     def save_form_data(self, instance, data):
