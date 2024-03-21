@@ -344,7 +344,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .sort(function(a, b) {
                 return a.order - b.order;
             });
-        
+
         const prevItems = items.filter(function (item, index){
             if (item.item === dragging) {
                 return false;
@@ -377,6 +377,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
         dragging.classList.remove("dragging");
         editor.element.removeAttribute('dragging-element');
+
+        updateAllIndexes(editor);
     }
 
     function handleDrop(e) {

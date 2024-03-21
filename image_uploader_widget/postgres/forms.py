@@ -27,6 +27,8 @@ class ImageListFormField(forms.Field):
     def clean(self, value):
         cleaned_data = []
         errors = []
+
+        print(value)
         
         max_size = len(value)
         for index in range(max_size):
