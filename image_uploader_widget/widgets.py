@@ -3,13 +3,10 @@ from django.forms import widgets
 
 class ImageUploaderWidget(widgets.ClearableFileInput):
     template_name = 'admin/widgets/image_uploader_widget.html'
-    add_image_text = ""
     drop_text = ""
     empty_text = ""
     empty_icon = ""
     drop_icon = ""
-    add_icon = ""
-    accept = "image/*"
 
     def __init__(self, drop_text = "", empty_text = "",
         empty_icon = "", drop_icon = "", attrs = None):
@@ -18,9 +15,6 @@ class ImageUploaderWidget(widgets.ClearableFileInput):
         self.empty_icon = empty_icon
         self.drop_icon = drop_icon
         super(ImageUploaderWidget, self).__init__(attrs)
-
-    def get_add_image_text(self):
-        return self.add_image_text
 
     def get_drop_text(self):
         return self.drop_text
@@ -34,12 +28,6 @@ class ImageUploaderWidget(widgets.ClearableFileInput):
     def get_drop_icon(self):
         return self.drop_icon
 
-    def get_add_icon(self):
-        return self.add_icon
-    
-    def get_accept(self):
-        return self.accept
-
     def get_context(self, name, value, attrs = None):
         context = super(ImageUploaderWidget, self).get_context(name, value, attrs)
         if not context:
@@ -47,13 +35,12 @@ class ImageUploaderWidget(widgets.ClearableFileInput):
         
         return {
             **context,
-            'add_image_text': self.get_add_image_text(),
-            'drop_text': self.get_drop_text(),
-            'empty_text': self.get_empty_text(),
-            'empty_icon': self.get_empty_icon(),
-            'drop_icon': self.get_drop_icon(),
-            'add_icon': self.get_add_icon(),
-            'accept': self.get_accept(),
+            "custom": {
+                "drop_text": self.get_drop_text(),
+                "empty_text": self.get_empty_text(),
+                "empty_icon": self.get_empty_icon(),
+                "drop_icon": self.get_drop_icon(),
+            }
         }
 
     @property
