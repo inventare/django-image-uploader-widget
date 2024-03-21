@@ -11,6 +11,9 @@ from django.core.files.storage import default_storage, Storage
 from .forms import ImageListFormField
 
 def validate_file_name(name, allow_relative_path=False):
+    # TODO: when drop support for django 3.2, remove this function
+    # and import from django
+    
     # Remove potentially dangerous names
     if os.path.basename(name) in {'', '.', '..'}:
         raise SuspiciousFileOperation("Could not derive file name from '%s'" % name)
@@ -28,6 +31,7 @@ def validate_file_name(name, allow_relative_path=False):
         raise SuspiciousFileOperation("File name '%s' includes path elements" % name)
 
     return name
+
 
 class ImageListField(ArrayField):
     def __init__(
