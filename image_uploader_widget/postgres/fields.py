@@ -77,7 +77,6 @@ class ImageListField(ArrayField):
             dirname = datetime.datetime.now().strftime(str(self.upload_to))
             filename = posixpath.join(dirname, filename)
         filename = validate_file_name(filename, allow_relative_path=True)
-        # TODO: fix filename problem in the future.
         return self.storage.generate_filename(filename)
     
     def _get_file(self, instance, file):
