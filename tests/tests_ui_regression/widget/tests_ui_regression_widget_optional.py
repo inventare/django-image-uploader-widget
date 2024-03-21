@@ -99,7 +99,7 @@ class OptionaldWidgetTestCase(test_case.IUWTestCase):
         root = self.find_widget_root()
         preview_icon = self.find_preview_icon(root)
         preview_icon.hover()
-        self.wait(0.7)
+        self.wait(0.5)
 
         self.assertMatchSnapshot(root, 'wo_test_ui_initialized_with_data_hover_preview_dark')
         self.page.emulate_media(color_scheme='light')
