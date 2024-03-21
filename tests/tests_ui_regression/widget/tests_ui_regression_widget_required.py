@@ -75,6 +75,8 @@ class RequiredWidgetUIRegressionTests(test_case.IUWTestCase):
             root = self.find_widget_root()
             preview = self.find_widget_preview(root)
             preview.hover()
+            self.wait(0.5)
+
             self.assertMatchSnapshot(root, 'wr_test_ui_initialized_with_data_dark')
 
     def test_ui_initialized_with_data_hover_preview(self):
@@ -151,6 +153,7 @@ class RequiredWidgetUIRegressionTests(test_case.IUWTestCase):
             self.goto_change_page()
 
             root = self.find_widget_root()
+            self.wait(0.5)
             self.assertMatchSnapshot(root, 'wr_test_ui_initialized_toggle_dark_theme_inverted')
 
             toggle = self.page.query_selector('#header button.theme-toggle')

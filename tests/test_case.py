@@ -417,12 +417,21 @@ class IUWTestCase(StaticLiveServerTestCase):
         
         comparation_image = self._get_compare_image(element, id)
 
-        fail = False
         diff = ImageChops.difference(image, comparation_image)
-        if diff.getbbox() and not self._validate_difference_threshold(diff):
-            fail = True
+        
+        if not diff.getbbox():
+            self._delete_compare_image(id)
+            return
 
-        if fail:
-            self._fail_match_snapshot(element, id)
+        threshold = 10
+        diff = diff.point(lambda x: 0 if x < threshold else 255)
+        pixels = diff.getcolors()
+
+        if len(pixels) == 1:
+            _, color = pixels[0]
+            if color == (0, 0, 0):
+                self._delete_compare_image(id)
+                return
 
         self._delete_compare_image(id)
+        self._fail_match_snapshot(element, id)

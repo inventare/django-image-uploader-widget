@@ -66,6 +66,7 @@ class OptionaldWidgetTestCase(test_case.IUWTestCase):
         root = self.find_widget_root()
         preview = self.find_widget_preview(root)
         preview.hover()
+        self.wait(0.5)
 
         self.assertMatchSnapshot(root, 'wo_test_ui_initialized_with_data')
 
@@ -76,6 +77,7 @@ class OptionaldWidgetTestCase(test_case.IUWTestCase):
         root = self.find_widget_root()
         preview = self.find_widget_preview(root)
         preview.hover()
+        self.wait(0.5)
 
         self.assertMatchSnapshot(root, 'wo_test_ui_initialized_with_data_dark')
         self.page.emulate_media(color_scheme='light')
