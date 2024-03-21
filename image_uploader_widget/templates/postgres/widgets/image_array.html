@@ -6,9 +6,7 @@
     data-inline-type="image-uploader"
     data-inline-formset="{{ inline_admin_formset.inline_formset_data }}"
     data-accept="{{ accept }}"
-    {% if order_field %}
-        data-order-field="{{order_field}}"
-    {% endif %}
+    data-order-field="order"
 >
     <div class="iuw-inline-root">
         <div>
@@ -24,9 +22,21 @@
                     data-candelete="true"
                     data-raw="{{ item.value }}"
                 >
+                    <div class="form-row field-order">
+                        <input
+                            type="number"
+                            class="vIntegerField"
+                            min="0"
+                            name="{{ inline_admin_formset.formset.prefix }}-{{ forloop.counter0 }}-order"
+                            id="id_{{ inline_admin_formset.formset.prefix }}-{{ forloop.counter0 }}-order"
+                            value="{{ forloop.counter0 }}"
+                        />
+                    </div>
+
                     <p class="file-upload">
                         <a href="{{ item.value }}">{{ item.value }}</a>
                     </p>
+
                     <input
                         type="file"
                         name="{{ inline_admin_formset.formset.prefix }}-{{ forloop.counter0 }}-image"
@@ -66,6 +76,16 @@
                     name="{{ inline_admin_formset.formset.prefix }}-__prefix__-DELETE"
                     id="id_{{ inline_admin_formset.formset.prefix }}-__prefix__-DELETE"
                 />
+
+                <div class="form-row field-order">
+                    <input
+                        type="number"
+                        class="vIntegerField"
+                        min="0"
+                        name="{{ inline_admin_formset.formset.prefix }}-__prefix__-order"
+                        id="id_{{ inline_admin_formset.formset.prefix }}-__prefix__-order"
+                    />
+                </div>
             </div>
 
             <div class="iuw-add-image-btn">
