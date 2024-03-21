@@ -1,5 +1,5 @@
 import json
-from typing import Any
+from typing import Any, List
 from django import forms
 from django.contrib.postgres.forms import SplitArrayWidget
 from django.core.files.uploadedfile import InMemoryUploadedFile
@@ -45,7 +45,7 @@ class ImageUploaderArrayWidget(SplitArrayWidget):
             return None
         return default_storage.url(path)
 
-    def get_files_from_value(self, value: Any) -> str | None:
+    def get_files_from_value(self, value: Any) -> List[str]
         return [self._get_image(name) for name in value]
 
     def get_context(self, name, value, attrs = None):
