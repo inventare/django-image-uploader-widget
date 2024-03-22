@@ -378,7 +378,9 @@ document.addEventListener('DOMContentLoaded', function() {
         dragging.classList.remove("dragging");
         editor.element.removeAttribute('dragging-element');
 
-        updateAllIndexes(editor);
+        if (editor.isArrayField) {
+            updateAllIndexes(editor);
+        }
     }
 
     function handleDrop(e) {
@@ -529,6 +531,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const id = inlineGroup.id;
         element.setAttribute('data-editor', id);
         const orderField = inlineGroup.getAttribute('data-order-field')
+        const isArrayField = inlineGroup.getAttribute('data-array-field') === '1'
 
         const editor = {
             id: id,
@@ -543,6 +546,7 @@ document.addEventListener('DOMContentLoaded', function() {
             maxCount: 0,
             addImageButton: element.querySelector('.iuw-add-image-btn'),
             orderField: orderField,
+            isArrayField: isArrayField,
         };
 
         const tempFileInput = document.createElement('input');
