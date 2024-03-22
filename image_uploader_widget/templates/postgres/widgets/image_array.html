@@ -1,0 +1,136 @@
+{% load i18n admin_urls static %}
+
+<div
+    class="iuw-inline-admin-formset inline-group"
+    id="{{ inline_admin_formset.formset.prefix }}-group"
+    data-inline-type="image-uploader"
+    data-inline-formset="{{ inline_admin_formset.inline_formset_data }}"
+    data-accept="{{ accept }}"
+    data-order-field="order"
+    data-array-field="1"
+>
+    <div class="iuw-inline-root">
+        <div>
+            <input type="hidden" name="{{ inline_admin_formset.formset.prefix }}-TOTAL_FORMS" value="0" id="id_{{ inline_admin_formset.formset.prefix }}-TOTAL_FORMS" />
+            <input type="hidden" name="{{ inline_admin_formset.formset.prefix }}-INITIAL_FORMS" value="0" id="id_{{ inline_admin_formset.formset.prefix }}-INITIAL_FORMS" />
+            <input type="hidden" name="{{ inline_admin_formset.formset.prefix }}-MIN_NUM_FORMS" value="0" id="id_{{ inline_admin_formset.formset.prefix }}-MIN_NUM_FORMS" />
+            <input type="hidden" name="{{ inline_admin_formset.formset.prefix }}-MAX_NUM_FORMS" value="1000" id="id_{{ inline_admin_formset.formset.prefix }}-MAX_NUM_FORMS" />
+
+            {% for item in widget.subwidgets %}
+                <div
+                    class="inline-related has_original"
+                    id="{{ inline_admin_formset.formset.prefix }}-{{ forloop.counter0 }}"
+                    data-candelete="true"
+                    data-raw="{{ item.value }}"
+                >
+                    <div class="form-row field-order">
+                        <input
+                            type="number"
+                            class="vIntegerField"
+                            min="0"
+                            name="{{ inline_admin_formset.formset.prefix }}-{{ forloop.counter0 }}-order"
+                            id="id_{{ inline_admin_formset.formset.prefix }}-{{ forloop.counter0 }}-order"
+                            value="{{ forloop.counter0 }}"
+                        />
+                    </div>
+
+                    <p class="file-upload">
+                        <a href="{{ item.value }}">{{ item.value }}</a>
+                    </p>
+
+                    <input
+                        type="file"
+                        name="{{ inline_admin_formset.formset.prefix }}-{{ forloop.counter0 }}-image"
+                        accept="image/*"
+                        id="id_{{ inline_admin_formset.formset.prefix }}-{{ forloop.counter0 }}-image"
+                    />
+
+                    <input
+                        type="hidden"
+                        name="{{ inline_admin_formset.formset.prefix }}-{{ forloop.counter0 }}-RAW"
+                        id="id_{{ inline_admin_formset.formset.prefix }}-{{ forloop.counter0 }}-RAW"
+                        value="{{ item.value_raw }}"
+                    />
+
+                    <input
+                        type="checkbox"
+                        name="{{ inline_admin_formset.formset.prefix }}-{{ forloop.counter0 }}-DELETE"
+                        id="id_{{ inline_admin_formset.formset.prefix }}-{{ forloop.counter0 }}-DELETE"
+                    />
+                </div>
+            {% endfor %}
+
+            <div
+                class="inline-related empty-form last-related"
+                id="{{ inline_admin_formset.formset.prefix }}-empty"
+                data-candelete="true"
+            >
+                <input
+                    type="file"
+                    name="{{ inline_admin_formset.formset.prefix }}-__prefix__-image"
+                    accept="image/*"
+                    id="id_{{ inline_admin_formset.formset.prefix }}-__prefix__-image"
+                />
+
+                <input
+                    type="checkbox"
+                    name="{{ inline_admin_formset.formset.prefix }}-__prefix__-DELETE"
+                    id="id_{{ inline_admin_formset.formset.prefix }}-__prefix__-DELETE"
+                />
+
+                <div class="form-row field-order">
+                    <input
+                        type="number"
+                        class="vIntegerField"
+                        min="0"
+                        name="{{ inline_admin_formset.formset.prefix }}-__prefix__-order"
+                        id="id_{{ inline_admin_formset.formset.prefix }}-__prefix__-order"
+                    />
+                </div>
+            </div>
+
+            <div class="iuw-add-image-btn">
+                {% if add_icon %}
+                    {{ add_icon|safe }}
+                {% else %}
+                    <svg class="add-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" width="100%" height="100%"><path xmlns="http://www.w3.org/2000/svg" d="M21 15v3h3v2h-3v3h-2v-3h-3v-2h3v-3h2zm.008-12c.548 0 .992.445.992.993V13h-2V5H4v13.999L14 9l3 3v2.829l-3-3L6.827 19H14v2H2.992A.993.993 0 0 1 2 20.007V3.993A1 1 0 0 1 2.992 3h18.016zM8 7a2 2 0 1 1 0 4 2 2 0 0 1 0-4z"></path></svg>
+                {% endif %}
+                <span>
+                    {% if add_image_text %}
+                        {{ add_image_text }}
+                    {% else %}
+                        {% translate 'Add image' %}
+                    {% endif %}
+                </span>
+            </div>
+            <div class="iuw-empty">
+                {% if empty_icon %}
+                    {{ empty_icon|safe }}
+                {% else %}
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-cloud-upload" viewBox="0 0 16 16" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" width="100%" height="100%"><path xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" d="M4.406 1.342A5.53 5.53 0 0 1 8 0c2.69 0 4.923 2 5.166 4.579C14.758 4.804 16 6.137 16 7.773 16 9.569 14.502 11 12.687 11H10a.5.5 0 0 1 0-1h2.688C13.979 10 15 8.988 15 7.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 2.825 10.328 1 8 1a4.53 4.53 0 0 0-2.941 1.1c-.757.652-1.153 1.438-1.153 2.055v.448l-.445.049C2.064 4.805 1 5.952 1 7.318 1 8.785 2.23 10 3.781 10H6a.5.5 0 0 1 0 1H3.781C1.708 11 0 9.366 0 7.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383z"></path><path xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" d="M7.646 4.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V14.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3z"></path></svg>
+                {% endif %}
+                <span>
+                    {% if empty_text %}
+                        {{ empty_text }}
+                    {% else %}
+                        {% translate 'Drop your images here or click to select...' %}
+                    {% endif %}
+                </span>
+            </div>
+            <div class="iuw-drop-label">
+                {% if drop_icon %}
+                    {{ drop_icon|safe }}
+                {% else %}
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-cloud-upload" viewBox="0 0 16 16" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" width="100%" height="100%"><path xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" d="M4.406 1.342A5.53 5.53 0 0 1 8 0c2.69 0 4.923 2 5.166 4.579C14.758 4.804 16 6.137 16 7.773 16 9.569 14.502 11 12.687 11H10a.5.5 0 0 1 0-1h2.688C13.979 10 15 8.988 15 7.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 2.825 10.328 1 8 1a4.53 4.53 0 0 0-2.941 1.1c-.757.652-1.153 1.438-1.153 2.055v.448l-.445.049C2.064 4.805 1 5.952 1 7.318 1 8.785 2.23 10 3.781 10H6a.5.5 0 0 1 0 1H3.781C1.708 11 0 9.366 0 7.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383z"></path><path xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" d="M7.646 4.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V14.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3z"></path></svg>
+                {% endif %}
+                <span>
+                    {% if drop_text %}
+                        {{ drop_text }}
+                    {% else %}
+                        {% translate 'Drop your images here...' %}
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+    </div>
+</div>

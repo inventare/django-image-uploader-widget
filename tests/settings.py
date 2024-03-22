@@ -22,7 +22,7 @@ TEMPLATES = [
     },
 ]
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 CACHED_STORAGE = False
 

@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.postgres.fields import ArrayField
+from image_uploader_widget.postgres.fields import ImageListField
 
 class TestNonRequired(models.Model):
     image = models.ImageField('Image', null=True, blank=True)
@@ -83,7 +83,7 @@ class CustomWidget(models.Model):
         verbose_name = 'Test Custom Widget'
 
 class TestWithArrayField(models.Model):
-    images = ArrayField(models.ImageField())
+    images = ImageListField(blank=True, null=True, upload_to='admin_test')
 
     class Meta:
         verbose_name = 'Test With Array Field'
