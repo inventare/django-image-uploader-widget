@@ -1,3 +1,4 @@
+import uuid
 from django.test import tag
 from django.core.files import File
 from tests import models, test_case
@@ -6,16 +7,24 @@ from tests import models, test_case
 class ArrayFieldEditorTests(test_case.IUWTestCase):
     model = "testwitharrayfield"
 
-    def init_item(self, only_one=False):
+    def init_item(self, reverse=False, only_one=False):
         images = []
+
+        if reverse:
+            only_one = False
         
         instance = None
         with open(self.image1, 'rb') as f1:
-            images = [*images, File(f1, 'file1.png')]
+            self.image1_name = f'{uuid.uuid4()}.png'
+            images = [*images, File(f1, self.image1_name)]
 
             if not only_one:
                 with open(self.image2, 'rb') as f2:
-                    images = [*images, File(f2, 'file2.png')]
+                    self.image2_name = f'{uuid.uuid4()}.png'
+                    if reverse:
+                        images = [File(f2, self.image2_name), *images]
+                    else:
+                        images = [*images, File(f2, self.image2_name)]
 
                     instance = models.TestWithArrayField.objects.create(images=images)
             
@@ -24,8 +33,8 @@ class ArrayFieldEditorTests(test_case.IUWTestCase):
         
         return instance
     
-    def goto_change_page(self, only_one=False):
-        self.item = self.init_item(only_one)
+    def goto_change_page(self, *, reverse=False, only_one=False):
+        self.item = self.init_item(reverse, only_one)
         super().goto_change_page(self.item.id)
         return self.item
 
@@ -430,4 +439,329 @@ class ArrayFieldEditorTests(test_case.IUWTestCase):
 
         self.assertFalse(drop_label.is_visible())
 
-    # TODO: test reorder array itens
+    def test_should_initialize_order_inputs_on_page(self):
+        self.goto_change_page(reverse=True)
+
+        root = self.find_inline_root()
+
+        previews = self.find_inline_previews(root)
+        self.assertEqual(len(previews), 2)
+        for index, preview in enumerate(previews):
+            order_input = self.find_inline_order(preview)
+            self.assertFalse(order_input.is_visible())
+            self.assertEqual(order_input.input_value(), str(index + 1))
+        
+        elements = root.query_selector_all('.inline-related:not(.empty-form):not(.deleted), .iuw-add-image-btn')
+        classes = list(map(lambda x: x.get_attribute('class'), elements))
+        self.assertEqual(classes.pop(), 'iuw-add-image-btn visible-by-number')
+    
+    def test_should_reorder_two_items_from_first_to_last(self):
+        self.goto_add_page()
+
+        root = self.find_inline_root()
+        temp_file = root.query_selector('.temp_file')
+
+        previews = self.find_inline_previews(root)
+        self.assertEqual(len(previews), 0)
+
+        temp_file.set_input_files(self.image1)
+        previews = self.find_inline_previews(root)
+        self.assertEqual(len(previews), 1)
+
+        temp_file.set_input_files(self.image2)
+        previews = self.find_inline_previews(root)
+        self.assertEqual(len(previews), 2)
+        for index, preview in enumerate(previews):
+            img = preview.query_selector('img')
+            preview_button = self.find_preview_icon(preview)
+            remove_button = self.find_delete_icon(preview)
+            order_input = self.find_inline_order(preview)
+            self.assertFalse(order_input.is_visible())
+            self.assertEqual(order_input.input_value(), str(index + 1))
+            self.assertIsNotNone(img)
+            self.assertIsNotNone(preview_button)
+            self.assertIsNotNone(remove_button)
+
+        # Reorder
+        preview1, preview2 = previews
+        preview1.hover()
+        self.page.mouse.down()
+        preview2.hover(position={ 'x': 100, 'y': 10 })
+        self.page.mouse.up()
+
+        order_input = self.find_inline_order(preview1)
+        self.assertEqual(order_input.input_value(), '2')
+        order_input = self.find_inline_order(preview2)
+        self.assertEqual(order_input.input_value(), '1')
+
+        elements = root.query_selector_all('.inline-related:not(.empty-form):not(.deleted), .iuw-add-image-btn')
+        classes = list(map(lambda x: x.get_attribute('class'), elements))
+        self.assertEqual(classes.pop(), 'iuw-add-image-btn visible-by-number')
+
+        self.submit_form('#testwitharrayfield_form')
+        self.assert_success_message()
+
+        item = models.TestWithArrayField.objects.first()
+        self.assertEqual(len(item.images), 2)
+        first, second = item.images
+        self.assertTrue("admin_test/image2" in first)
+        self.assertFalse("admin_test/image2" in second)
+    
+    def test_should_reorder_two_items_from_last_to_first(self):
+        self.goto_add_page()
+
+        root = self.find_inline_root()
+        temp_file = root.query_selector('.temp_file')
+
+        previews = self.find_inline_previews(root)
+        self.assertEqual(len(previews), 0)
+
+        temp_file.set_input_files(self.image1)
+        previews = self.find_inline_previews(root)
+        self.assertEqual(len(previews), 1)
+
+        temp_file.set_input_files(self.image2)
+        previews = self.find_inline_previews(root)
+        self.assertEqual(len(previews), 2)
+        for index, preview in enumerate(previews):
+            img = preview.query_selector('img')
+            preview_button = self.find_preview_icon(preview)
+            remove_button = self.find_delete_icon(preview)
+            order_input = self.find_inline_order(preview)
+            self.assertFalse(order_input.is_visible())
+            self.assertEqual(order_input.input_value(), str(index + 1))
+            self.assertIsNotNone(img)
+            self.assertIsNotNone(preview_button)
+            self.assertIsNotNone(remove_button)
+
+        # Reorder
+        preview1, preview2 = previews
+        preview2.hover()
+        self.page.mouse.down()
+        preview1.hover(position={ 'x': 40, 'y': 10 })
+        self.page.mouse.up()
+
+        order_input = self.find_inline_order(preview1)
+        self.assertEqual(order_input.input_value(), '2')
+        order_input = self.find_inline_order(preview2)
+        self.assertEqual(order_input.input_value(), '1')
+
+        elements = root.query_selector_all('.inline-related:not(.empty-form):not(.deleted), .iuw-add-image-btn')
+        classes = list(map(lambda x: x.get_attribute('class'), elements))
+        self.assertEqual(classes.pop(), 'iuw-add-image-btn visible-by-number')
+
+        self.submit_form('#testwitharrayfield_form')
+        self.assert_success_message()
+
+        item = models.TestWithArrayField.objects.first()
+        self.assertEqual(len(item.images), 2)
+        first, second = item.images
+        self.assertTrue("admin_test/image2" in first)
+        self.assertFalse("admin_test/image2" in second)
+
+    def test_should_reorder_three_items(self):
+        self.goto_add_page()
+
+        root = self.find_inline_root()
+        temp_file = root.query_selector('.temp_file')
+
+        previews = self.find_inline_previews(root)
+        self.assertEqual(len(previews), 0)
+
+        temp_file.set_input_files(self.image1)
+        previews = self.find_inline_previews(root)
+        self.assertEqual(len(previews), 1)
+
+        temp_file.set_input_files(self.image2)
+        previews = self.find_inline_previews(root)
+        self.assertEqual(len(previews), 2)
+
+        temp_file.set_input_files(self.image1)
+        previews = self.find_inline_previews(root)
+        self.assertEqual(len(previews), 3)
+
+        for index, preview in enumerate(previews):
+            img = preview.query_selector('img')
+            preview_button = self.find_preview_icon(preview)
+            remove_button = self.find_delete_icon(preview)
+            order_input = self.find_inline_order(preview)
+            self.assertFalse(order_input.is_visible())
+            self.assertEqual(order_input.input_value(), str(index + 1))
+            self.assertIsNotNone(img)
+            self.assertIsNotNone(preview_button)
+            self.assertIsNotNone(remove_button)
+
+        # Reorder 1 to 2
+        preview1, preview2, preview3 = previews
+        preview1.hover()
+        self.page.mouse.down()
+        preview2.hover(position={ 'x': 100, 'y': 10 })
+        self.page.mouse.up()
+        # Reorder 3 to 1 (now 2)
+        preview3.hover()
+        self.page.mouse.down()
+        preview2.hover(position={ 'x': 40, 'y': 10 })
+        self.page.mouse.up()
+
+        # The currently order is 3, 2, 1
+
+        order_input = self.find_inline_order(preview3)
+        self.assertEqual(order_input.input_value(), '1')
+        order_input = self.find_inline_order(preview2)
+        self.assertEqual(order_input.input_value(), '2')
+        order_input = self.find_inline_order(preview1)
+        self.assertEqual(order_input.input_value(), '3')
+
+        elements = root.query_selector_all('.inline-related:not(.empty-form):not(.deleted), .iuw-add-image-btn')
+        classes = list(map(lambda x: x.get_attribute('class'), elements))
+        self.assertEqual(classes.pop(), 'iuw-add-image-btn visible-by-number')
+
+        self.submit_form('#testwitharrayfield_form')
+        self.assert_success_message()
+
+        item = models.TestWithArrayField.objects.first()
+        self.assertEqual(len(item.images), 3)
+        first, second, third = item.images
+        self.assertFalse("admin_test/image2" in first)
+        self.assertTrue("admin_test/image2" in second)
+        self.assertFalse("admin_test/image2" in third)
+
+    def test_should_reorder_with_deleted_item(self):
+        self.goto_add_page()
+
+        root = self.find_inline_root()
+        temp_file = root.query_selector('.temp_file')
+
+        previews = self.find_inline_previews(root)
+        self.assertEqual(len(previews), 0)
+
+        temp_file.set_input_files(self.image1)
+        previews = self.find_inline_previews(root)
+        self.assertEqual(len(previews), 1)
+
+        temp_file.set_input_files(self.image2)
+        previews = self.find_inline_previews(root)
+        self.assertEqual(len(previews), 2)
+
+        temp_file.set_input_files(self.image1)
+        previews = self.find_inline_previews(root)
+        self.assertEqual(len(previews), 3)
+        
+        for index, preview in enumerate(previews):
+            img = preview.query_selector('img')
+            preview_button = self.find_preview_icon(preview)
+            remove_button = self.find_delete_icon(preview)
+            order_input = self.find_inline_order(preview)
+            self.assertFalse(order_input.is_visible())
+            self.assertEqual(order_input.input_value(), str(index + 1))
+            self.assertIsNotNone(img)
+            self.assertIsNotNone(preview_button)
+            self.assertIsNotNone(remove_button)
+
+        # Reorder 1 to 2
+        preview1, preview2, preview3 = previews
+        preview1.hover()
+        self.page.mouse.down()
+        self.assertFalse(self.find_drop_label().is_visible())
+        preview2.hover(position={ 'x': 100, 'y': 10 })
+        self.page.mouse.up()
+
+        # Currently Order Is: 2 1 3
+        delete_button = self.find_delete_icon(preview2)
+        delete_button.click()
+
+        # Reorder 3 to 1
+        preview3.hover()
+        self.page.mouse.down()
+        self.assertFalse(self.find_drop_label().is_visible())
+        preview1.hover(position={ 'x': 40, 'y': 10 })
+        self.page.mouse.up()
+
+        # The currently order is 3, 1 (2 is deleted)
+
+        order_input = self.find_inline_order(preview3)
+        self.assertEqual(order_input.input_value(), '1')
+        order_input = self.find_inline_order(preview1)
+        self.assertEqual(order_input.input_value(), '2')
+
+        elements = root.query_selector_all('.inline-related:not(.empty-form):not(.deleted), .iuw-add-image-btn')
+        classes = list(map(lambda x: x.get_attribute('class'), elements))
+        self.assertEqual(classes.pop(), 'iuw-add-image-btn visible-by-number')
+
+        self.submit_form('#testwitharrayfield_form')
+        self.assert_success_message()
+
+        item = models.TestWithArrayField.objects.first()
+        self.assertEqual(len(item.images), 2)
+        first, second = item.images
+        self.assertFalse("admin_test/image2" in first)
+        self.assertFalse("admin_test/image2" in second)
+
+    def test_should_reorder_and_delete_item(self):
+        self.goto_add_page()
+
+        root = self.find_inline_root()
+        temp_file = root.query_selector('.temp_file')
+
+        previews = self.find_inline_previews(root)
+        self.assertEqual(len(previews), 0)
+
+        temp_file.set_input_files(self.image1)
+        previews = self.find_inline_previews(root)
+        self.assertEqual(len(previews), 1)
+
+        temp_file.set_input_files(self.image2)
+        previews = self.find_inline_previews(root)
+        self.assertEqual(len(previews), 2)
+
+        temp_file.set_input_files(self.image1)
+        previews = self.find_inline_previews(root)
+        self.assertEqual(len(previews), 3)
+
+        for index, preview in enumerate(previews):
+            img = preview.query_selector('img')
+            preview_button = self.find_preview_icon(preview)
+            remove_button = self.find_delete_icon(preview)
+            order_input = self.find_inline_order(preview)
+            self.assertFalse(order_input.is_visible())
+            self.assertEqual(order_input.input_value(), str(index + 1))
+            self.assertIsNotNone(img)
+            self.assertIsNotNone(preview_button)
+            self.assertIsNotNone(remove_button)
+
+        # Reorder 1 to 2
+        preview1, preview2, preview3 = previews
+        preview1.hover()
+        self.page.mouse.down()
+        self.assertFalse(self.find_drop_label().is_visible())
+        preview2.hover(position={ 'x': 100, 'y': 10 })
+        self.page.mouse.up()
+        # Reorder 3 to 1 (now 2)
+        preview3.hover()
+        self.page.mouse.down()
+        self.assertFalse(self.find_drop_label().is_visible())
+        preview2.hover(position={ 'x': 40, 'y': 10 })
+        self.page.mouse.up()
+
+        # The currently order is 3, 2, 1
+
+        delete = self.find_delete_icon(preview2)
+        delete.click()
+
+        order_input = self.find_inline_order(preview3)
+        self.assertEqual(order_input.input_value(), '1')
+        order_input = self.find_inline_order(preview1)
+        self.assertEqual(order_input.input_value(), '2')
+
+        elements = root.query_selector_all('.inline-related:not(.empty-form):not(.deleted), .iuw-add-image-btn')
+        classes = list(map(lambda x: x.get_attribute('class'), elements))
+        self.assertEqual(classes.pop(), 'iuw-add-image-btn visible-by-number')
+
+        self.submit_form('#testwitharrayfield_form')
+        self.assert_success_message()
+
+        item = models.TestWithArrayField.objects.first()
+        self.assertEqual(len(item.images), 2)
+        first, second = item.images
+        self.assertFalse("admin_test/image2" in first)
+        self.assertFalse("admin_test/image2" in second)
