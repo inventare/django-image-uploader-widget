@@ -1,7 +1,6 @@
 from django.test.utils import tag
 from tests import models, test_case
 
-@tag('playwright', 'functional')
 class OptionalWidgetTabularInlineTestCase(test_case.IUWTestCase):
     model = 'testnonrequiredtabularinline'
 

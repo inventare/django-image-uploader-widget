@@ -2,7 +2,7 @@ from django.test import tag
 from django.core.files import File
 from tests import models, test_case
 
-@tag('functional', "playwright")
+@tag('functional')
 class InlineEditorTests(test_case.IUWTestCase):
     model = "inline"
 
@@ -146,7 +146,7 @@ class InlineEditorTests(test_case.IUWTestCase):
         self.assert_success_message()
         self.assertEqual(len(models.InlineItem.objects.all()), 0)
 
-    def test_should_have_intiialized_with_data_when_go_to_edit_page(self):
+    def test_should_have_initialized_with_data_when_go_to_edit_page(self):
         """
         Should have initialized with data when go to edit page.
 

@@ -1,42 +1,49 @@
+import uuid
 from django.test import tag
 from django.core.files import File
 from tests import models, test_case
 
-@tag('functional', "ordered")
-class OrderedInlineEditorTests(test_case.IUWTestCase):
-    model = "orderedinline"
+@tag('functional', 'array_field')
+class ArrayFieldEditorTests(test_case.IUWTestCase):
+    model = "testwitharrayfield"
 
-    def init_item(self, only_one=False):
-        inline = models.OrderedInline.objects.create()
-        
-        self.item1 = models.OrderedInlineItem()
-        self.item1.parent = inline
-        self.item1.order = 1
-        with open(self.image1, 'rb') as f:
-            self.item1.image.save("image.png", File(f))
-        self.item1.save()
-        
-        if not only_one:
-            self.item2 = models.OrderedInlineItem()
-            self.item2.parent = inline
-            self.item2.order = 2
-            with open(self.image2, 'rb') as f:
-                self.item2.image.save("image2.png", File(f))
-            self.item2.save()
+    def init_item(self, reverse=False, only_one=False):
+        images = []
 
-        return inline
+        if reverse:
+            only_one = False
+        
+        instance = None
+        with open(self.image1, 'rb') as f1:
+            self.image1_name = f'{uuid.uuid4()}.png'
+            images = [*images, File(f1, self.image1_name)]
+
+            if not only_one:
+                with open(self.image2, 'rb') as f2:
+                    self.image2_name = f'{uuid.uuid4()}.png'
+                    if reverse:
+                        images = [File(f2, self.image2_name), *images]
+                    else:
+                        images = [*images, File(f2, self.image2_name)]
+
+                    instance = models.TestWithArrayField.objects.create(images=images)
+            
+            else:
+                instance = models.TestWithArrayField.objects.create(images=images)
+        
+        return instance
     
-    def goto_change_page(self, only_one=False):
-        item = self.init_item(only_one)
-        super().goto_change_page(item.id)
-        return item
+    def goto_change_page(self, *, reverse=False, only_one=False):
+        self.item = self.init_item(reverse, only_one)
+        super().goto_change_page(self.item.id)
+        return self.item
 
-    def test_should_have_visible_empty_marker_when_no_images_inline(self):
+    def test_should_have_visible_empty_marker_when_no_images_array_field(self):
         """
-        Should have a visible empty marker when no images on inline.
+        Should have a visible empty marker when no images on array field.
 
         The test flow is:
-            - Navigate to Inline Add Page.
+            - Navigate to ArrayField Add Page.
             - Assert if add button is hidden.
             - Assert if empty marker is visible.
         """
@@ -57,7 +64,7 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
         Should fire click on the temporary input when click on empty marker.
         
         The test flow is:
-            - Navigate to Inline Add Page.
+            - Navigate to ArrayField Add Page.
             - Click on the empty marker.
             - Assert if click event is fired on temporary input file.
         """
@@ -74,19 +81,18 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
 
         The test flow is:
             - Assert if None item is present on database.
-            - Navigate to Inline Add Page.
+            - Navigate to ArrayField Add Page.
             - Assert if None preview item is present on page.
             - Select first file.
             - Assert if One preview item is present on page.
             - Select second file.
             - Assert if Two preview items is present on page.
-            - Assert image, order, preview and delete icon on each of preview itens.
+            - Assert image, preview and delete icon on each of preview itens.
             - Submit the form.
             - Assert admin success message.
             - Assert the itens on the database.
-            - Assert the saved itens order.
         """
-        self.assertEqual(len(models.OrderedInlineItem.objects.all()), 0)
+        self.assertEqual(len(models.TestWithArrayField.objects.all()), 0)
         self.goto_add_page()
 
         root = self.find_inline_root()
@@ -103,25 +109,22 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
         previews = self.find_inline_previews(root)
         self.assertEqual(len(previews), 2)
         
-        for index, preview in enumerate(previews):
+        for preview in previews:
             img = preview.query_selector('img')
             preview_button = self.find_preview_icon(preview)
             remove_button = self.find_delete_icon(preview)
-            order_input = self.find_inline_order(preview)
-            self.assertFalse(order_input.is_visible())
-            self.assertEqual(order_input.input_value(), str(index + 1))
             self.assertIsNotNone(img)
             self.assertIsNotNone(preview_button)
             self.assertIsNotNone(remove_button)
 
-        self.submit_form('#orderedinline_form')
+        self.submit_form('#testwitharrayfield_form')
         self.assert_success_message()
 
-        items = models.OrderedInlineItem.objects.order_by('id').all()
-        self.assertEqual(len(items), 2)
-        for index, item in enumerate(items):
-            self.assertIsNotNone(item.image)
-            self.assertEqual(str(item.order), str(index + 1))
+        item = models.TestWithArrayField.objects.first()
+        self.assertIsNotNone(item)
+        self.assertEqual(len(item.images), 2)
+        for url in item.images:
+            self.assertIsNotNone(url)
 
     def test_should_remove_preview_and_not_save_when_not_saved(self):
         """
@@ -136,7 +139,7 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
             - Submit the form.
             - Assert if none item is saved.
         """
-        self.assertEqual(len(models.OrderedInlineItem.objects.all()), 0)
+        self.assertEqual(len(models.TestWithArrayField.objects.all()), 0)
         self.goto_add_page()
 
         root = self.find_inline_root()
@@ -149,11 +152,14 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
         self.find_delete_icon(previews[0]).click()
         self.assertEqual(len(self.find_inline_previews(root)), 0)
 
-        self.submit_form('#orderedinline_form')
+        self.submit_form('#testwitharrayfield_form')
         self.assert_success_message()
-        self.assertEqual(len(models.OrderedInlineItem.objects.all()), 0)
+        
+        item = models.TestWithArrayField.objects.first()
+        self.assertIsNotNone(item)
+        self.assertEqual(len(item.images), 0)
 
-    def test_should_have_intiialized_with_data_when_go_to_edit_page(self):
+    def test_should_have_initialized_with_data_when_go_to_edit_page(self):
         """
         Should have initialized with data when go to edit page.
 
@@ -178,9 +184,9 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
 
             src = img.get_attribute('src')
             if index == 0:
-                self.assertTrue(self.item1.image.url in src)
+                self.assertTrue(self.item.images[0] in src)
             else:
-                self.assertTrue(self.item2.image.url in src)
+                self.assertTrue(self.item.images[1] in src)
 
     def test_should_remove_saved_items_when_edit(self):
         """
@@ -208,16 +214,12 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
 
         previews = self.find_inline_previews(root)
         self.assertEqual(len(previews), 0)
-        previews = self.find_deleted_inline_previews(root)
-        self.assertEqual(len(previews), 2)
 
-        for preview in previews:
-            self.assertTrue(preview.query_selector('input[type=checkbox]').is_checked())
-
-        self.submit_form('#orderedinline_form')
+        self.submit_form('#testwitharrayfield_form')
         self.assert_success_message()
 
-        self.assertEqual(len(models.OrderedInlineItem.objects.all()), 0)
+        item = models.TestWithArrayField.objects.get(pk=self.item.pk)
+        self.assertEqual(len(item.images), 0)
 
     def test_should_fire_input_click_when_click_on_preview_image(self):
         """
@@ -356,7 +358,6 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
             - Submit the form.
             - Assert success message.
             - Assert if the image was changed on model entity.
-            - Assert if order is not changed.
         """
         self.goto_change_page()
 
@@ -364,34 +365,82 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
         previews = self.find_inline_previews(root)
         self.assertEqual(len(previews), 2)
 
-        url1 = self.item1.image.url
+        url1 = self.item.images[0]
 
         preview = previews[0]
         preview_img = preview.query_selector('img')
         preview_src = preview_img.get_attribute('src')
-        order_field = self.find_inline_order(preview)
-        order = order_field.input_value()
-
-        order_field_other = self.find_inline_order(previews[1])
-        order_other = order_field_other.input_value()
         
         file_input = preview.query_selector('input[type=file]')
         file_input.set_input_files(self.image1)
 
         self.assertNotEqual(preview_src, preview_img.get_attribute('src'))
         
-        self.submit_form('#orderedinline_form')
+        self.submit_form('#testwitharrayfield_form')
         self.assert_success_message()
 
-        item1 = models.OrderedInlineItem.objects.filter(pk=self.item1.pk).first()
-        self.assertNotEqual(item1.image.url, url1)
-        self.assertEqual(str(item1.order), str(order))
+        item = models.TestWithArrayField.objects.get(pk=self.item.pk)
+        self.assertNotEqual(item.images[0], url1)
 
-        item2 = models.OrderedInlineItem.objects.filter(pk=self.item2.pk).first()
-        self.assertEqual(str(item2.order), str(order_other))
+    def test_drop_label_leave(self):
+        self.goto_add_page()
+
+        root = self.find_inline_root()
+        drop_label = self.find_drop_label()
+
+        self.assertFalse(drop_label.is_visible())
+        
+        data_transfer = self.page.evaluate_handle('() => new DataTransfer()')
+        root.dispatch_event('dragenter', { 'dataTransfer': data_transfer })
+        self.wait(0.5)
+
+        self.assertTrue(drop_label.is_visible())
+
+        root.dispatch_event('dragleave', { 'dataTransfer': data_transfer })
+        self.wait(0.5)
+
+        self.assertFalse(drop_label.is_visible())
+
+    def test_drop_label_drop(self):
+        self.goto_add_page()
+
+        root = self.find_inline_root()
+        drop_label = self.find_drop_label()
+
+        self.assertFalse(drop_label.is_visible())
+        
+        data_transfer = self.page.evaluate_handle('() => new DataTransfer()')
+        root.dispatch_event('dragenter', { 'dataTransfer': data_transfer })
+        self.wait(0.5)
+
+        self.assertTrue(drop_label.is_visible())
+
+        root.dispatch_event('drop', { 'dataTransfer': data_transfer })
+        self.wait(0.5)
+
+        self.assertFalse(drop_label.is_visible())
+
+    def test_drop_label_end(self):
+        self.goto_add_page()
+
+        root = self.find_inline_root()
+        drop_label = self.find_drop_label()
+
+        self.assertFalse(drop_label.is_visible())
+        
+        data_transfer = self.page.evaluate_handle('() => new DataTransfer()')
+        root.dispatch_event('dragenter', { 'dataTransfer': data_transfer })
+        self.wait(0.5)
+
+        self.assertTrue(drop_label.is_visible())
+
+        root.dispatch_event('dragend', { 'dataTransfer': data_transfer })
+        self.wait(0.5)
+
+        self.assertFalse(drop_label.is_visible())
 
     def test_should_initialize_order_inputs_on_page(self):
-        self.goto_change_page()
+        self.goto_change_page(reverse=True)
 
         root = self.find_inline_root()
 
@@ -407,7 +456,6 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
         self.assertEqual(classes.pop(), 'iuw-add-image-btn visible-by-number')
     
     def test_should_reorder_two_items_from_first_to_last(self):
-        self.assertEqual(len(models.OrderedInlineItem.objects.all()), 0)
         self.goto_add_page()
 
         root = self.find_inline_root()
@@ -450,19 +498,16 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
         classes = list(map(lambda x: x.get_attribute('class'), elements))
         self.assertEqual(classes.pop(), 'iuw-add-image-btn visible-by-number')
 
-        self.submit_form('#orderedinline_form')
+        self.submit_form('#testwitharrayfield_form')
         self.assert_success_message()
 
-        items = models.OrderedInlineItem.objects.order_by('id').all()
-        self.assertEqual(len(items), 2)
-        item1, item2 = items
-        self.assertIsNotNone(item1.image)
-        self.assertEqual(str(item1.order), '2')
-        self.assertIsNotNone(item2.image)
-        self.assertEqual(str(item2.order), '1')
+        item = models.TestWithArrayField.objects.first()
+        self.assertEqual(len(item.images), 2)
+        first, second = item.images
+        self.assertTrue("admin_test/image2" in first)
+        self.assertFalse("admin_test/image2" in second)
     
     def test_should_reorder_two_items_from_last_to_first(self):
-        self.assertEqual(len(models.OrderedInlineItem.objects.all()), 0)
         self.goto_add_page()
 
         root = self.find_inline_root()
@@ -505,19 +550,16 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
         classes = list(map(lambda x: x.get_attribute('class'), elements))
         self.assertEqual(classes.pop(), 'iuw-add-image-btn visible-by-number')
 
-        self.submit_form('#orderedinline_form')
+        self.submit_form('#testwitharrayfield_form')
         self.assert_success_message()
 
-        items = models.OrderedInlineItem.objects.order_by('id').all()
-        self.assertEqual(len(items), 2)
-        item1, item2 = items
-        self.assertIsNotNone(item1.image)
-        self.assertEqual(str(item1.order), '2')
-        self.assertIsNotNone(item2.image)
-        self.assertEqual(str(item2.order), '1')
+        item = models.TestWithArrayField.objects.first()
+        self.assertEqual(len(item.images), 2)
+        first, second = item.images
+        self.assertTrue("admin_test/image2" in first)
+        self.assertFalse("admin_test/image2" in second)
 
     def test_should_reorder_three_items(self):
-        self.assertEqual(len(models.OrderedInlineItem.objects.all()), 0)
         self.goto_add_page()
 
         root = self.find_inline_root()
@@ -574,21 +616,17 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
         classes = list(map(lambda x: x.get_attribute('class'), elements))
         self.assertEqual(classes.pop(), 'iuw-add-image-btn visible-by-number')
 
-        self.submit_form('#orderedinline_form')
+        self.submit_form('#testwitharrayfield_form')
         self.assert_success_message()
 
-        items = models.OrderedInlineItem.objects.order_by('id').all()
-        self.assertEqual(len(items), 3)
-        item1, item2, item3 = items
-        self.assertIsNotNone(item3.image)
-        self.assertEqual(str(item3.order), '1')
-        self.assertIsNotNone(item2.image)
-        self.assertEqual(str(item2.order), '2')
-        self.assertIsNotNone(item1.image)
-        self.assertEqual(str(item1.order), '3')
+        item = models.TestWithArrayField.objects.first()
+        self.assertEqual(len(item.images), 3)
+        first, second, third = item.images
+        self.assertFalse("admin_test/image2" in first)
+        self.assertTrue("admin_test/image2" in second)
+        self.assertFalse("admin_test/image2" in third)
 
     def test_should_reorder_with_deleted_item(self):
-        self.assertEqual(len(models.OrderedInlineItem.objects.all()), 0)
         self.goto_add_page()
 
         root = self.find_inline_root()
@@ -650,19 +688,16 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
         classes = list(map(lambda x: x.get_attribute('class'), elements))
         self.assertEqual(classes.pop(), 'iuw-add-image-btn visible-by-number')
 
-        self.submit_form('#orderedinline_form')
+        self.submit_form('#testwitharrayfield_form')
         self.assert_success_message()
 
-        items = models.OrderedInlineItem.objects.order_by('id').all()
-        self.assertEqual(len(items), 2)
-        item1, item3 = items
-        self.assertIsNotNone(item3.image)
-        self.assertEqual(str(item3.order), '1')
-        self.assertIsNotNone(item1.image)
-        self.assertEqual(str(item1.order), '2')
+        item = models.TestWithArrayField.objects.first()
+        self.assertEqual(len(item.images), 2)
+        first, second = item.images
+        self.assertFalse("admin_test/image2" in first)
+        self.assertFalse("admin_test/image2" in second)
 
     def test_should_reorder_and_delete_item(self):
-        self.assertEqual(len(models.OrderedInlineItem.objects.all()), 0)
         self.goto_add_page()
 
         root = self.find_inline_root()
@@ -722,70 +757,11 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
         classes = list(map(lambda x: x.get_attribute('class'), elements))
         self.assertEqual(classes.pop(), 'iuw-add-image-btn visible-by-number')
 
-        self.submit_form('#orderedinline_form')
+        self.submit_form('#testwitharrayfield_form')
         self.assert_success_message()
 
-        items = models.OrderedInlineItem.objects.order_by('id').all()
-        self.assertEqual(len(items), 2)
-        item3, item1 = items
-        self.assertIsNotNone(item3.image)
-        self.assertEqual(str(item3.order), '1')
-        self.assertIsNotNone(item1.image)
-        self.assertEqual(str(item1.order), '2')
-
-    def test_drop_label_leave(self):
-        self.goto_add_page()
-
-        root = self.find_inline_root()
-        drop_label = self.find_drop_label()
-
-        self.assertFalse(drop_label.is_visible())
-        
-        data_transfer = self.page.evaluate_handle('() => new DataTransfer()')
-        root.dispatch_event('dragenter', { 'dataTransfer': data_transfer })
-        self.wait(0.5)
-
-        self.assertTrue(drop_label.is_visible())
-
-        root.dispatch_event('dragleave', { 'dataTransfer': data_transfer })
-        self.wait(0.5)
-
-        self.assertFalse(drop_label.is_visible())
-
-    def test_drop_label_drop(self):
-        self.goto_add_page()
-
-        root = self.find_inline_root()
-        drop_label = self.find_drop_label()
-
-        self.assertFalse(drop_label.is_visible())
-        
-        data_transfer = self.page.evaluate_handle('() => new DataTransfer()')
-        root.dispatch_event('dragenter', { 'dataTransfer': data_transfer })
-        self.wait(0.5)
-
-        self.assertTrue(drop_label.is_visible())
-
-        root.dispatch_event('drop', { 'dataTransfer': data_transfer })
-        self.wait(0.5)
-
-        self.assertFalse(drop_label.is_visible())
-
-    def test_drop_label_end(self):
-        self.goto_add_page()
-
-        root = self.find_inline_root()
-        drop_label = self.find_drop_label()
-
-        self.assertFalse(drop_label.is_visible())
-        
-        data_transfer = self.page.evaluate_handle('() => new DataTransfer()')
-        root.dispatch_event('dragenter', { 'dataTransfer': data_transfer })
-        self.wait(0.5)
-
-        self.assertTrue(drop_label.is_visible())
-
-        root.dispatch_event('dragend', { 'dataTransfer': data_transfer })
-        self.wait(0.5)
-
-        self.assertFalse(drop_label.is_visible())
+        item = models.TestWithArrayField.objects.first()
+        self.assertEqual(len(item.images), 2)
+        first, second = item.images
+        self.assertFalse("admin_test/image2" in first)
+        self.assertFalse("admin_test/image2" in second)

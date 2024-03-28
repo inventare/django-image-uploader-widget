@@ -2,7 +2,6 @@ from django.test import tag
 from django.core.files import File
 from tests import models, test_case
 
-@tag('playwright', 'functional')
 class WidgetRequiredTests(test_case.IUWTestCase):
     model = 'testrequired'
 

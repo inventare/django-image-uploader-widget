@@ -3,7 +3,7 @@ from django.test import tag
 from django.core.files import File
 from tests import models, test_case
 
-@tag("ui-regression", "playwright")
+@tag("ui-regression")
 class InlineEditorUIRegressionTestCase(test_case.IUWTestCase):
     model = "inline"
 

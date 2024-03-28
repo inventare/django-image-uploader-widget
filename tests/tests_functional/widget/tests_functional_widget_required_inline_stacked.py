@@ -1,7 +1,6 @@
 from django.test.utils import tag
 from tests import models, test_case
 
-@tag('playwright', 'functional')
 class RequiredWidgetStackedInlineTestCase(test_case.IUWTestCase):
     model = 'testrequiredinline'
    

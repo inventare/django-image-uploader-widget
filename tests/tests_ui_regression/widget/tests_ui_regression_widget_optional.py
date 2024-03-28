@@ -3,7 +3,7 @@ from django.core.files import File
 from django.test.utils import tag
 from tests import models, test_case
 
-@tag("ui-regression", "playwright")
+@tag("ui-regression")
 class OptionaldWidgetTestCase(test_case.IUWTestCase):
     model = "testnonrequired"
 
