@@ -122,7 +122,7 @@ class ArrayFieldEditorTests(test_case.IUWTestCase):
 
         item = models.TestWithArrayField.objects.first()
         self.assertIsNotNone(item)
-        self.assertEquals(len(item.images), 2)
+        self.assertEqual(len(item.images), 2)
         for url in item.images:
             self.assertIsNotNone(url)
 
