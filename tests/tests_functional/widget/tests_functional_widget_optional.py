@@ -2,7 +2,6 @@ from django.test.utils import tag
 from django.core.files import File
 from tests import models, test_case
 
-@tag('playwright', 'functional')
 class OptionalWidgetTestCase(test_case.IUWTestCase):
     model = 'testnonrequired'
 

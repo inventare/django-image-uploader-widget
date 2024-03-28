@@ -2,7 +2,7 @@ from django.test import tag
 from django.core.files import File
 from tests import models, test_case
 
-@tag('functional', "playwright", "ordered")
+@tag('functional', "ordered")
 class OrderedInlineEditorTests(test_case.IUWTestCase):
     model = "orderedinline"
 

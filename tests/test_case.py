@@ -40,7 +40,6 @@ class _DarkMode:
     def __exit__(self, exc_type, exc_value, tb):
         self.test_case.page.emulate_media(color_scheme='light')
 
-@tag('playwright')
 class IUWTestCase(StaticLiveServerTestCase):
     model = None
     pixel_threshold_red = 5

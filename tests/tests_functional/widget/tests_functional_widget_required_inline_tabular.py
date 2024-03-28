@@ -2,7 +2,6 @@ from django.test.utils import tag
 from tests import models
 from tests import test_case
 
-@tag('playwright', 'functional')
 class RequiredWidgetTabularInlineTestCase(test_case.IUWTestCase):
     model = "testrequiredtabularinline"
     
