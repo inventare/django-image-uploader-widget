@@ -1,18 +1,21 @@
 from itertools import chain
+
 from django import forms
-from django.core.exceptions import ValidationError
 from django.contrib.postgres.utils import prefix_validation_error
+from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
+
 from .widget import ImageUploaderArrayWidget
+
 
 class ImageListFormField(forms.Field):
     default_error_messages = {
         "item_invalid": _("Item %(name)s in the array did not validate:"),
     }
-    
+
     def __init__(self, **kwargs):
-        kwargs.pop('base_field')
-        self.max_length = kwargs.pop('max_length') or 150
+        kwargs.pop("base_field")
+        self.max_length = kwargs.pop("max_length") or 150
 
         self.required = False
         self.base_field = forms.ImageField(max_length=self.max_length)
@@ -45,7 +48,7 @@ class ImageListFormField(forms.Field):
                         error,
                         self.error_messages["item_invalid"],
                         code="item_invalid",
-                        params={ "name": file_name },
+                        params={"name": file_name},
                     )
                 )
                 cleaned_data.append(None)
@@ -66,4 +69,3 @@ class ImageListFormField(forms.Field):
             if initial in self.empty_values and data in self.empty_values:
                 return False
         return super().has_changed(initial, data)
-

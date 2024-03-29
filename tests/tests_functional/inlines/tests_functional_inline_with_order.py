@@ -1,31 +1,33 @@
-from django.test import tag
 from django.core.files import File
+from django.test import tag
+
 from tests import models, test_case
 
-@tag('functional', "ordered")
+
+@tag("functional", "ordered")
 class OrderedInlineEditorTests(test_case.IUWTestCase):
     model = "orderedinline"
 
     def init_item(self, only_one=False):
         inline = models.OrderedInline.objects.create()
-        
+
         self.item1 = models.OrderedInlineItem()
         self.item1.parent = inline
         self.item1.order = 1
-        with open(self.image1, 'rb') as f:
+        with open(self.image1, "rb") as f:
             self.item1.image.save("image.png", File(f))
         self.item1.save()
-        
+
         if not only_one:
             self.item2 = models.OrderedInlineItem()
             self.item2.parent = inline
             self.item2.order = 2
-            with open(self.image2, 'rb') as f:
+            with open(self.image2, "rb") as f:
                 self.item2.image.save("image2.png", File(f))
             self.item2.save()
 
         return inline
-    
+
     def goto_change_page(self, only_one=False):
         item = self.init_item(only_one)
         super().goto_change_page(item.id)
@@ -55,7 +57,7 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
     def test_should_fire_click_on_temporary_input_when_click_empty_marker(self):
         """
         Should fire click on the temporary input when click on empty marker.
-        
+
         The test flow is:
             - Navigate to Inline Add Page.
             - Click on the empty marker.
@@ -65,7 +67,7 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
 
         root = self.find_inline_root()
         empty = self.find_empty_marker(root)
-        with self.assert_input_file_clicked('.temp_file'):
+        with self.assert_input_file_clicked(".temp_file"):
             empty.click()
 
     def test_should_create_preview_when_select_and_upload_when_submit(self):
@@ -90,7 +92,7 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
         self.goto_add_page()
 
         root = self.find_inline_root()
-        temp_file = root.query_selector('.temp_file')
+        temp_file = root.query_selector(".temp_file")
 
         previews = self.find_inline_previews(root)
         self.assertEqual(len(previews), 0)
@@ -102,9 +104,9 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
         temp_file.set_input_files(self.image2)
         previews = self.find_inline_previews(root)
         self.assertEqual(len(previews), 2)
-        
+
         for index, preview in enumerate(previews):
-            img = preview.query_selector('img')
+            img = preview.query_selector("img")
             preview_button = self.find_preview_icon(preview)
             remove_button = self.find_delete_icon(preview)
             order_input = self.find_inline_order(preview)
@@ -114,10 +116,10 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
             self.assertIsNotNone(preview_button)
             self.assertIsNotNone(remove_button)
 
-        self.submit_form('#orderedinline_form')
+        self.submit_form("#orderedinline_form")
         self.assert_success_message()
 
-        items = models.OrderedInlineItem.objects.order_by('id').all()
+        items = models.OrderedInlineItem.objects.order_by("id").all()
         self.assertEqual(len(items), 2)
         for index, item in enumerate(items):
             self.assertIsNotNone(item.image)
@@ -140,16 +142,16 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
         self.goto_add_page()
 
         root = self.find_inline_root()
-        temp_file = root.query_selector('.temp_file')
+        temp_file = root.query_selector(".temp_file")
         temp_file.set_input_files(self.image1)
 
         previews = self.find_inline_previews(root)
         self.assertEqual(len(previews), 1)
-        
+
         self.find_delete_icon(previews[0]).click()
         self.assertEqual(len(self.find_inline_previews(root)), 0)
 
-        self.submit_form('#orderedinline_form')
+        self.submit_form("#orderedinline_form")
         self.assert_success_message()
         self.assertEqual(len(models.OrderedInlineItem.objects.all()), 0)
 
@@ -169,14 +171,14 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
         self.assertEqual(len(previews), 2)
 
         for index, preview in enumerate(previews):
-            img = preview.query_selector('img')
+            img = preview.query_selector("img")
             preview_button = self.find_preview_icon(preview)
             remove_button = self.find_delete_icon(preview)
             self.assertIsNotNone(img)
             self.assertIsNotNone(preview_button)
             self.assertIsNotNone(remove_button)
 
-            src = img.get_attribute('src')
+            src = img.get_attribute("src")
             if index == 0:
                 self.assertTrue(self.item1.image.url in src)
             else:
@@ -212,9 +214,9 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
         self.assertEqual(len(previews), 2)
 
         for preview in previews:
-            self.assertTrue(preview.query_selector('input[type=checkbox]').is_checked())
+            self.assertTrue(preview.query_selector("input[type=checkbox]").is_checked())
 
-        self.submit_form('#orderedinline_form')
+        self.submit_form("#orderedinline_form")
         self.assert_success_message()
 
         self.assertEqual(len(models.OrderedInlineItem.objects.all()), 0)
@@ -237,20 +239,24 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
         previews = self.find_inline_previews(root)
         self.assertEqual(len(previews), 2)
 
-        with self.assert_input_file_clicked(".inline-related:not(.empty-form):not(.deleted) input[type=file]", 0):
+        with self.assert_input_file_clicked(
+            ".inline-related:not(.empty-form):not(.deleted) input[type=file]", 0
+        ):
             preview = previews[0]
-            img = preview.query_selector('img')
+            img = preview.query_selector("img")
             img.click()
 
-        with self.assert_input_file_clicked(".inline-related:not(.empty-form):not(.deleted) input[type=file]", 1):
+        with self.assert_input_file_clicked(
+            ".inline-related:not(.empty-form):not(.deleted) input[type=file]", 1
+        ):
             preview = previews[1]
-            img = preview.query_selector('img')
+            img = preview.query_selector("img")
             img.click()
 
     def test_should_fire_temp_file_click_when_click_on_add_button(self):
         """
         Should fire temporary file input click when click on the add button.
-        
+
         The test flow is:
             - Go to change page.
             - Assert if the one preview is present.
@@ -280,20 +286,20 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
             - Assert if the preview modal is visible.
         """
         self.goto_change_page(only_one=True)
-        
+
         root = self.find_inline_root()
         previews = self.find_inline_previews(root)
         self.assertEqual(len(previews), 1)
 
         preview = previews[0]
-        preview_img = preview.query_selector('img')
+        preview_img = preview.query_selector("img")
         self.find_preview_icon(preview).click()
         self.assert_preview_modal(preview_img)
 
     def test_should_not_close_preview_modal_when_click_image(self):
         """
         Should not close the preview modal when click on the image on preview modal.
-        
+
         The test flow is:
             - Navigate to Change Page.
             - Assert if one preview is present.
@@ -304,18 +310,18 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
             - Assert if the preview modal is visible.
         """
         self.goto_change_page(only_one=True)
-        
+
         root = self.find_inline_root()
         previews = self.find_inline_previews(root)
         self.assertEqual(len(previews), 1)
 
         preview = previews[0]
-        preview_img = preview.query_selector('img')
+        preview_img = preview.query_selector("img")
         self.find_preview_icon(preview).click()
         self.assert_preview_modal(preview_img)
 
         preview_modal = self.get_preview_modal(True, 3000)
-        img = preview_modal.query_selector('img')
+        img = preview_modal.query_selector("img")
         img.click()
         self.wait(0.5)
         self.assertEqual(preview_modal.get_attribute("class"), "iuw-modal visible")
@@ -323,7 +329,7 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
     def test_should_close_preview_modal_when_click_close_button(self):
         """
         Should close the preview modal when click on the close button.
-        
+
         The test flow is:
             - Navigate to Change Page.
             - Assert if one preview is present.
@@ -339,7 +345,7 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
         self.assertEqual(len(previews), 1)
 
         preview = previews[0]
-        preview_img = preview.query_selector('img')
+        preview_img = preview.query_selector("img")
         self.find_preview_icon(preview).click()
         self.assert_preview_modal(preview_img)
         self.assert_preview_modal_close()
@@ -347,7 +353,7 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
     def test_should_change_image_of_item_when_change_image_on_inline(self):
         """
         Should change the image of a item when change image by inline and save.
-        
+
         The test flow is:
             - Navigate to Change Page.
             - Assert if two previews is present.
@@ -367,20 +373,20 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
         url1 = self.item1.image.url
 
         preview = previews[0]
-        preview_img = preview.query_selector('img')
-        preview_src = preview_img.get_attribute('src')
+        preview_img = preview.query_selector("img")
+        preview_src = preview_img.get_attribute("src")
         order_field = self.find_inline_order(preview)
         order = order_field.input_value()
 
         order_field_other = self.find_inline_order(previews[1])
         order_other = order_field_other.input_value()
-        
-        file_input = preview.query_selector('input[type=file]')
+
+        file_input = preview.query_selector("input[type=file]")
         file_input.set_input_files(self.image1)
 
-        self.assertNotEqual(preview_src, preview_img.get_attribute('src'))
-        
-        self.submit_form('#orderedinline_form')
+        self.assertNotEqual(preview_src, preview_img.get_attribute("src"))
+
+        self.submit_form("#orderedinline_form")
         self.assert_success_message()
 
         item1 = models.OrderedInlineItem.objects.filter(pk=self.item1.pk).first()
@@ -401,17 +407,19 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
             order_input = self.find_inline_order(preview)
             self.assertFalse(order_input.is_visible())
             self.assertEqual(order_input.input_value(), str(index + 1))
-        
-        elements = root.query_selector_all('.inline-related:not(.empty-form):not(.deleted), .iuw-add-image-btn')
-        classes = list(map(lambda x: x.get_attribute('class'), elements))
-        self.assertEqual(classes.pop(), 'iuw-add-image-btn visible-by-number')
-    
+
+        elements = root.query_selector_all(
+            ".inline-related:not(.empty-form):not(.deleted), .iuw-add-image-btn"
+        )
+        classes = list(map(lambda x: x.get_attribute("class"), elements))
+        self.assertEqual(classes.pop(), "iuw-add-image-btn visible-by-number")
+
     def test_should_reorder_two_items_from_first_to_last(self):
         self.assertEqual(len(models.OrderedInlineItem.objects.all()), 0)
         self.goto_add_page()
 
         root = self.find_inline_root()
-        temp_file = root.query_selector('.temp_file')
+        temp_file = root.query_selector(".temp_file")
 
         previews = self.find_inline_previews(root)
         self.assertEqual(len(previews), 0)
@@ -424,7 +432,7 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
         previews = self.find_inline_previews(root)
         self.assertEqual(len(previews), 2)
         for index, preview in enumerate(previews):
-            img = preview.query_selector('img')
+            img = preview.query_selector("img")
             preview_button = self.find_preview_icon(preview)
             remove_button = self.find_delete_icon(preview)
             order_input = self.find_inline_order(preview)
@@ -438,35 +446,37 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
         preview1, preview2 = previews
         preview1.hover()
         self.page.mouse.down()
-        preview2.hover(position={ 'x': 100, 'y': 10 })
+        preview2.hover(position={"x": 100, "y": 10})
         self.page.mouse.up()
 
         order_input = self.find_inline_order(preview1)
-        self.assertEqual(order_input.input_value(), '2')
+        self.assertEqual(order_input.input_value(), "2")
         order_input = self.find_inline_order(preview2)
-        self.assertEqual(order_input.input_value(), '1')
+        self.assertEqual(order_input.input_value(), "1")
 
-        elements = root.query_selector_all('.inline-related:not(.empty-form):not(.deleted), .iuw-add-image-btn')
-        classes = list(map(lambda x: x.get_attribute('class'), elements))
-        self.assertEqual(classes.pop(), 'iuw-add-image-btn visible-by-number')
+        elements = root.query_selector_all(
+            ".inline-related:not(.empty-form):not(.deleted), .iuw-add-image-btn"
+        )
+        classes = list(map(lambda x: x.get_attribute("class"), elements))
+        self.assertEqual(classes.pop(), "iuw-add-image-btn visible-by-number")
 
-        self.submit_form('#orderedinline_form')
+        self.submit_form("#orderedinline_form")
         self.assert_success_message()
 
-        items = models.OrderedInlineItem.objects.order_by('id').all()
+        items = models.OrderedInlineItem.objects.order_by("id").all()
         self.assertEqual(len(items), 2)
         item1, item2 = items
         self.assertIsNotNone(item1.image)
-        self.assertEqual(str(item1.order), '2')
+        self.assertEqual(str(item1.order), "2")
         self.assertIsNotNone(item2.image)
-        self.assertEqual(str(item2.order), '1')
-    
+        self.assertEqual(str(item2.order), "1")
+
     def test_should_reorder_two_items_from_last_to_first(self):
         self.assertEqual(len(models.OrderedInlineItem.objects.all()), 0)
         self.goto_add_page()
 
         root = self.find_inline_root()
-        temp_file = root.query_selector('.temp_file')
+        temp_file = root.query_selector(".temp_file")
 
         previews = self.find_inline_previews(root)
         self.assertEqual(len(previews), 0)
@@ -479,7 +489,7 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
         previews = self.find_inline_previews(root)
         self.assertEqual(len(previews), 2)
         for index, preview in enumerate(previews):
-            img = preview.query_selector('img')
+            img = preview.query_selector("img")
             preview_button = self.find_preview_icon(preview)
             remove_button = self.find_delete_icon(preview)
             order_input = self.find_inline_order(preview)
@@ -493,35 +503,37 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
         preview1, preview2 = previews
         preview2.hover()
         self.page.mouse.down()
-        preview1.hover(position={ 'x': 40, 'y': 10 })
+        preview1.hover(position={"x": 40, "y": 10})
         self.page.mouse.up()
 
         order_input = self.find_inline_order(preview1)
-        self.assertEqual(order_input.input_value(), '2')
+        self.assertEqual(order_input.input_value(), "2")
         order_input = self.find_inline_order(preview2)
-        self.assertEqual(order_input.input_value(), '1')
+        self.assertEqual(order_input.input_value(), "1")
 
-        elements = root.query_selector_all('.inline-related:not(.empty-form):not(.deleted), .iuw-add-image-btn')
-        classes = list(map(lambda x: x.get_attribute('class'), elements))
-        self.assertEqual(classes.pop(), 'iuw-add-image-btn visible-by-number')
+        elements = root.query_selector_all(
+            ".inline-related:not(.empty-form):not(.deleted), .iuw-add-image-btn"
+        )
+        classes = list(map(lambda x: x.get_attribute("class"), elements))
+        self.assertEqual(classes.pop(), "iuw-add-image-btn visible-by-number")
 
-        self.submit_form('#orderedinline_form')
+        self.submit_form("#orderedinline_form")
         self.assert_success_message()
 
-        items = models.OrderedInlineItem.objects.order_by('id').all()
+        items = models.OrderedInlineItem.objects.order_by("id").all()
         self.assertEqual(len(items), 2)
         item1, item2 = items
         self.assertIsNotNone(item1.image)
-        self.assertEqual(str(item1.order), '2')
+        self.assertEqual(str(item1.order), "2")
         self.assertIsNotNone(item2.image)
-        self.assertEqual(str(item2.order), '1')
+        self.assertEqual(str(item2.order), "1")
 
     def test_should_reorder_three_items(self):
         self.assertEqual(len(models.OrderedInlineItem.objects.all()), 0)
         self.goto_add_page()
 
         root = self.find_inline_root()
-        temp_file = root.query_selector('.temp_file')
+        temp_file = root.query_selector(".temp_file")
 
         previews = self.find_inline_previews(root)
         self.assertEqual(len(previews), 0)
@@ -539,7 +551,7 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
         self.assertEqual(len(previews), 3)
 
         for index, preview in enumerate(previews):
-            img = preview.query_selector('img')
+            img = preview.query_selector("img")
             preview_button = self.find_preview_icon(preview)
             remove_button = self.find_delete_icon(preview)
             order_input = self.find_inline_order(preview)
@@ -553,46 +565,48 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
         preview1, preview2, preview3 = previews
         preview1.hover()
         self.page.mouse.down()
-        preview2.hover(position={ 'x': 100, 'y': 10 })
+        preview2.hover(position={"x": 100, "y": 10})
         self.page.mouse.up()
         # Reorder 3 to 1 (now 2)
         preview3.hover()
         self.page.mouse.down()
-        preview2.hover(position={ 'x': 40, 'y': 10 })
+        preview2.hover(position={"x": 40, "y": 10})
         self.page.mouse.up()
 
         # The currently order is 3, 2, 1
 
         order_input = self.find_inline_order(preview3)
-        self.assertEqual(order_input.input_value(), '1')
+        self.assertEqual(order_input.input_value(), "1")
         order_input = self.find_inline_order(preview2)
-        self.assertEqual(order_input.input_value(), '2')
+        self.assertEqual(order_input.input_value(), "2")
         order_input = self.find_inline_order(preview1)
-        self.assertEqual(order_input.input_value(), '3')
+        self.assertEqual(order_input.input_value(), "3")
 
-        elements = root.query_selector_all('.inline-related:not(.empty-form):not(.deleted), .iuw-add-image-btn')
-        classes = list(map(lambda x: x.get_attribute('class'), elements))
-        self.assertEqual(classes.pop(), 'iuw-add-image-btn visible-by-number')
+        elements = root.query_selector_all(
+            ".inline-related:not(.empty-form):not(.deleted), .iuw-add-image-btn"
+        )
+        classes = list(map(lambda x: x.get_attribute("class"), elements))
+        self.assertEqual(classes.pop(), "iuw-add-image-btn visible-by-number")
 
-        self.submit_form('#orderedinline_form')
+        self.submit_form("#orderedinline_form")
         self.assert_success_message()
 
-        items = models.OrderedInlineItem.objects.order_by('id').all()
+        items = models.OrderedInlineItem.objects.order_by("id").all()
         self.assertEqual(len(items), 3)
         item1, item2, item3 = items
         self.assertIsNotNone(item3.image)
-        self.assertEqual(str(item3.order), '1')
+        self.assertEqual(str(item3.order), "1")
         self.assertIsNotNone(item2.image)
-        self.assertEqual(str(item2.order), '2')
+        self.assertEqual(str(item2.order), "2")
         self.assertIsNotNone(item1.image)
-        self.assertEqual(str(item1.order), '3')
+        self.assertEqual(str(item1.order), "3")
 
     def test_should_reorder_with_deleted_item(self):
         self.assertEqual(len(models.OrderedInlineItem.objects.all()), 0)
         self.goto_add_page()
 
         root = self.find_inline_root()
-        temp_file = root.query_selector('.temp_file')
+        temp_file = root.query_selector(".temp_file")
 
         previews = self.find_inline_previews(root)
         self.assertEqual(len(previews), 0)
@@ -608,9 +622,9 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
         temp_file.set_input_files(self.image1)
         previews = self.find_inline_previews(root)
         self.assertEqual(len(previews), 3)
-        
+
         for index, preview in enumerate(previews):
-            img = preview.query_selector('img')
+            img = preview.query_selector("img")
             preview_button = self.find_preview_icon(preview)
             remove_button = self.find_delete_icon(preview)
             order_input = self.find_inline_order(preview)
@@ -625,7 +639,7 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
         preview1.hover()
         self.page.mouse.down()
         self.assertFalse(self.find_drop_label().is_visible())
-        preview2.hover(position={ 'x': 100, 'y': 10 })
+        preview2.hover(position={"x": 100, "y": 10})
         self.page.mouse.up()
 
         # Currently Order Is: 2 1 3
@@ -636,37 +650,39 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
         preview3.hover()
         self.page.mouse.down()
         self.assertFalse(self.find_drop_label().is_visible())
-        preview1.hover(position={ 'x': 40, 'y': 10 })
+        preview1.hover(position={"x": 40, "y": 10})
         self.page.mouse.up()
 
         # The currently order is 3, 1 (2 is deleted)
 
         order_input = self.find_inline_order(preview3)
-        self.assertEqual(order_input.input_value(), '1')
+        self.assertEqual(order_input.input_value(), "1")
         order_input = self.find_inline_order(preview1)
-        self.assertEqual(order_input.input_value(), '2')
+        self.assertEqual(order_input.input_value(), "2")
 
-        elements = root.query_selector_all('.inline-related:not(.empty-form):not(.deleted), .iuw-add-image-btn')
-        classes = list(map(lambda x: x.get_attribute('class'), elements))
-        self.assertEqual(classes.pop(), 'iuw-add-image-btn visible-by-number')
+        elements = root.query_selector_all(
+            ".inline-related:not(.empty-form):not(.deleted), .iuw-add-image-btn"
+        )
+        classes = list(map(lambda x: x.get_attribute("class"), elements))
+        self.assertEqual(classes.pop(), "iuw-add-image-btn visible-by-number")
 
-        self.submit_form('#orderedinline_form')
+        self.submit_form("#orderedinline_form")
         self.assert_success_message()
 
-        items = models.OrderedInlineItem.objects.order_by('id').all()
+        items = models.OrderedInlineItem.objects.order_by("id").all()
         self.assertEqual(len(items), 2)
         item1, item3 = items
         self.assertIsNotNone(item3.image)
-        self.assertEqual(str(item3.order), '1')
+        self.assertEqual(str(item3.order), "1")
         self.assertIsNotNone(item1.image)
-        self.assertEqual(str(item1.order), '2')
+        self.assertEqual(str(item1.order), "2")
 
     def test_should_reorder_and_delete_item(self):
         self.assertEqual(len(models.OrderedInlineItem.objects.all()), 0)
         self.goto_add_page()
 
         root = self.find_inline_root()
-        temp_file = root.query_selector('.temp_file')
+        temp_file = root.query_selector(".temp_file")
 
         previews = self.find_inline_previews(root)
         self.assertEqual(len(previews), 0)
@@ -684,7 +700,7 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
         self.assertEqual(len(previews), 3)
 
         for index, preview in enumerate(previews):
-            img = preview.query_selector('img')
+            img = preview.query_selector("img")
             preview_button = self.find_preview_icon(preview)
             remove_button = self.find_delete_icon(preview)
             order_input = self.find_inline_order(preview)
@@ -699,13 +715,13 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
         preview1.hover()
         self.page.mouse.down()
         self.assertFalse(self.find_drop_label().is_visible())
-        preview2.hover(position={ 'x': 100, 'y': 10 })
+        preview2.hover(position={"x": 100, "y": 10})
         self.page.mouse.up()
         # Reorder 3 to 1 (now 2)
         preview3.hover()
         self.page.mouse.down()
         self.assertFalse(self.find_drop_label().is_visible())
-        preview2.hover(position={ 'x': 40, 'y': 10 })
+        preview2.hover(position={"x": 40, "y": 10})
         self.page.mouse.up()
 
         # The currently order is 3, 2, 1
@@ -714,24 +730,26 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
         delete.click()
 
         order_input = self.find_inline_order(preview3)
-        self.assertEqual(order_input.input_value(), '1')
+        self.assertEqual(order_input.input_value(), "1")
         order_input = self.find_inline_order(preview1)
-        self.assertEqual(order_input.input_value(), '2')
+        self.assertEqual(order_input.input_value(), "2")
 
-        elements = root.query_selector_all('.inline-related:not(.empty-form):not(.deleted), .iuw-add-image-btn')
-        classes = list(map(lambda x: x.get_attribute('class'), elements))
-        self.assertEqual(classes.pop(), 'iuw-add-image-btn visible-by-number')
+        elements = root.query_selector_all(
+            ".inline-related:not(.empty-form):not(.deleted), .iuw-add-image-btn"
+        )
+        classes = list(map(lambda x: x.get_attribute("class"), elements))
+        self.assertEqual(classes.pop(), "iuw-add-image-btn visible-by-number")
 
-        self.submit_form('#orderedinline_form')
+        self.submit_form("#orderedinline_form")
         self.assert_success_message()
 
-        items = models.OrderedInlineItem.objects.order_by('id').all()
+        items = models.OrderedInlineItem.objects.order_by("id").all()
         self.assertEqual(len(items), 2)
         item3, item1 = items
         self.assertIsNotNone(item3.image)
-        self.assertEqual(str(item3.order), '1')
+        self.assertEqual(str(item3.order), "1")
         self.assertIsNotNone(item1.image)
-        self.assertEqual(str(item1.order), '2')
+        self.assertEqual(str(item1.order), "2")
 
     def test_drop_label_leave(self):
         self.goto_add_page()
@@ -740,14 +758,14 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
         drop_label = self.find_drop_label()
 
         self.assertFalse(drop_label.is_visible())
-        
-        data_transfer = self.page.evaluate_handle('() => new DataTransfer()')
-        root.dispatch_event('dragenter', { 'dataTransfer': data_transfer })
+
+        data_transfer = self.page.evaluate_handle("() => new DataTransfer()")
+        root.dispatch_event("dragenter", {"dataTransfer": data_transfer})
         self.wait(0.5)
 
         self.assertTrue(drop_label.is_visible())
 
-        root.dispatch_event('dragleave', { 'dataTransfer': data_transfer })
+        root.dispatch_event("dragleave", {"dataTransfer": data_transfer})
         self.wait(0.5)
 
         self.assertFalse(drop_label.is_visible())
@@ -759,14 +777,14 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
         drop_label = self.find_drop_label()
 
         self.assertFalse(drop_label.is_visible())
-        
-        data_transfer = self.page.evaluate_handle('() => new DataTransfer()')
-        root.dispatch_event('dragenter', { 'dataTransfer': data_transfer })
+
+        data_transfer = self.page.evaluate_handle("() => new DataTransfer()")
+        root.dispatch_event("dragenter", {"dataTransfer": data_transfer})
         self.wait(0.5)
 
         self.assertTrue(drop_label.is_visible())
 
-        root.dispatch_event('drop', { 'dataTransfer': data_transfer })
+        root.dispatch_event("drop", {"dataTransfer": data_transfer})
         self.wait(0.5)
 
         self.assertFalse(drop_label.is_visible())
@@ -778,14 +796,14 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
         drop_label = self.find_drop_label()
 
         self.assertFalse(drop_label.is_visible())
-        
-        data_transfer = self.page.evaluate_handle('() => new DataTransfer()')
-        root.dispatch_event('dragenter', { 'dataTransfer': data_transfer })
+
+        data_transfer = self.page.evaluate_handle("() => new DataTransfer()")
+        root.dispatch_event("dragenter", {"dataTransfer": data_transfer})
         self.wait(0.5)
 
         self.assertTrue(drop_label.is_visible())
 
-        root.dispatch_event('dragend', { 'dataTransfer': data_transfer })
+        root.dispatch_event("dragend", {"dataTransfer": data_transfer})
         self.wait(0.5)
 
         self.assertFalse(drop_label.is_visible())

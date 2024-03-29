@@ -1,7 +1,9 @@
 import django
-from django.test import tag
 from django.core.files import File
+from django.test import tag
+
 from tests import models, test_case
+
 
 @tag("ui-regression")
 class InlineEditorUIRegressionTestCase(test_case.IUWTestCase):
@@ -9,22 +11,22 @@ class InlineEditorUIRegressionTestCase(test_case.IUWTestCase):
 
     def init_item(self, only_one=False):
         inline = models.Inline.objects.create()
-        
+
         self.item1 = models.InlineItem()
         self.item1.parent = inline
-        with open(self.image1, 'rb') as f:
+        with open(self.image1, "rb") as f:
             self.item1.image.save("image.png", File(f))
         self.item1.save()
-        
+
         if not only_one:
             self.item2 = models.InlineItem()
             self.item2.parent = inline
-            with open(self.image2, 'rb') as f:
+            with open(self.image2, "rb") as f:
                 self.item2.image.save("image2.png", File(f))
             self.item2.save()
 
         return inline
-    
+
     def goto_change_page(self, only_one=False):
         item = self.init_item(only_one)
         super().goto_change_page(item.id)
@@ -37,7 +39,7 @@ class InlineEditorUIRegressionTestCase(test_case.IUWTestCase):
         root = self.find_inline_root()
         self.wait(0.5)
 
-        self.assertMatchSnapshot(root, 'in_test_empty_marker')
+        self.assertMatchSnapshot(root, "in_test_empty_marker")
 
     def test_empty_marker_hover(self):
         self.goto_add_page()
@@ -47,13 +49,13 @@ class InlineEditorUIRegressionTestCase(test_case.IUWTestCase):
         self.find_empty_marker().hover()
         self.wait(0.5)
 
-        self.assertMatchSnapshot(root, 'in_test_empty_marker_hover')
+        self.assertMatchSnapshot(root, "in_test_empty_marker_hover")
 
     def test_with_images_data(self):
         self.goto_change_page()
-        
+
         root = self.find_inline_root()
-        self.assertMatchSnapshot(root, 'in_test_with_images_data')
+        self.assertMatchSnapshot(root, "in_test_with_images_data")
 
     def test_with_images_hover_preview(self):
         self.goto_change_page()
@@ -62,9 +64,9 @@ class InlineEditorUIRegressionTestCase(test_case.IUWTestCase):
         previews = self.find_inline_previews(root)
         previews[0].hover()
         self.wait(0.5)
-        
-        self.assertMatchSnapshot(root, 'in_test_with_images_hover_preview')
-    
+
+        self.assertMatchSnapshot(root, "in_test_with_images_hover_preview")
+
     def test_hover_preview_icon(self):
         self.goto_change_page()
 
@@ -72,8 +74,8 @@ class InlineEditorUIRegressionTestCase(test_case.IUWTestCase):
         previews = self.find_inline_previews(root)
         self.find_preview_icon(previews[0]).hover()
         self.wait(0.5)
-        
-        self.assertMatchSnapshot(root, 'in_test_hover_preview_icon')
+
+        self.assertMatchSnapshot(root, "in_test_hover_preview_icon")
 
     def test_show_preview_modal(self):
         self.goto_change_page()
@@ -84,7 +86,7 @@ class InlineEditorUIRegressionTestCase(test_case.IUWTestCase):
         self.wait(0.5)
 
         modal = self.get_preview_modal(black_overlay=True)
-        self.assertMatchSnapshot(modal, 'in_test_show_preview_modal')
+        self.assertMatchSnapshot(modal, "in_test_show_preview_modal")
 
     def test_hover_delete_icon(self):
         self.goto_change_page()
@@ -93,8 +95,8 @@ class InlineEditorUIRegressionTestCase(test_case.IUWTestCase):
         previews = self.find_inline_previews(root)
         self.find_delete_icon(previews[0]).hover()
         self.wait(0.5)
-        
-        self.assertMatchSnapshot(root, 'in_test_hover_delete_icon')
+
+        self.assertMatchSnapshot(root, "in_test_hover_delete_icon")
 
     def test_hover_add_button(self):
         self.goto_change_page()
@@ -103,7 +105,7 @@ class InlineEditorUIRegressionTestCase(test_case.IUWTestCase):
         self.find_add_button(root).hover()
         self.wait(0.5)
 
-        self.assertMatchSnapshot(root, 'in_test_hover_add_button')
+        self.assertMatchSnapshot(root, "in_test_hover_add_button")
 
     def test_ui_initialized_toggle_dark_theme(self):
         major, minor, _, _, _ = django.VERSION
@@ -111,16 +113,16 @@ class InlineEditorUIRegressionTestCase(test_case.IUWTestCase):
             # Theme toggle is added in django 4.2
             # https://docs.djangoproject.com/en/4.2/releases/4.2/#django-contrib-admin
             return
-        
-        self.page.emulate_media(color_scheme='light')
+
+        self.page.emulate_media(color_scheme="light")
         self.goto_change_page()
 
         root = self.find_inline_root()
-        self.assertMatchSnapshot(root, 'in_test_ui_initialized_toggle_dark_theme')
+        self.assertMatchSnapshot(root, "in_test_ui_initialized_toggle_dark_theme")
 
-        self.page.query_selector('#header button.theme-toggle').click()
+        self.page.query_selector("#header button.theme-toggle").click()
         self.wait(0.3)
-        
-        self.assertMatchSnapshot(root, 'in_test_ui_initialized_toggle_dark_theme2')
 
-        self.page.emulate_media(color_scheme='light')
+        self.assertMatchSnapshot(root, "in_test_ui_initialized_toggle_dark_theme2")
+
+        self.page.emulate_media(color_scheme="light")
