@@ -1,21 +1,24 @@
+import datetime
 import os
 import pathlib
-import datetime
-from typing import Optional
 import posixpath
-from django.core.exceptions import SuspiciousFileOperation
-from django.db.models import ImageField
+from typing import Optional
+
 from django.contrib.postgres.fields import ArrayField
+from django.core.exceptions import SuspiciousFileOperation
+from django.core.files.storage import Storage, default_storage
+from django.db.models import ImageField
 from django.db.models.fields.files import FieldFile
-from django.core.files.storage import default_storage, Storage
+
 from .forms import ImageListFormField
+
 
 def validate_file_name(name, allow_relative_path=False):
     # TODO: when drop support for django 3.2, remove this function
     # and import from django
-    
+
     # Remove potentially dangerous names
-    if os.path.basename(name) in {'', '.', '..'}:
+    if os.path.basename(name) in {"", ".", ".."}:
         raise SuspiciousFileOperation("Could not derive file name from '%s'" % name)
 
     if allow_relative_path:
@@ -23,7 +26,7 @@ def validate_file_name(name, allow_relative_path=False):
         # FileField.generate_filename() where all file paths are expected to be
         # Unix style (with forward slashes).
         path = pathlib.PurePosixPath(name)
-        if path.is_absolute() or '..' in path.parts:
+        if path.is_absolute() or ".." in path.parts:
             raise SuspiciousFileOperation(
                 "Detected path traversal attempt in '%s'" % name
             )
@@ -40,12 +43,14 @@ class ImageListField(ArrayField):
         max_length: int = 150,
         storage: Optional[Storage] = None,
         upload_to: str = "",
-        **kwargs
+        **kwargs,
     ):
         self.max_length = max_length or 150
         self.storage = storage or default_storage
         self.upload_to = upload_to or ""
-        kwargs['base_field'] = ImageField(max_length=self.max_length, upload_to=upload_to)
+        kwargs["base_field"] = ImageField(
+            max_length=self.max_length, upload_to=upload_to
+        )
         super().__init__(
             *args,
             **kwargs,
@@ -63,7 +68,7 @@ class ImageListField(ArrayField):
             }
         )
         return name, path, args, kwargs
-    
+
     def generate_filename(self, instance, filename):
         """
         Apply (if callable) or prepend (if a string) upload_to to the filename,
@@ -78,11 +83,11 @@ class ImageListField(ArrayField):
             filename = posixpath.join(dirname, filename)
         filename = validate_file_name(filename, allow_relative_path=True)
         return self.storage.generate_filename(filename)
-    
+
     def _get_file(self, instance, file):
         if isinstance(file, str):
             return FieldFile(instance, self, file)
-        
+
         field_file = FieldFile(instance, self, file.name)
         field_file.file = file
         field_file._committed = False
@@ -97,7 +102,7 @@ class ImageListField(ArrayField):
                 file.save(file.name, file.file, save=False)
 
         return value
-    
+
     def save_form_data(self, instance, data):
         if not data:
             data = []

@@ -1,29 +1,31 @@
-from django.test import tag
 from django.core.files import File
+from django.test import tag
+
 from tests import models, test_case
 
-@tag('functional')
+
+@tag("functional")
 class InlineEditorTests(test_case.IUWTestCase):
     model = "inline"
 
     def init_item(self, only_one=False):
         inline = models.Inline.objects.create()
-        
+
         self.item1 = models.InlineItem()
         self.item1.parent = inline
-        with open(self.image1, 'rb') as f:
+        with open(self.image1, "rb") as f:
             self.item1.image.save("image.png", File(f))
         self.item1.save()
-        
+
         if not only_one:
             self.item2 = models.InlineItem()
             self.item2.parent = inline
-            with open(self.image2, 'rb') as f:
+            with open(self.image2, "rb") as f:
                 self.item2.image.save("image2.png", File(f))
             self.item2.save()
 
         return inline
-    
+
     def goto_change_page(self, only_one=False):
         item = self.init_item(only_one)
         super().goto_change_page(item.id)
@@ -53,7 +55,7 @@ class InlineEditorTests(test_case.IUWTestCase):
     def test_should_fire_click_on_temporary_input_when_click_empty_marker(self):
         """
         Should fire click on the temporary input when click on empty marker.
-        
+
         The test flow is:
             - Navigate to Inline Add Page.
             - Click on the empty marker.
@@ -63,7 +65,7 @@ class InlineEditorTests(test_case.IUWTestCase):
 
         root = self.find_inline_root()
         empty = self.find_empty_marker(root)
-        with self.assert_input_file_clicked('.temp_file'):
+        with self.assert_input_file_clicked(".temp_file"):
             empty.click()
 
     def test_should_create_preview_when_select_and_upload_when_submit(self):
@@ -87,7 +89,7 @@ class InlineEditorTests(test_case.IUWTestCase):
         self.goto_add_page()
 
         root = self.find_inline_root()
-        temp_file = root.query_selector('.temp_file')
+        temp_file = root.query_selector(".temp_file")
 
         previews = self.find_inline_previews(root)
         self.assertEqual(len(previews), 0)
@@ -99,16 +101,16 @@ class InlineEditorTests(test_case.IUWTestCase):
         temp_file.set_input_files(self.image2)
         previews = self.find_inline_previews(root)
         self.assertEqual(len(previews), 2)
-        
+
         for preview in previews:
-            img = preview.query_selector('img')
+            img = preview.query_selector("img")
             preview_button = self.find_preview_icon(preview)
             remove_button = self.find_delete_icon(preview)
             self.assertIsNotNone(img)
             self.assertIsNotNone(preview_button)
             self.assertIsNotNone(remove_button)
 
-        self.submit_form('#inline_form')
+        self.submit_form("#inline_form")
         self.assert_success_message()
 
         items = models.InlineItem.objects.all()
@@ -133,16 +135,16 @@ class InlineEditorTests(test_case.IUWTestCase):
         self.goto_add_page()
 
         root = self.find_inline_root()
-        temp_file = root.query_selector('.temp_file')
+        temp_file = root.query_selector(".temp_file")
         temp_file.set_input_files(self.image1)
 
         previews = self.find_inline_previews(root)
         self.assertEqual(len(previews), 1)
-        
+
         self.find_delete_icon(previews[0]).click()
         self.assertEqual(len(self.find_inline_previews(root)), 0)
 
-        self.submit_form('#inline_form')
+        self.submit_form("#inline_form")
         self.assert_success_message()
         self.assertEqual(len(models.InlineItem.objects.all()), 0)
 
@@ -162,14 +164,14 @@ class InlineEditorTests(test_case.IUWTestCase):
         self.assertEqual(len(previews), 2)
 
         for index, preview in enumerate(previews):
-            img = preview.query_selector('img')
+            img = preview.query_selector("img")
             preview_button = self.find_preview_icon(preview)
             remove_button = self.find_delete_icon(preview)
             self.assertIsNotNone(img)
             self.assertIsNotNone(preview_button)
             self.assertIsNotNone(remove_button)
 
-            src = img.get_attribute('src')
+            src = img.get_attribute("src")
             if index == 0:
                 self.assertTrue(self.item1.image.url in src)
             else:
@@ -205,9 +207,9 @@ class InlineEditorTests(test_case.IUWTestCase):
         self.assertEqual(len(previews), 2)
 
         for preview in previews:
-            self.assertTrue(preview.query_selector('input[type=checkbox]').is_checked())
+            self.assertTrue(preview.query_selector("input[type=checkbox]").is_checked())
 
-        self.submit_form('#inline_form')
+        self.submit_form("#inline_form")
         self.assert_success_message()
 
         self.assertEqual(len(models.InlineItem.objects.all()), 0)
@@ -230,20 +232,24 @@ class InlineEditorTests(test_case.IUWTestCase):
         previews = self.find_inline_previews(root)
         self.assertEqual(len(previews), 2)
 
-        with self.assert_input_file_clicked(".inline-related:not(.empty-form):not(.deleted) input[type=file]", 0):
+        with self.assert_input_file_clicked(
+            ".inline-related:not(.empty-form):not(.deleted) input[type=file]", 0
+        ):
             preview = previews[0]
-            img = preview.query_selector('img')
+            img = preview.query_selector("img")
             img.click()
 
-        with self.assert_input_file_clicked(".inline-related:not(.empty-form):not(.deleted) input[type=file]", 1):
+        with self.assert_input_file_clicked(
+            ".inline-related:not(.empty-form):not(.deleted) input[type=file]", 1
+        ):
             preview = previews[1]
-            img = preview.query_selector('img')
+            img = preview.query_selector("img")
             img.click()
 
     def test_should_fire_temp_file_click_when_click_on_add_button(self):
         """
         Should fire temporary file input click when click on the add button.
-        
+
         The test flow is:
             - Go to change page.
             - Assert if the one preview is present.
@@ -273,20 +279,20 @@ class InlineEditorTests(test_case.IUWTestCase):
             - Assert if the preview modal is visible.
         """
         self.goto_change_page(only_one=True)
-        
+
         root = self.find_inline_root()
         previews = self.find_inline_previews(root)
         self.assertEqual(len(previews), 1)
 
         preview = previews[0]
-        preview_img = preview.query_selector('img')
+        preview_img = preview.query_selector("img")
         self.find_preview_icon(preview).click()
         self.assert_preview_modal(preview_img)
 
     def test_should_not_close_preview_modal_when_click_image(self):
         """
         Should not close the preview modal when click on the image on preview modal.
-        
+
         The test flow is:
             - Navigate to Change Page.
             - Assert if one preview is present.
@@ -297,18 +303,18 @@ class InlineEditorTests(test_case.IUWTestCase):
             - Assert if the preview modal is visible.
         """
         self.goto_change_page(only_one=True)
-        
+
         root = self.find_inline_root()
         previews = self.find_inline_previews(root)
         self.assertEqual(len(previews), 1)
 
         preview = previews[0]
-        preview_img = preview.query_selector('img')
+        preview_img = preview.query_selector("img")
         self.find_preview_icon(preview).click()
         self.assert_preview_modal(preview_img)
 
         preview_modal = self.get_preview_modal(True, 3000)
-        img = preview_modal.query_selector('img')
+        img = preview_modal.query_selector("img")
         img.click()
         self.wait(0.5)
         self.assertEqual(preview_modal.get_attribute("class"), "iuw-modal visible")
@@ -316,7 +322,7 @@ class InlineEditorTests(test_case.IUWTestCase):
     def test_should_close_preview_modal_when_click_close_button(self):
         """
         Should close the preview modal when click on the close button.
-        
+
         The test flow is:
             - Navigate to Change Page.
             - Assert if one preview is present.
@@ -332,7 +338,7 @@ class InlineEditorTests(test_case.IUWTestCase):
         self.assertEqual(len(previews), 1)
 
         preview = previews[0]
-        preview_img = preview.query_selector('img')
+        preview_img = preview.query_selector("img")
         self.find_preview_icon(preview).click()
         self.assert_preview_modal(preview_img)
         self.assert_preview_modal_close()
@@ -340,7 +346,7 @@ class InlineEditorTests(test_case.IUWTestCase):
     def test_should_change_image_of_item_when_change_image_on_inline(self):
         """
         Should change the image of a item when change image by inline and save.
-        
+
         The test flow is:
             - Navigate to Change Page.
             - Assert if two previews is present.
@@ -359,15 +365,15 @@ class InlineEditorTests(test_case.IUWTestCase):
         url1 = self.item1.image.url
 
         preview = previews[0]
-        preview_img = preview.query_selector('img')
-        preview_src = preview_img.get_attribute('src')
-        
-        file_input = preview.query_selector('input[type=file]')
+        preview_img = preview.query_selector("img")
+        preview_src = preview_img.get_attribute("src")
+
+        file_input = preview.query_selector("input[type=file]")
         file_input.set_input_files(self.image1)
 
-        self.assertNotEqual(preview_src, preview_img.get_attribute('src'))
-        
-        self.submit_form('#inline_form')
+        self.assertNotEqual(preview_src, preview_img.get_attribute("src"))
+
+        self.submit_form("#inline_form")
         self.assert_success_message()
 
         item1 = models.InlineItem.objects.filter(pk=self.item1.pk).first()
@@ -380,14 +386,14 @@ class InlineEditorTests(test_case.IUWTestCase):
         drop_label = self.find_drop_label()
 
         self.assertFalse(drop_label.is_visible())
-        
-        data_transfer = self.page.evaluate_handle('() => new DataTransfer()')
-        root.dispatch_event('dragenter', { 'dataTransfer': data_transfer })
+
+        data_transfer = self.page.evaluate_handle("() => new DataTransfer()")
+        root.dispatch_event("dragenter", {"dataTransfer": data_transfer})
         self.wait(0.5)
 
         self.assertTrue(drop_label.is_visible())
 
-        root.dispatch_event('dragleave', { 'dataTransfer': data_transfer })
+        root.dispatch_event("dragleave", {"dataTransfer": data_transfer})
         self.wait(0.5)
 
         self.assertFalse(drop_label.is_visible())
@@ -399,14 +405,14 @@ class InlineEditorTests(test_case.IUWTestCase):
         drop_label = self.find_drop_label()
 
         self.assertFalse(drop_label.is_visible())
-        
-        data_transfer = self.page.evaluate_handle('() => new DataTransfer()')
-        root.dispatch_event('dragenter', { 'dataTransfer': data_transfer })
+
+        data_transfer = self.page.evaluate_handle("() => new DataTransfer()")
+        root.dispatch_event("dragenter", {"dataTransfer": data_transfer})
         self.wait(0.5)
 
         self.assertTrue(drop_label.is_visible())
 
-        root.dispatch_event('drop', { 'dataTransfer': data_transfer })
+        root.dispatch_event("drop", {"dataTransfer": data_transfer})
         self.wait(0.5)
 
         self.assertFalse(drop_label.is_visible())
@@ -418,14 +424,14 @@ class InlineEditorTests(test_case.IUWTestCase):
         drop_label = self.find_drop_label()
 
         self.assertFalse(drop_label.is_visible())
-        
-        data_transfer = self.page.evaluate_handle('() => new DataTransfer()')
-        root.dispatch_event('dragenter', { 'dataTransfer': data_transfer })
+
+        data_transfer = self.page.evaluate_handle("() => new DataTransfer()")
+        root.dispatch_event("dragenter", {"dataTransfer": data_transfer})
         self.wait(0.5)
 
         self.assertTrue(drop_label.is_visible())
 
-        root.dispatch_event('dragend', { 'dataTransfer': data_transfer })
+        root.dispatch_event("dragend", {"dataTransfer": data_transfer})
         self.wait(0.5)
 
         self.assertFalse(drop_label.is_visible())

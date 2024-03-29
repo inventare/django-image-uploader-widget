@@ -1,8 +1,9 @@
 from django import forms
 from django.contrib import admin
 
+
 class ImageUploaderInline(admin.StackedInline):
-    template = 'admin/edit_inline/image_uploader.html'
+    template = "admin/edit_inline/image_uploader.html"
     extra = 0
     add_image_text = ""
     drop_text = ""
@@ -17,19 +18,19 @@ class ImageUploaderInline(admin.StackedInline):
 
     def get_drop_text(self):
         return self.drop_text
-    
+
     def get_empty_text(self):
         return self.empty_text
 
     def get_empty_icon(self):
         return self.empty_icon
-    
+
     def get_drop_icon(self):
         return self.drop_icon
 
     def get_add_icon(self):
         return self.add_icon
-    
+
     def get_accept(self):
         return self.accept
 
@@ -47,26 +48,29 @@ class ImageUploaderInline(admin.StackedInline):
     @property
     def media(self):
         return forms.Media(
-            js = [
-                'admin/js/image-uploader-modal.js',
-                'admin/js/image-uploader-inline.js',
+            js=[
+                "admin/js/image-uploader-modal.js",
+                "admin/js/image-uploader-inline.js",
             ],
-            css = {
-                'screen': [
-                    'admin/css/image-uploader-inline.css',
+            css={
+                "screen": [
+                    "admin/css/image-uploader-inline.css",
                 ]
-            }
+            },
         )
 
+
 class OrderedImageUploaderInline(ImageUploaderInline):
-    template = 'admin/edit_inline/ordered_image_uploader.html'
+    template = "admin/edit_inline/ordered_image_uploader.html"
     order_field = "order"
 
     def get_order_field(self, request):
         return self.order_field
-    
+
     def get_formset(self, request, obj=None, **kwargs):
-        item = super(OrderedImageUploaderInline, self).get_formset(request, obj, **kwargs)
+        item = super(OrderedImageUploaderInline, self).get_formset(
+            request, obj, **kwargs
+        )
         item.order_field = self.get_order_field(request)
         return item
 
