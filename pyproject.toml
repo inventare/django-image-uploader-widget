@@ -1,7 +1,7 @@
 [project]
 requires-python = ">= 3.8"
 name = 'django-image-uploader-widget'
-version = '0.4.5'
+version = '0.4.6'
 description='Simple Image Uploader Widget for Django-Admin'
 dependencies = [
   'django>=3.2',
@@ -50,6 +50,4 @@ profile = 'black'
 [tool.setuptools]
 include-package-data = true
 zip-safe = false
-
-[tool.setuptools.packages.find]
-where = ["image_uploader_widget"]
+packages = ["image_uploader_widget"]
