@@ -1,0 +1,55 @@
+[project]
+requires-python = ">= 3.8"
+name = 'django-image-uploader-widget'
+version = '0.4.4'
+description='Simple Image Uploader Widget for Django-Admin'
+dependencies = [
+  'django>=3.2',
+  'Pillow',
+]
+authors = [{name = "Eduardo Oliveira", email = "eduardo_y05@outlook.com"}]
+maintainers = [{name = "Eduardo Oliveira", email = "eduardo_y05@outlook.com"}]
+readme = "README.md"
+license = {file = "LICENSE"}
+keywords = ["django", "admin", "widget", "image", "uploader"]
+classifiers = [
+  'Development Status :: 5 - Production/Stable',
+  'Environment :: Web Environment',
+  'Framework :: Django',
+  'Intended Audience :: Developers',
+  'License :: OSI Approved :: MIT License',
+  'Operating System :: OS Independent',
+  'Programming Language :: Python',
+  'Programming Language :: Python :: 3',
+  'Programming Language :: Python :: 3.8',
+  'Programming Language :: Python :: 3.9',
+  'Programming Language :: Python :: 3.10',
+  'Programming Language :: Python :: 3.11',
+  'Programming Language :: Python :: 3.12',
+]
+
+[project.optional-dependencies]
+dev = ["black", "isort", "pre-commit"]
+test = ["playwright"]
+
+[project.urls]
+homepage = "https://github.com/inventare/django-image-uploader-widget"
+documentation = "https://inventare.github.io/django-image-uploader-widget/"
+
+[build-system]
+requires = ["setuptools", "build"]
+build-backend = "setuptools.build_meta"
+
+[tool.black]
+line-length = 88
+target-version = ['py310']
+
+[tool.isort]
+profile = 'black'
+
+[tool.setuptools]
+include-package-data = true
+zip-safe = false
+
+[tool.setuptools.packages.find]
+where = ["image_uploader_widget"]
