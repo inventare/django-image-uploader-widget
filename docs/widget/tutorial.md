@@ -68,7 +68,7 @@ And, now, we have a new, and more complex, folder structure:
 
 ## Installing the widget
 
-To install the widget, is possible to use the same instructions of the [Introduction](../intro.md), and the first step is to install the package with pip:
+To install the widget, is possible to use the same instructions of the [Getting started](../index.md), and the first step is to install the package with pip:
 
 ```bash
 pip install django-image-uploader-widget

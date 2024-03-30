@@ -1,4 +1,4 @@
-# Introduction
+# Getting started
 
 The **django-image-uploader-widget** is a widget to **django**, specially **django-admin** to handle better image uploads with a modern and beautiful user interface.
 
@@ -12,11 +12,23 @@ Some of the features of this widget is:
 - Inline editor provided to work with multiple images.
 - Modal to view the full image (The images are adjusted as cover in the preview box, then, in some cases, that is very useful).
 
-![Drag and Drop Image](/img/beautiful.gif)
+<div class="images-container" markdown="block">
 
-![Select by click](/img/click.gif)
+![Drag and Drop Image](./images/beautiful.gif){ loading=lazy }
 
-![Inline handle](/img/inline_multiple.gif)
+</div>
+
+<div class="images-container" markdown="block">
+
+![Select by click](./images/click.gif){ loading=lazy }
+
+</div>
+
+<div class="images-container" markdown="block">
+
+![Inline handle](./images/inline_multiple.gif){ loading=lazy }
+
+</div>
 
 ## Getting Started
 

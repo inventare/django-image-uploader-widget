@@ -4,7 +4,7 @@ sidebar_position: 2
 
 # Resumed
 
-If you want to read a more complete description of how to use this widget, see the [Tutorial](./02-tutorial.md). But, if you is an advanced user, only install the package:
+If you want to read a more complete description of how to use this widget, see the [Tutorial](./tutorial.md). But, if you is an advanced user, only install the package:
 
 ```bash
 pip install django-image-uploader-widget
