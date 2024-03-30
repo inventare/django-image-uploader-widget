@@ -53,6 +53,9 @@ nav:
   - Inline Admin:
     - inline_admin/tutorial.md
     - ... | flat | inline_admin/*.md
+  - ArrayField:
+    - array_field/tutorial.md
+    - ... | flat | array_field/*.md
   - Customization:
     - ... | flat | customization/*.md
   - Development:
