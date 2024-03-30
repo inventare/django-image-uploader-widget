@@ -10,10 +10,14 @@ theme:
     primary: blue
   icon:
     repo: fontawesome/brands/github
+    logo: material/image
+  favicon: images/favicon.png
   features:
     - navigation.tabs
     - navigation.tabs.sticky
     - navigation.top
+    - search.suggest
+    - search.highlight
 
 markdown_extensions:
   - tables
@@ -35,6 +39,10 @@ extra_css:
 plugins:
   - glightbox
   - awesome-pages
+  - search
+
+extra:
+  homepage: https://inventare.github.io/django-image-uploader-widget/
 
 nav:
   - index.md

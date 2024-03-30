@@ -6,3 +6,4 @@ media/
 build
 *.egg-info
 dist
+site

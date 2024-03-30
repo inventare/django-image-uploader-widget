@@ -11,39 +11,45 @@ jobs:
     if: github.event_name != 'push'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
+      - name: Clone Repository
+        uses: actions/checkout@v3
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          node-version: '14.x'
-      - name: Test Build
-        run: |
-          cd docs
-          if [ -e yarn.lock ]; then
-            yarn install --frozen-lockfile
-          elif [ -e package-lock.json ]; then
-            npm ci
-          else
-            npm i
-          fi
-          npm run build
+          python-version: 3.11
+      
+      - name: Install Dependencies
+        run: pip install .[docs]
+      
+      - name: Test build
+        run: mkdocs build
 
   gh-release:
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - name: Clone Repository
+        uses: actions/checkout@v3
+     
+      - name: Configure Git Credentials
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+     
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          node-version: 16
-          cache: yarn
-          cache-dependency-path: 'docs/yarn.lock'
-
-      - name: Install dependencies
-        run: cd docs && yarn install --frozen-lockfile
-      - name: Build website
+          python-version: 3.11
+      
+      - name: Install Dependencies
+        run: pip install .[docs]
+      
+      - name: Build
         run: cd docs && yarn build
+        
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GH_PAGES_DEPLOY }}
-          publish_dir: ./docs/build
+          publish_dir: ./site
