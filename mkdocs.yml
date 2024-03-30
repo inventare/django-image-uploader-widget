@@ -11,7 +11,6 @@ theme:
   icon:
     repo: fontawesome/brands/github
   features:
-    - navigation.indexes
     - navigation.tabs
     - navigation.tabs.sticky
     - navigation.top
@@ -31,7 +30,24 @@ markdown_extensions:
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
 
 extra_css:
-  - stylesheets/extra.css
+  - _stylesheets/extra.css
 
 plugins:
   - glightbox
+  - awesome-pages
+
+nav:
+  - index.md
+  - Widget:
+    - widget/resumed.md
+    - widget/tutorial.md
+    - ... | flat | widget/*.md
+  - Inline Admin:
+    - inline_admin/tutorial.md
+    - ... | flat | inline_admin/*.md
+  - Customization:
+    - ... | flat | customization/*.md
+  - Development:
+    - ... | flat | development/*.md
+    - Architecture Decision Records:
+      - ... | flat | development/architecture-decision-records/*.md
