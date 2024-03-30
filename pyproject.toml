@@ -31,6 +31,7 @@ classifiers = [
 [project.optional-dependencies]
 dev = ["black", "isort", "pre-commit"]
 test = ["playwright"]
+docs = ["mkdocs", "mkdocs-material", "mkdocs-glightbox"]
 
 [project.urls]
 homepage = "https://github.com/inventare/django-image-uploader-widget"

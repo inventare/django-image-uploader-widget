@@ -1,0 +1,25 @@
+.md-typeset__table,
+.md-typeset__table table,
+.md-typeset__table table thead,
+.md-typeset__table table tbody,
+.md-typeset__table tr {
+  width: 100%;
+}
+.md-typeset__table th.adr-emoji,
+.md-typeset__table td.adr-emoji {
+  width: 70px;
+  min-width: 70px !important;
+  max-width: 70px;
+}
+.md-typeset__table th.adr-text,
+.md-typeset__table td.adr-text {
+  width: 100%;
+}
+
+
+.images-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
