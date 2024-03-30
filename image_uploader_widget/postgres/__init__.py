@@ -1,3 +1,3 @@
 from .fields import ImageListField
 
-__all__ = ['ImageListField']
+__all__ = ["ImageListField"]
