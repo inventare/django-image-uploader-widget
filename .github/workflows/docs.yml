@@ -46,7 +46,7 @@ jobs:
         run: pip install .[docs]
       
       - name: Build
-        run: cd docs && yarn build
+        run: mkdocs build
         
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
