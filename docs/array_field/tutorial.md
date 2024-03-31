@@ -16,9 +16,9 @@ Some comments, like the [Discussion #97](https://github.com/inventare/django-ima
 
 Currently, we have added support, addaptating the `inline admin` feature to work widget-like and add support for the `ArrayField` to store images using the `storage` and save it path to an `ArrayField`. This is, really, a little experimental for now, and can contains some bugs. If your found one: open a Issue reporting.
 
-### Attention point
+!!! warning "Attention Point"
 
-Like various other `multiple` instances or values support, we have an tiny problem at this component, for now: when we save a form with some "unchanged" values, i.e., with the current file path string instead of an uploaded file, this string is used to store in the database. Is planed, in the future, change this to use the original array values to confirm the sended values. But, for this first version, this is a issue that is not resolved.
+    See the attention point on the [Prevent Raw Images Path Change](./prevent-raw-change.md) page.
 
 ## Usage
 
