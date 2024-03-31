@@ -102,7 +102,6 @@ class CustomInlineAdmin(admin.ModelAdmin):
 class CustomWidgetAdmin(admin.ModelAdmin):
     form = forms.TestCustomForm
 
-
 @admin.register(models.TestWithArrayField)
 class TestWithArrayFieldAdmin(admin.ModelAdmin):
-    pass
+    form = forms.TestWithArrayFieldForm

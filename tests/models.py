@@ -104,7 +104,6 @@ class CustomWidget(models.Model):
     class Meta:
         verbose_name = "Test Custom Widget"
 
-
 class TestWithArrayField(models.Model):
     images = ImageListField(blank=True, null=True, upload_to="admin_test")
 
