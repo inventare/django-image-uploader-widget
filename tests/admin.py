@@ -105,4 +105,4 @@ class CustomWidgetAdmin(admin.ModelAdmin):
 
 @admin.register(models.TestWithArrayField)
 class TestWithArrayFieldAdmin(admin.ModelAdmin):
-    pass
+    form = forms.TestWithArrayFieldForm
