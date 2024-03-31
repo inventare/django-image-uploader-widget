@@ -14,11 +14,11 @@
         <link rel="prev" href="../../inline_admin/ordered/">
       
       
-        <link rel="next" href="../../customization/colors/">
+        <link rel="next" href="../prevent-raw-change/">
       
       
       <link rel="icon" href="../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.15">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.16">
     
     
       
@@ -26,7 +26,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.7e359304.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.bcfcd587.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
@@ -710,21 +710,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Experimental for Now?">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#attention-point" class="md-nav__link">
-    <span class="md-ellipsis">
-      Attention point
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -740,6 +725,27 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../prevent-raw-change/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Prevent Raw Images Path Change
+  </span>
+  
+
+      </a>
     </li>
   
 
@@ -1089,21 +1095,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Experimental for Now?">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#attention-point" class="md-nav__link">
-    <span class="md-ellipsis">
-      Attention point
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -1146,8 +1137,10 @@
 <p>Some comments, like the <a href="https://github.com/inventare/django-image-uploader-widget/discussions/97">Discussion #97</a>, <a href="https://github.com/inventare/django-image-uploader-widget/issues/146">Issue #146</a> and <a href="https://github.com/inventare/django-image-uploader-widget/issues/110">Issue #110</a> make some feature requests and the Issue #146 takes one proposition: uses the <code>ArrayField</code>. The <code>ArrayField</code> is a <code>PostgreSQL</code> specific field and support for storing multiple values into one field.</p>
 <h2 id="experimental-for-now">Experimental for Now?</h2>
 <p>Currently, we have added support, addaptating the <code>inline admin</code> feature to work widget-like and add support for the <code>ArrayField</code> to store images using the <code>storage</code> and save it path to an <code>ArrayField</code>. This is, really, a little experimental for now, and can contains some bugs. If your found one: open a Issue reporting.</p>
-<h3 id="attention-point">Attention point</h3>
-<p>Like various other <code>multiple</code> instances or values support, we have an tiny problem at this component, for now: when we save a form with some "unchanged" values, i.e., with the current file path string instead of an uploaded file, this string is used to store in the database. Is planed, in the future, change this to use the original array values to confirm the sended values. But, for this first version, this is a issue that is not resolved.</p>
+<div class="admonition warning">
+<p class="admonition-title">Attention Point</p>
+<p>See the attention point on the <a href="../prevent-raw-change/">Prevent Raw Images Path Change</a> page.</p>
+</div>
 <h2 id="usage">Usage</h2>
 <p>Instead of <code>widget</code> or <code>inline admin</code> that we only set the <code>widget</code> and <code>inline admin</code> for the created model, in this part, we need to customize the model.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a><a href="#__codelineno-0-1"><span class="linenos" data-linenos="1 "></span></a><span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
