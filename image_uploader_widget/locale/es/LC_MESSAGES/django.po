@@ -1,29 +1,38 @@
-
 msgid ""
 msgstr ""
 "Project-Id-Version: image_uploader_widget\n"
 "Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-04-02 20:52-0300\n"
+"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: es\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
+#: image_uploader_widget/postgres/forms.py:13
+#, python-format
+msgid "Item %(name)s in the array did not validate:"
+msgstr "El elemento %(nth)s del arreglo no se pudo validar:"
+
+#: image_uploader_widget/templates/admin/edit_inline/image_uploader.html:48
+#: image_uploader_widget/templates/postgres/widgets/image_array.html:102
 msgid "Add image"
 msgstr "Añadir imagen"
 
-#: templates/admin/edit_inline/image_uploader.html:58
+#: image_uploader_widget/templates/admin/edit_inline/image_uploader.html:62
+#: image_uploader_widget/templates/postgres/widgets/image_array.html:116
 msgid "Drop your images here or click to select..."
 msgstr "Suelte sus imágenes aquí o haga clic para seleccionar..."
 
-#: templates/admin/edit_inline/image_uploader.html:72
+#: image_uploader_widget/templates/admin/edit_inline/image_uploader.html:76
+#: image_uploader_widget/templates/postgres/widgets/image_array.html:130
 msgid "Drop your images here..."
 msgstr "Suelte sus imagenes aquí..."
 
-#: templates/admin/widgets/image_uploader_widget.html:16
+#: image_uploader_widget/templates/admin/widgets/image_uploader_widget.html:16
 msgid "Drop your image here..."
 msgstr "Suelta tu imagen aquí..."
 
-#: templates/admin/widgets/image_uploader_widget.html:30
+#: image_uploader_widget/templates/admin/widgets/image_uploader_widget.html:30
 msgid "Drop your image here or click to select one..."
 msgstr "Suelta tu imagen aquí o haz clic para seleccionar una..."
