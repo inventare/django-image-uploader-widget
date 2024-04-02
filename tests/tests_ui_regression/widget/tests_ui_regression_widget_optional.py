@@ -27,7 +27,7 @@ class OptionaldWidgetTestCase(test_case.IUWTestCase):
         self.wait(0.5)
 
         root = self.find_widget_root()
-        self.assertMatchSnapshot(root, "wo_test_ui_empty_marker")
+        self.assert_match_snapshot(root, "wo_test_ui_empty_marker")
 
     def test_ui_empty_marker_dark(self):
         self.page.emulate_media(color_scheme="dark")
@@ -37,7 +37,7 @@ class OptionaldWidgetTestCase(test_case.IUWTestCase):
         self.wait(0.5)
 
         root = self.find_widget_root()
-        self.assertMatchSnapshot(root, "wo_test_ui_empty_marker_dark")
+        self.assert_match_snapshot(root, "wo_test_ui_empty_marker_dark")
         self.page.emulate_media(color_scheme="light")
 
     def test_ui_empty_marker_hovered(self):
@@ -48,7 +48,7 @@ class OptionaldWidgetTestCase(test_case.IUWTestCase):
         self.wait(0.5)
 
         root = self.find_widget_root()
-        self.assertMatchSnapshot(root, "wo_test_ui_empty_marker_hovered")
+        self.assert_match_snapshot(root, "wo_test_ui_empty_marker_hovered")
 
     def test_ui_empty_marker_hovered_dark(self):
         self.page.emulate_media(color_scheme="dark")
@@ -59,7 +59,7 @@ class OptionaldWidgetTestCase(test_case.IUWTestCase):
         self.wait(0.5)
 
         root = self.find_widget_root()
-        self.assertMatchSnapshot(root, "wo_test_ui_empty_marker_hovered_dark")
+        self.assert_match_snapshot(root, "wo_test_ui_empty_marker_hovered_dark")
         self.page.emulate_media(color_scheme="light")
 
     def test_ui_initialized_with_data(self):
@@ -70,7 +70,7 @@ class OptionaldWidgetTestCase(test_case.IUWTestCase):
         preview.hover()
         self.wait(0.5)
 
-        self.assertMatchSnapshot(root, "wo_test_ui_initialized_with_data")
+        self.assert_match_snapshot(root, "wo_test_ui_initialized_with_data")
 
     def test_ui_initialized_with_data_dark(self):
         self.page.emulate_media(color_scheme="dark")
@@ -81,7 +81,7 @@ class OptionaldWidgetTestCase(test_case.IUWTestCase):
         preview.hover()
         self.wait(0.5)
 
-        self.assertMatchSnapshot(root, "wo_test_ui_initialized_with_data_dark")
+        self.assert_match_snapshot(root, "wo_test_ui_initialized_with_data_dark")
         self.page.emulate_media(color_scheme="light")
 
     def test_ui_initialized_with_data_hover_preview(self):
@@ -92,7 +92,9 @@ class OptionaldWidgetTestCase(test_case.IUWTestCase):
         preview_icon.hover()
         self.wait(0.5)
 
-        self.assertMatchSnapshot(root, "wo_test_ui_initialized_with_data_hover_preview")
+        self.assert_match_snapshot(
+            root, "wo_test_ui_initialized_with_data_hover_preview"
+        )
 
     def test_ui_initialized_with_data_hover_preview_dark(self):
         self.page.emulate_media(color_scheme="dark")
@@ -103,7 +105,7 @@ class OptionaldWidgetTestCase(test_case.IUWTestCase):
         preview_icon.hover()
         self.wait(0.5)
 
-        self.assertMatchSnapshot(
+        self.assert_match_snapshot(
             root, "wo_test_ui_initialized_with_data_hover_preview_dark"
         )
         self.page.emulate_media(color_scheme="light")
@@ -116,7 +118,9 @@ class OptionaldWidgetTestCase(test_case.IUWTestCase):
         delete_icon.hover()
         self.wait(0.5)
 
-        self.assertMatchSnapshot(root, "wo_test_ui_initialized_with_data_hover_remove")
+        self.assert_match_snapshot(
+            root, "wo_test_ui_initialized_with_data_hover_remove"
+        )
 
     def test_ui_initialized_with_data_hover_remove_dark(self):
         self.page.emulate_media(color_scheme="dark")
@@ -127,7 +131,7 @@ class OptionaldWidgetTestCase(test_case.IUWTestCase):
         delete_icon.hover()
         self.wait(0.5)
 
-        self.assertMatchSnapshot(
+        self.assert_match_snapshot(
             root, "wo_test_ui_initialized_with_data_hover_remove_dark"
         )
         self.page.emulate_media(color_scheme="light")
@@ -141,7 +145,7 @@ class OptionaldWidgetTestCase(test_case.IUWTestCase):
         self.wait(0.5)
 
         modal = self.get_preview_modal(black_overlay=True)
-        self.assertMatchSnapshot(modal, "wo_test_ui_initialized_with_data_preview")
+        self.assert_match_snapshot(modal, "wo_test_ui_initialized_with_data_preview")
 
     def test_ui_initialized_with_data_preview_dark(self):
         self.page.emulate_media(color_scheme="dark")
@@ -153,7 +157,9 @@ class OptionaldWidgetTestCase(test_case.IUWTestCase):
         self.wait(0.5)
 
         modal = self.get_preview_modal(black_overlay=True)
-        self.assertMatchSnapshot(modal, "wo_test_ui_initialized_with_data_preview_dark")
+        self.assert_match_snapshot(
+            modal, "wo_test_ui_initialized_with_data_preview_dark"
+        )
         self.page.emulate_media(color_scheme="light")
 
     def test_ui_initialized_toggle_dark_theme(self):
@@ -167,13 +173,13 @@ class OptionaldWidgetTestCase(test_case.IUWTestCase):
         self.goto_change_page()
 
         root = self.find_widget_root()
-        self.assertMatchSnapshot(root, "wo_test_ui_initialized_toggle_dark_theme")
+        self.assert_match_snapshot(root, "wo_test_ui_initialized_toggle_dark_theme")
 
         toggle = self.page.query_selector("#header button.theme-toggle")
         toggle.click()
         self.wait(0.5)
 
-        self.assertMatchSnapshot(root, "wo_test_ui_initialized_toggle_dark_theme2")
+        self.assert_match_snapshot(root, "wo_test_ui_initialized_toggle_dark_theme2")
         self.page.emulate_media(color_scheme="light")
 
     def test_ui_initialized_toggle_dark_theme_inverted(self):
@@ -186,7 +192,7 @@ class OptionaldWidgetTestCase(test_case.IUWTestCase):
         self.goto_change_page()
 
         root = self.find_widget_root()
-        self.assertMatchSnapshot(
+        self.assert_match_snapshot(
             root, "wo_test_ui_initialized_toggle_dark_theme_inverted"
         )
 
@@ -194,7 +200,7 @@ class OptionaldWidgetTestCase(test_case.IUWTestCase):
         toggle.click()
         self.wait(0.5)
 
-        self.assertMatchSnapshot(
+        self.assert_match_snapshot(
             root, "wo_test_ui_initialized_toggle_dark_theme_inverted2"
         )
         self.page.emulate_media(color_scheme="light")

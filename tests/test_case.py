@@ -1,12 +1,10 @@
 import os
-import sys
 import time
 import uuid
 
 from django.contrib.auth import get_user_model
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
-from django.test import tag
-from PIL import Image, ImageChops
+from match_snapshot import MatchSnapshot
 from playwright.sync_api import expect, sync_playwright
 
 
@@ -51,25 +49,22 @@ class _DarkMode:
         self.test_case.page.emulate_media(color_scheme="light")
 
 
-class IUWTestCase(StaticLiveServerTestCase):
+class IUWTestCase(MatchSnapshot, StaticLiveServerTestCase):
     model = None
-    pixel_threshold_red = 5
-    pixel_threshold_green = 5
-    pixel_threshold_blue = 5
 
     @property
     def image1(self):
         """Get the file path of the image1."""
-        base_dir = os.path.dirname(os.path.dirname(__file__))
-        mocks_dir = os.path.join(base_dir, "mocks")
+        base_dir = os.path.dirname(__file__)
+        mocks_dir = os.path.join(base_dir, "__mocks__")
         image = os.path.join(mocks_dir, "image.png")
         return image
 
     @property
     def image2(self):
         """Get the file path of the image2."""
-        base_dir = os.path.dirname(os.path.dirname(__file__))
-        mocks_dir = os.path.join(base_dir, "mocks")
+        base_dir = os.path.dirname(__file__)
+        mocks_dir = os.path.join(base_dir, "__mocks__")
         image = os.path.join(mocks_dir, "image2.png")
         return image
 
@@ -259,199 +254,3 @@ class IUWTestCase(StaticLiveServerTestCase):
         if not element:
             element = self.page
         return element.wait_for_selector(".iuw-empty", timeout=timeout)
-
-    def _get_snapshot_filename(self, id: str) -> str:
-        """
-        Returns the snapshot file name to an unique id.
-
-        :Args:
-            - id: an unique id to gets the snapshot file name.
-        """
-        snapshots_dir = "./snapshots"
-        return os.path.join(snapshots_dir, "snapshot_%s.png" % id)
-
-    def _get_compare_filename(self, id: str) -> str:
-        """
-        Returns the comparison file name to an unique id.
-
-        :Args:
-            - id: an unique id to gets the comparison file name.
-        """
-        snapshots_dir = "./snapshots"
-        return os.path.join(snapshots_dir, "compare_%s.png" % id)
-
-    def _get_failure_filename(self, id: str) -> str:
-        """
-        Returns the comparison file name to an unique id.
-
-        :Args:
-            - id: an unique id to gets the comparison file name.
-        """
-        snapshots_dir = "./failures"
-        return os.path.join(snapshots_dir, "compare_%s.png" % id)
-
-    def _create_snapshot_image(self, element, id: str):
-        """
-        Takes an screenshot of the element and stores it as snaptshot.
-
-        :Args:
-            - element: the element to takes the screenshot.
-            - id: an unique id to gets the snapshot file name.
-        """
-        file = self._get_snapshot_filename(id)
-        element.screenshot(path=file)
-
-    def _create_compare_image(self, element, id: str):
-        """
-        Takes an screenshot of the element and stores it as comparison.
-
-        :Args:
-            - element: the element to takes the screenshot.
-            - id: an unique id to gets the comparison file name.
-        """
-        file = self._get_compare_filename(id)
-        element.screenshot(path=file)
-
-    def _get_snapshot_image(self, element, id: str) -> (Image, bool):
-        """
-        Gets, or create, the snapshot image from the element.
-
-        :Args:
-            - element: the element to create the snapshot.
-            - id: an unique id to gets the snapshot file name.
-
-        :Returns:
-            Returns the snapshot image and an boolean indicating
-            if the file was created.
-        """
-        file = self._get_snapshot_filename(id)
-        created = False
-
-        if not os.path.exists(file):
-            self._create_snapshot_image(element, id)
-            created = True
-
-        return Image.open(file).convert("RGB"), created
-
-    def _get_compare_image(self, element, id: str) -> Image:
-        """
-        Gets, or create, the comparison image from the element.
-
-        :Args:
-            - element: the element to create the comparison.
-            - id: an unique id to gets the comparison file name.
-
-        :Returns:
-            Returns the comparison image.
-        """
-        self._create_compare_image(element, id)
-        file = self._get_compare_filename(id)
-        return Image.open(file).convert("RGB")
-
-    def _delete_compare_image(self, id: str):
-        """
-        Delete the comparison image file.
-
-        :Args:
-            - id: an unique id to gets the comparison file name.
-        """
-        file = self._get_compare_filename(id)
-
-        if not os.path.exists(file):
-            return
-
-        os.remove(file)
-
-    def _delete_snapshot(self, id: str):
-        """
-        Delete the snapshot image file.
-
-        :Args:
-            - id: an unique id to gets the snapshot file name.
-        """
-        file = self._get_snapshot_filename(id)
-
-        if not os.path.exists(file):
-            return
-
-        os.remove(file)
-
-    def _fail_match_snapshot(self, element, id: str):
-        """
-        Check if operational system is in an tty, ask for updating the snapshot.
-        If user anwser to update the snapshot, it will be updated. Otherwise,
-        it will fail the test.
-        """
-        if not os.isatty(sys.stdout.fileno()):
-            return self.fail("The UI screenshot not matches snapshot")
-
-        value = input(
-            "The UI screenshot not matches snaptshot. You want to update snapshot? (Y)es, (N)o: "
-        )
-        if value != "Y":
-            return self.fail("The UI screenshot not matches snapshot")
-
-        self._delete_snapshot(id)
-        self._create_snapshot_image(element, id)
-
-    def _validate_difference_threshold(self, diff: Image):
-        """
-        Check pixel-by-pixel if the difference image has more difference
-        that the threshold's defined at the class.
-
-        :Args:
-            - diff: the difference image, gots from ImageChops.difference(img1, img2)
-        """
-        data = diff.load()
-
-        for x in range(0, diff.width):
-            for y in range(0, diff.height):
-                pixel = data[x, y]
-                r, g, b = pixel
-                if r > self.pixel_threshold_red:
-                    print("Difference in RED: %s at X: %s, Y: %s" % (r, x, y))
-                    return False
-                if g > self.pixel_threshold_green:
-                    print("Difference in GREEN: %s at X: %s, Y: %s" % (g, x, y))
-                    return False
-                if b > self.pixel_threshold_blue:
-                    print("Difference in BLUE: %s at X: %s, Y: %s" % (b, x, y))
-                    return False
-
-        return True
-
-    def assertMatchSnapshot(self, element, id: str) -> str:
-        """
-        Takes an screenshot and compare with saved, or save at first time, an
-        snapshot image. Fail if two screenshots are not equal using Pillow
-        ImageChops.difference.
-
-        :Args:
-            - element: the element to take screenshots.
-            - id: an unique id to gets and create snapshot and comparison.
-        """
-        image, created = self._get_snapshot_image(element, id)
-
-        if created:
-            return
-
-        comparation_image = self._get_compare_image(element, id)
-
-        diff = ImageChops.difference(image, comparation_image)
-
-        if not diff.getbbox():
-            self._delete_compare_image(id)
-            return
-
-        threshold = 10
-        diff = diff.point(lambda x: 0 if x < threshold else 255)
-        pixels = diff.getcolors()
-
-        if len(pixels) == 1:
-            _, color = pixels[0]
-            if color == (0, 0, 0):
-                self._delete_compare_image(id)
-                return
-
-        self._delete_compare_image(id)
-        self._fail_match_snapshot(element, id)
