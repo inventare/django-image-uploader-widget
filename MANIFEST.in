@@ -1,7 +1,5 @@
 include README.md
 include LICENSE
-recursive-exclude mocks *
-recursive-exclude snapshots *
 recursive-exclude docs *
 recursive-exclude tests *
 recursive-exclude core *
