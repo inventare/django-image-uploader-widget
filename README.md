@@ -29,7 +29,7 @@
 - [x] Support preview modal;
 - [x] Support custom inline for **django-admin** usage.
 - [x] Support reordering inside **django-admin** inline.
-- [ ] Support `ArrayField` for `PostgreSQL` databases.
+- [x] Support `ArrayField` for `PostgreSQL` databases.
 
 ## Installation
 
@@ -53,6 +53,8 @@ INSTALLED_APPS = [
 
 ### With Admin
 
+The `ImageUploaderWidget` is a class that implements a custom widget for single image uploader and can be used inside the `formfield_overrides` attribute inside the `ModelAdmin` class.
+
 ```python
 # admin.py
 from django.contrib import admin
@@ -68,7 +70,11 @@ class YourModelAdmin(admin.ModelAdmin):
     }
 ```
 
+See the [documentation](https://inventare.github.io/django-image-uploader-widget/widget/resumed/) for more complex usage's.
+
 ### With ModelForm
+
+The `ImageUploaderWidget` can be used inside the `widgets` Meta attribute of a `Form`/`ModelForm`:
 
 ```python
 # forms.py
@@ -83,7 +89,11 @@ class ExampleForm(forms.ModelForm):
         fields = '__all__'
 ```
 
+See the [documentation](https://inventare.github.io/django-image-uploader-widget/widget/resumed/) for more complex usage's.
+
 ### Custom Inline Admin
+
+The `ImageUploaderInline` is implemented with the base of the `admin.StackedInline` to create an custom **django-admin** to work with multiple images upload using a model only to store the images:
 
 ```python
 # models.py
@@ -114,6 +124,26 @@ class ProductImageAdmin(ImageUploaderInline):
 class ProductAdmin(admin.ModelAdmin):
     inlines = [ProductImageAdmin]
 ```
+
+See the [documentation](https://inventare.github.io/django-image-uploader-widget/inline_admin/tutorial/) for more complex usage's.
+
+### Array Field
+
+The ArrayField support is made by a custom field, called `ImageListField`. Then, to use it, we need to change the field from default `ArrayField` to `ImageListField`. The reason for it is: the default `ArrayField` with `ImageField` not works and some part of the behaviour of the `ImageField` is implemented inside the `ImageListField`.
+
+```python
+# models.py
+from django.db import models
+from image_uploader_widget.postgres import ImageListField
+
+class TestWithArrayField(models.Model):
+    images = ImageListField(blank=True, null=True, upload_to="admin_test")
+
+    class Meta:
+        verbose_name = "Test With Array Field"
+```
+
+See the [documentation](https://inventare.github.io/django-image-uploader-widget/array_field/tutorial/) for more complex usage's.
 
 ## Documentation
 
