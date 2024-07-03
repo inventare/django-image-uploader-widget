@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // According to the article:
     // "A video exists in different formats such as MP4, MPEG, WebM, Ogg, AVI, QuickTime, etc.
     // But HTML supports only 3 types of video formats, which include MP4, Ogg, and WebM."
-    const REGEX_VIDEO_EXTENSIONS = /\.(mp4|webm|ogg)$/;
+    const REGEX_VIDEO_EXTENSIONS = /\.(mp4|webm|ogg|mov)$/;
 
     function renderPreview(url, canDelete, canPreview, mediatype) {
         let deleteIcon = "";
