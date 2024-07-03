@@ -4,11 +4,13 @@ document.addEventListener('DOMContentLoaded', function () {
     const PREVIEW_ICON = '<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-zoom-in" viewBox="0 0 16 16" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" width="100%" height="100%"><path xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"></path><path xmlns="http://www.w3.org/2000/svg" d="M10.344 11.742c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1 6.538 6.538 0 0 1-1.398 1.4z"></path><path xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" d="M6.5 3a.5.5 0 0 1 .5.5V6h2.5a.5.5 0 0 1 0 1H7v2.5a.5.5 0 0 1-1 0V7H3.5a.5.5 0 0 1 0-1H6V3.5a.5.5 0 0 1 .5-.5z"></path></svg>';
     let DRAGGING_WIDGET = null;
 
+    const REGEX_VIDEO_EXTENSIONS = /\.(mp4|webm|ogg)$/
+
     function renderPreview(url, canDelete, canPreview) {
         let deleteIcon = "";
         let previewIcon = "";
         if (canDelete) {
-            deleteIcon = '<span class="iuw-delete-icon">' + DELETE_ICON + '</span>';
+            deleteIcon = '<span class="iuw-delete-icon">' + DELETE_ICON + '</span>'
         }
         if (canPreview) {
             let className = "iuw-preview-icon";
@@ -18,17 +20,16 @@ document.addEventListener('DOMContentLoaded', function () {
             previewIcon = '<span class="' + className + '">' + PREVIEW_ICON + '</span>';
         }
         const div = document.createElement('div');
-        div.className = "iuw-preview";
+        div.className = "iuw-image-preview"
 
-        if (url.match(/\.(jpeg|jpg|gif|png)$/) != null) {
-            div.innerHTML = '<img loading="lazy" src="' + url + '" />' + deleteIcon + previewIcon;
-        } else if (url.match(/\.(mp4|webm|ogg)$/) != null) {
+        if (url.match(REGEX_VIDEO_EXTENSIONS) != null) {
             div.innerHTML = '<video controls src="' + url + '"></video>' + deleteIcon + previewIcon;
+        } else {
+            div.innerHTML = '<img loading="lazy" src="' + url + '" />' + deleteIcon + previewIcon;
         }
 
         return div;
     }
-
 
     function getWidget(element) {
         const root = element.closest('.iuw-root');
@@ -82,8 +83,8 @@ document.addEventListener('DOMContentLoaded', function () {
         updateWidgetRenderState(widget);
     }
 
-    function handlePreviewImage(mediaTag, mediatype) {
-        let tag = mediaTag.querySelector(mediatype.startsWith('video/') ? 'video' : 'img');
+    function handlePreviewImage(imageElement) {
+        let tag = imageElement.querySelector('img,video');
         if (!tag) {
             return;
         }
@@ -92,7 +93,7 @@ document.addEventListener('DOMContentLoaded', function () {
         IUWPreviewModal.openPreviewModal();
     }
 
-    function handleImagePreviewClick(e, mediatype) {
+    function handleImagePreviewClick(e) {
         if (!e || !e.target) {
             return;
         }
@@ -104,7 +105,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         if (targetElement.closest('.iuw-preview-icon')) {
             const element = targetElement.closest('.iuw-image-preview');
-            handlePreviewImage(element, mediatype);
+            handlePreviewImage(element);
             return;
         }
         const widget = getWidget(targetElement);
@@ -178,7 +179,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function updateWidgetRenderState(widget) {
         updateCheckboxAndEmptyState(widget);
 
-        let previews = widget.element.querySelectorAll('.iuw-preview');
+        let previews = widget.element.querySelectorAll('.iuw-image-preview');
         for (const preview of previews) {
             widget.element.removeChild(preview);
         }
@@ -189,8 +190,12 @@ document.addEventListener('DOMContentLoaded', function () {
         } else if (!!widget.raw) {
             widget.element.appendChild(renderPreview(widget.raw, widget.canDelete, widget.canPreview));
         }
-    }
 
+        previews = widget.element.querySelectorAll('.iuw-image-preview');
+        for (const preview of previews) {
+            preview.addEventListener('click', handleImagePreviewClick)
+        }
+    }
 
     function bindWidgetEvents(widget) {
         widget.fileInput.addEventListener('change', handleFileInputChange);
