@@ -220,19 +220,14 @@ html[data-theme="dark"] {
   position: relative;
   /* childs */
 }
-.iuw-root .iuw-image-preview img {
+.iuw-root .iuw-image-preview img,
+.iuw-root .iuw-image-preview video {
   /* sizing */
   width: 100%;
   height: 100%;
   /* display mode */
   object-fit: cover;
   object-position: center;
-}
-.iuw-root .iuw-preview video {
-    max-width: 100%;
-    height: auto;
-    display: block;
-    vertical-align: middle;
 }
 .iuw-root .iuw-image-preview .iuw-delete-icon,
 .iuw-root .iuw-image-preview .iuw-preview-icon {
@@ -333,19 +328,13 @@ html[data-theme="dark"] {
   height: 80%;
   position: relative;
 }
-#iuw-modal-element .iuw-modal-image-preview img {
+#iuw-modal-element .iuw-modal-image-preview img,
+#iuw-modal-element .iuw-modal-image-preview video {
   background: var(--iuw-modal-image-background);
   width: 100%;
   height: 100%;
   object-fit: contain;
   object-position: center;
-  cursor: default;
-}
-#iuw-modal-element .iuw-modal-image-preview video {
-  background: var(--iuw-modal-image-background);
-  width: 100%;
-  height: auto;
-  vertical-align: middle;
   cursor: default;
 }
 #iuw-modal-element .iuw-modal-image-preview .iuw-modal-close {
