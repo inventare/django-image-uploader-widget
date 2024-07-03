@@ -223,7 +223,8 @@ html[data-theme="dark"] {
   opacity: 0.1;
   filter: blur(2px);
 }
-.iuw-inline-root .inline-related img {
+.iuw-inline-root .inline-related img,
+.iuw-inline-root .inline-related video {
   /* sizing */
   width: 100%;
   height: 100%;
@@ -389,7 +390,8 @@ html[data-theme="dark"] {
   height: 80%;
   position: relative;
 }
-#iuw-modal-element .iuw-modal-image-preview img {
+#iuw-modal-element .iuw-modal-image-preview img,
+#iuw-modal-element .iuw-modal-image-preview video {
   background: var(--iuw-modal-image-background);
   width: 100%;
   height: 100%;

@@ -11,7 +11,7 @@ class ImageUploaderInline(admin.StackedInline):
     empty_icon = ""
     drop_icon = ""
     add_icon = ""
-    accept = "image/*"
+    accept = "image/*,video/*"
 
     def get_add_image_text(self):
         return self.add_image_text

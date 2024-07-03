@@ -228,6 +228,12 @@ html[data-theme="dark"] {
   object-fit: cover;
   object-position: center;
 }
+.iuw-root .iuw-preview video {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    vertical-align: middle;
+}
 .iuw-root .iuw-image-preview .iuw-delete-icon,
 .iuw-root .iuw-image-preview .iuw-preview-icon {
   /* shape */
@@ -333,6 +339,13 @@ html[data-theme="dark"] {
   height: 100%;
   object-fit: contain;
   object-position: center;
+  cursor: default;
+}
+#iuw-modal-element .iuw-modal-image-preview video {
+  background: var(--iuw-modal-image-background);
+  width: 100%;
+  height: auto;
+  vertical-align: middle;
   cursor: default;
 }
 #iuw-modal-element .iuw-modal-image-preview .iuw-modal-close {

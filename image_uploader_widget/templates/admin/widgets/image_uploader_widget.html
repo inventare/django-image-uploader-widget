@@ -2,7 +2,7 @@
 
 <div class="iuw-root" {% if not widget.required %}data-candelete="true"{% endif %} {% if widget.is_initial %} data-raw="{{ widget.value.url }}"{% endif %}>
     <input type="file" name="{{ widget.name }}" {% for name, value in widget.attrs.items %}{% if value is not False %} {{ name }}{% if value is not True %}="{{ value|stringformat:'s' }}"{% endif %}{% endif %}{% endfor %} />
-    
+
     <div class="iuw-drop-label">
         {% if custom.drop_icon %}
             {{ custom.drop_icon|safe }}

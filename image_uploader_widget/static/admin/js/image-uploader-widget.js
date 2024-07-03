@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let deleteIcon = "";
         let previewIcon = "";
         if (canDelete) {
-            deleteIcon = '<span class="iuw-delete-icon">' + DELETE_ICON + '</span>'
+            deleteIcon = '<span class="iuw-delete-icon">' + DELETE_ICON + '</span>';
         }
         if (canPreview) {
             let className = "iuw-preview-icon";
@@ -18,10 +18,17 @@ document.addEventListener('DOMContentLoaded', function () {
             previewIcon = '<span class="' + className + '">' + PREVIEW_ICON + '</span>';
         }
         const div = document.createElement('div');
-        div.className = "iuw-image-preview"
-        div.innerHTML = '<img src="' + url + '" />' + deleteIcon + previewIcon;
+        div.className = "iuw-preview";
+
+        if (url.match(/\.(jpeg|jpg|gif|png)$/) != null) {
+            div.innerHTML = '<img src="' + url + '" />' + deleteIcon + previewIcon;
+        } else if (url.match(/\.(mp4|webm|ogg)$/) != null) {
+            div.innerHTML = '<video controls src="' + url + '"></video>' + deleteIcon + previewIcon;
+        }
+
         return div;
     }
+
 
     function getWidget(element) {
         const root = element.closest('.iuw-root');
@@ -75,17 +82,17 @@ document.addEventListener('DOMContentLoaded', function () {
         updateWidgetRenderState(widget);
     }
 
-    function handlePreviewImage(imageElement) {
-        let image = imageElement.querySelector('img');
-        if (!image) {
+    function handlePreviewImage(mediaTag, mediatype) {
+        let tag = mediaTag.querySelector(mediatype.startsWith('video/') ? 'video' : 'img');
+        if (!tag) {
             return;
         }
-        image = image.cloneNode(true);
-        IUWPreviewModal.createPreviewModal(image);
+        tag = tag.cloneNode(true);
+        IUWPreviewModal.createPreviewModal(tag);
         IUWPreviewModal.openPreviewModal();
     }
 
-    function handleImagePreviewClick(e) {
+    function handleImagePreviewClick(e, mediatype) {
         if (!e || !e.target) {
             return;
         }
@@ -97,7 +104,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         if (targetElement.closest('.iuw-preview-icon')) {
             const element = targetElement.closest('.iuw-image-preview');
-            handlePreviewImage(element);
+            handlePreviewImage(element, mediatype);
             return;
         }
         const widget = getWidget(targetElement);
@@ -139,7 +146,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         widget.dragging = false;
         widget.element.classList.remove('drop-zone');
-        
+
         DRAGGING_WIDGET = null;
 
         if (!e.dataTransfer.files.length) {
@@ -171,7 +178,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function updateWidgetRenderState(widget) {
         updateCheckboxAndEmptyState(widget);
 
-        let previews = widget.element.querySelectorAll('.iuw-image-preview');
+        let previews = widget.element.querySelectorAll('.iuw-preview');
         for (const preview of previews) {
             widget.element.removeChild(preview);
         }
@@ -182,12 +189,8 @@ document.addEventListener('DOMContentLoaded', function () {
         } else if (!!widget.raw) {
             widget.element.appendChild(renderPreview(widget.raw, widget.canDelete, widget.canPreview));
         }
-
-        previews = widget.element.querySelectorAll('.iuw-image-preview');
-        for (const preview of previews) {
-            preview.addEventListener('click', handleImagePreviewClick)
-        }
     }
+
 
     function bindWidgetEvents(widget) {
         widget.fileInput.addEventListener('change', handleFileInputChange);
@@ -202,7 +205,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         widget.emptyMarker.addEventListener('click', handleEmptyMarkerClick);
     }
-    
+
     function buildWidget(element) {
         const fileInput = element.querySelector('input[type=file]');
         const id = fileInput.id;
@@ -221,12 +224,12 @@ document.addEventListener('DOMContentLoaded', function () {
             raw: element.getAttribute('data-raw'),
             file: null,
         };
-        
+
         window.uploaderWidgets[id] = widget;
 
         bindWidgetEvents(widget);
         updateWidgetRenderState(widget);
-        
+
         return widget;
     }
 

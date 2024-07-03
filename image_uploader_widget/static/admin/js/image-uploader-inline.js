@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return row;
     }
 
-    function getAndUpdateDataRaw(element) {
+    function getAndUpdateDataRaw(element, mediatype) {
         if (element.classList.contains('empty-form')) {
             return null;
         }
@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return hrefAttr;
     }
 
-    function updatePreviewState(editor, element, url) {
+    function updatePreviewState(editor, element, url, mediatype) {
         if (!url) {
             const inputOrder = editor.orderField ? ' , .field-' + editor.orderField + ' input' : '';
             const inputs = element.querySelectorAll('input[type=hidden], input[type=checkbox], input[type=file]' + inputOrder);
@@ -87,7 +87,9 @@ document.addEventListener('DOMContentLoaded', function() {
         let deleteIcon = null;
         const related = element.closest('.inline-related');
 
-        related.addEventListener('click', handleItemPreviewClick);
+        related.addEventListener('click', (e) => {
+            handleItemPreviewClick(e, mediatype);
+        });
         if (editor.orderField) {
             related.addEventListener('dragstart', handleItemPreviewDragStart);
             related.addEventListener('dragend', handleItemPreviewDragEnd);
@@ -111,9 +113,25 @@ document.addEventListener('DOMContentLoaded', function() {
             element.appendChild(span);
         }
 
-        const img = document.createElement('img');
-        img.src = url;
-        element.appendChild(img);
+        if (!mediatype) {
+            if (url.match(/\.(mp4|webm|ogg)$/)) {
+                mediatype = 'video/*'
+            } else {
+                mediatype = 'image/*'
+            }
+        }
+
+        if (mediatype.startsWith('video/')) {
+            const video = document.createElement('video');
+            video.controls = true;
+            video.src = url;
+            element.appendChild(video);
+        } else {
+            // default is image... even if media type is not.
+            const img = document.createElement('img');
+            img.src = url;
+            element.appendChild(img);
+        }
         
         if (deleteIcon) {
             element.appendChild(deleteIcon);
@@ -145,9 +163,11 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        const imgTag = fileInput.closest('.inline-related').querySelector('img');
-        if (imgTag) {
-            imgTag.src = URL.createObjectURL(files[0]);
+        const mediatype = files[0].type;
+        const mediatTag = fileInput.closest('.inline-related').querySelector(mediatype.startsWith('video/') ? 'video' : 'img');
+
+        if (mediatTag) {
+            mediatTag.src = URL.createObjectURL();
         }
     }
 
@@ -164,7 +184,7 @@ document.addEventListener('DOMContentLoaded', function() {
         updateAllIndexes(editor);
     }
 
-    function handleItemPreviewClick(e) {
+    function handleItemPreviewClick(e, mediatype) {
         if (!e || !e.target) {
             return;
         }
@@ -178,10 +198,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         if (target.closest('.iuw-preview-icon')) {
-            let image = item.querySelector('img');
-            if (image) {
-                image = image.cloneNode(true);
-                IUWPreviewModal.createPreviewModal(image);
+            let tag = item.querySelector(mediatype.startsWith('video') ? 'video' : 'img');
+            if (tag) {
+                tag = tag.cloneNode(true);
+                IUWPreviewModal.createPreviewModal(tag);
                 IUWPreviewModal.openPreviewModal();
                 return;
             }
@@ -265,7 +285,7 @@ document.addEventListener('DOMContentLoaded', function() {
             parent.appendChild(clonedInput);
         }
 
-        updatePreviewState(editor, row, URL.createObjectURL(file));
+        updatePreviewState(editor, row, URL.createObjectURL(file), file.type);
         updateEmptyState(editor);
         updateAllIndexes(editor);
     }
