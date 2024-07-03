@@ -129,6 +129,7 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             // default is image... even if media type is not.
             const img = document.createElement('img');
+            img.loading = 'lazy';
             img.src = url;
             element.appendChild(img);
         }

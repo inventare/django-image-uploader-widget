@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function () {
         div.className = "iuw-preview";
 
         if (url.match(/\.(jpeg|jpg|gif|png)$/) != null) {
-            div.innerHTML = '<img src="' + url + '" />' + deleteIcon + previewIcon;
+            div.innerHTML = '<img loading="lazy" src="' + url + '" />' + deleteIcon + previewIcon;
         } else if (url.match(/\.(mp4|webm|ogg)$/) != null) {
             div.innerHTML = '<video controls src="' + url + '"></video>' + deleteIcon + previewIcon;
         }
