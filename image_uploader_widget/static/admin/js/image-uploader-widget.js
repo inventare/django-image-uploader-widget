@@ -4,7 +4,13 @@ document.addEventListener('DOMContentLoaded', function () {
     const PREVIEW_ICON = '<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-zoom-in" viewBox="0 0 16 16" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" width="100%" height="100%"><path xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"></path><path xmlns="http://www.w3.org/2000/svg" d="M10.344 11.742c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1 6.538 6.538 0 0 1-1.398 1.4z"></path><path xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" d="M6.5 3a.5.5 0 0 1 .5.5V6h2.5a.5.5 0 0 1 0 1H7v2.5a.5.5 0 0 1-1 0V7H3.5a.5.5 0 0 1 0-1H6V3.5a.5.5 0 0 1 .5-.5z"></path></svg>';
     let DRAGGING_WIDGET = null;
 
-    function renderPreview(url, canDelete, canPreview) {
+    // Reference: https://www.geeksforgeeks.org/what-are-different-video-formats-supported-by-browsers-in-html/
+    // According to the article:
+    // "A video exists in different formats such as MP4, MPEG, WebM, Ogg, AVI, QuickTime, etc.
+    // But HTML supports only 3 types of video formats, which include MP4, Ogg, and WebM."
+    const REGEX_VIDEO_EXTENSIONS = /\.(mp4|webm|ogg|mov)$/;
+
+    function renderPreview(url, canDelete, canPreview, mediatype) {
         let deleteIcon = "";
         let previewIcon = "";
         if (canDelete) {
@@ -19,7 +25,17 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         const div = document.createElement('div');
         div.className = "iuw-image-preview"
-        div.innerHTML = '<img src="' + url + '" />' + deleteIcon + previewIcon;
+
+        if (!mediatype) {
+            mediatype = url.match(REGEX_VIDEO_EXTENSIONS) ? 'video/*' : 'image/*'
+        }
+
+        if (mediatype.startsWith('video/')) {
+            div.innerHTML = '<video controls src="' + url + '"></video>' + deleteIcon + previewIcon;
+        } else {
+            div.innerHTML = '<img loading="lazy" src="' + url + '" />' + deleteIcon + previewIcon;
+        }
+
         return div;
     }
 
@@ -76,12 +92,12 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function handlePreviewImage(imageElement) {
-        let image = imageElement.querySelector('img');
-        if (!image) {
+        let tag = imageElement.querySelector('img,video');
+        if (!tag) {
             return;
         }
-        image = image.cloneNode(true);
-        IUWPreviewModal.createPreviewModal(image);
+        tag = tag.cloneNode(true);
+        IUWPreviewModal.createPreviewModal(tag);
         IUWPreviewModal.openPreviewModal();
     }
 
@@ -139,7 +155,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         widget.dragging = false;
         widget.element.classList.remove('drop-zone');
-        
+
         DRAGGING_WIDGET = null;
 
         if (!e.dataTransfer.files.length) {
@@ -178,7 +194,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (!!widget.file) {
             const url = URL.createObjectURL(widget.file);
-            widget.element.appendChild(renderPreview(url, widget.canDelete, widget.canPreview));
+            widget.element.appendChild(renderPreview(url, widget.canDelete, widget.canPreview, widget.file.type));
         } else if (!!widget.raw) {
             widget.element.appendChild(renderPreview(widget.raw, widget.canDelete, widget.canPreview));
         }
@@ -202,7 +218,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         widget.emptyMarker.addEventListener('click', handleEmptyMarkerClick);
     }
-    
+
     function buildWidget(element) {
         const fileInput = element.querySelector('input[type=file]');
         const id = fileInput.id;
@@ -221,12 +237,12 @@ document.addEventListener('DOMContentLoaded', function () {
             raw: element.getAttribute('data-raw'),
             file: null,
         };
-        
+
         window.uploaderWidgets[id] = widget;
 
         bindWidgetEvents(widget);
         updateWidgetRenderState(widget);
-        
+
         return widget;
     }
 

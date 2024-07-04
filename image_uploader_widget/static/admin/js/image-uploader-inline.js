@@ -5,6 +5,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const DELETE_ICON = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" width="100%" height="100%"><path xmlns="http://www.w3.org/2000/svg" d="m289.94 256 95-95A24 24 0 0 0 351 127l-95 95-95-95a24 24 0 0 0-34 34l95 95-95 95a24 24 0 1 0 34 34l95-95 95 95a24 24 0 0 0 34-34z"></path></svg>';
     const PREVIEW_ICON = '<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-zoom-in" viewBox="0 0 16 16" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" width="100%" height="100%"><path xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"></path><path xmlns="http://www.w3.org/2000/svg" d="M10.344 11.742c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1 6.538 6.538 0 0 1-1.398 1.4z"></path><path xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" d="M6.5 3a.5.5 0 0 1 .5.5V6h2.5a.5.5 0 0 1 0 1H7v2.5a.5.5 0 0 1-1 0V7H3.5a.5.5 0 0 1 0-1H6V3.5a.5.5 0 0 1 .5-.5z"></path></svg>';
 
+    const REGEX_VIDEO_EXTENSIONS = /\.(mp4|webm|ogg|mov)$/;
+
     function getEditor(element) {
         const root = element.closest('.iuw-inline-root');
         if (!root) {
@@ -50,7 +52,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return row;
     }
 
-    function getAndUpdateDataRaw(element) {
+    function getAndUpdateDataRaw(element, mediatype) {
         if (element.classList.contains('empty-form')) {
             return null;
         }
@@ -66,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return hrefAttr;
     }
 
-    function updatePreviewState(editor, element, url) {
+    function updatePreviewState(editor, element, url, mediatype) {
         if (!url) {
             const inputOrder = editor.orderField ? ' , .field-' + editor.orderField + ' input' : '';
             const inputs = element.querySelectorAll('input[type=hidden], input[type=checkbox], input[type=file]' + inputOrder);
@@ -87,7 +89,9 @@ document.addEventListener('DOMContentLoaded', function() {
         let deleteIcon = null;
         const related = element.closest('.inline-related');
 
-        related.addEventListener('click', handleItemPreviewClick);
+        related.addEventListener('click', (e) => {
+            handleItemPreviewClick(e, mediatype);
+        });
         if (editor.orderField) {
             related.addEventListener('dragstart', handleItemPreviewDragStart);
             related.addEventListener('dragend', handleItemPreviewDragEnd);
@@ -111,9 +115,26 @@ document.addEventListener('DOMContentLoaded', function() {
             element.appendChild(span);
         }
 
-        const img = document.createElement('img');
-        img.src = url;
-        element.appendChild(img);
+        if (!mediatype) {
+            if (url.match(REGEX_VIDEO_EXTENSIONS)) {
+                mediatype = 'video/*'
+            } else {
+                mediatype = 'image/*'
+            }
+        }
+
+        if (mediatype.startsWith('video/')) {
+            const video = document.createElement('video');
+            video.controls = true;
+            video.src = url;
+            element.appendChild(video);
+        } else {
+            // default is image... even if media type is not.
+            const img = document.createElement('img');
+            img.loading = 'lazy';
+            img.src = url;
+            element.appendChild(img);
+        }
         
         if (deleteIcon) {
             element.appendChild(deleteIcon);
@@ -145,9 +166,11 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        const imgTag = fileInput.closest('.inline-related').querySelector('img');
-        if (imgTag) {
-            imgTag.src = URL.createObjectURL(files[0]);
+        const mediatype = files[0].type;
+        const mediatTag = fileInput.closest('.inline-related').querySelector(mediatype.startsWith('video/') ? 'video' : 'img');
+
+        if (mediatTag) {
+            mediatTag.src = URL.createObjectURL(files[0]);
         }
     }
 
@@ -164,7 +187,7 @@ document.addEventListener('DOMContentLoaded', function() {
         updateAllIndexes(editor);
     }
 
-    function handleItemPreviewClick(e) {
+    function handleItemPreviewClick(e, mediatype) {
         if (!e || !e.target) {
             return;
         }
@@ -178,10 +201,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         if (target.closest('.iuw-preview-icon')) {
-            let image = item.querySelector('img');
-            if (image) {
-                image = image.cloneNode(true);
-                IUWPreviewModal.createPreviewModal(image);
+            let tag = item.querySelector(mediatype.startsWith('video') ? 'video' : 'img');
+            if (tag) {
+                tag = tag.cloneNode(true);
+                IUWPreviewModal.createPreviewModal(tag);
                 IUWPreviewModal.openPreviewModal();
                 return;
             }
@@ -265,7 +288,7 @@ document.addEventListener('DOMContentLoaded', function() {
             parent.appendChild(clonedInput);
         }
 
-        updatePreviewState(editor, row, URL.createObjectURL(file));
+        updatePreviewState(editor, row, URL.createObjectURL(file), file.type);
         updateEmptyState(editor);
         updateAllIndexes(editor);
     }
@@ -572,6 +595,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const related = element.querySelectorAll('.inline-related');
         for (const item of related) {
             updatePreviewState(editor, item);
+            if (item.id !== 'housefile_set-empty' && !item.dataset.raw) {
+                item.remove()
+            }
         }
 
         bindEvents(editor);

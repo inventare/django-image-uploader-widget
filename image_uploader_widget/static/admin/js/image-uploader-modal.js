@@ -24,7 +24,7 @@ const IUWPreviewModal = {
     onModalClick: function (e) {
         if (e && e.target) {
             const element = e.target;
-            if (element.closest('img.iuw-modal-image-preview-item')) {
+            if (element.closest('.iuw-modal-image-preview-item')) {
                 return;
             }
         }
