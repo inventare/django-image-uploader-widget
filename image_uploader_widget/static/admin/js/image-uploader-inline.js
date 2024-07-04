@@ -170,7 +170,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const mediatTag = fileInput.closest('.inline-related').querySelector(mediatype.startsWith('video/') ? 'video' : 'img');
 
         if (mediatTag) {
-            mediatTag.src = URL.createObjectURL();
+            mediatTag.src = URL.createObjectURL(files[0]);
         }
     }
 
