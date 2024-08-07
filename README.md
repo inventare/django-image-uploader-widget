@@ -31,6 +31,17 @@
 - [x] Support reordering inside **django-admin** inline.
 - [x] Support `ArrayField` for `PostgreSQL` databases.
 
+## Future Roadmap
+
+| Intented Version  | Description                                                | Expected date |
+| ----------------- | ---------------------------------------------------------- | ------------- |
+| 0.6.0             | Support for Drag and Drop for reordering on mobile phones. [#153](https://github.com/inventare/django-image-uploader-widget/issues/153) | August, 2024  |
+| 0.7.0             | Add support for the htmx swap initialization. [#177](https://github.com/inventare/django-image-uploader-widget/issues/177)              | August, 2024  |
+| 0.7.X             | Write test-cases for side-cases [#151](https://github.com/inventare/django-image-uploader-widget/issues/151)              | August, 2024  |
+| 0.7.X             | Review the documentation of the package. [#171](https://github.com/inventare/django-image-uploader-widget/issues/171)              | September, 2024  |
+| 0.7.X             | Grant light/dark theme support on Django 3.2 and Django 4.2+. [#113](https://github.com/inventare/django-image-uploader-widget/issues/113)              | September, 2024  |
+| 1.0.0             | Drop support for Django 3.2 (no more supported by Django team). [#152](https://github.com/inventare/django-image-uploader-widget/issues/152)              | October, 2024  |
+
 ## Installation
 
 Install from PyPI:
