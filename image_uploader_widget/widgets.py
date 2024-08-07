@@ -1,4 +1,5 @@
 from django import forms
+from django.conf import settings
 from django.forms import widgets
 
 
@@ -47,11 +48,9 @@ class ImageUploaderWidget(widgets.ClearableFileInput):
 
     @property
     def media(self):
+        extra = "" if settings.DEBUG else ".min"
         return forms.Media(
-            js=(
-                "admin/js/image-uploader-modal.js",
-                "admin/js/image-uploader-widget.js",
-            ),
+            js=("admin/js/image-uploader-widget%s.js" % extra,),
             css={
                 "screen": ("admin/css/image-uploader-widget.css",),
             },

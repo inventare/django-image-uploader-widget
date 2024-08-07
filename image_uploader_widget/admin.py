@@ -1,4 +1,5 @@
 from django import forms
+from django.conf import settings
 from django.contrib import admin
 
 
@@ -47,10 +48,10 @@ class ImageUploaderInline(admin.StackedInline):
 
     @property
     def media(self):
+        extra = "" if settings.DEBUG else ".min"
         return forms.Media(
             js=[
-                "admin/js/image-uploader-modal.js",
-                "admin/js/image-uploader-inline.js",
+                "admin/js/image-uploader-inline%s.js" % extra,
             ],
             css={
                 "screen": [
