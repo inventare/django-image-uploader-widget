@@ -117,13 +117,28 @@ function cloneFromEmptyTemplate(root) {
   row.setAttribute('data-candelete', 'true');
   row.id = prefix + '-' + getNext(root, prefix);
 
-  template.parentElement.insertBefore(row, template);
+  template.parentElement.appendChild(row);
+
+  const inlineGroup = root.closest('.inline-group');
+  const orderField = inlineGroup.getAttribute('data-order-field');
+  if (!orderField) {
+    return row;
+  }
+  const orderSelector = 'input[name$="' + orderField + '"]';
+  const inputs = inlineGroup.querySelectorAll(orderSelector)
+  let order = 1;
+  for (const input of inputs) {
+    if (parseInt(input.value, 10) >= order) {
+      order = parseInt(input.value, 10) + 1;
+    }
+  }
+  row.querySelector(orderSelector).value = order;
 
   return row;
 }
 
-function handleAddNewImage(root, tempFileInput) {
-  file = (tempFileInput.files || [null])[0];
+function handleAddNewImage(root, tempFileInput, inputFile = null) {
+  file = inputFile ||(tempFileInput.files || [null])[0];
   if (!file) {
       return;
   }
@@ -133,6 +148,15 @@ function handleAddNewImage(root, tempFileInput) {
   row.appendChild(img);
   const rowFileInput = row.querySelector('input[type=file]');
   const parent = rowFileInput.parentElement;
+
+  if (!tempFileInput) {
+    const dataTransferList = new DataTransfer();
+    dataTransferList.items.add(file);
+    rowFileInput.files = dataTransferList.files;
+
+    updateAllIndexes(root);
+    return;
+  }
 
   const className = rowFileInput.className;
   const name = rowFileInput.getAttribute('name');
@@ -187,6 +211,8 @@ function handlePreviewImage(previewItem) {
 }
 
 function handleRemoveImage(previewItem) {
+  const root = previewItem.closest('.iuw-inline-root');
+
   if (previewItem.classList.contains('has_original')) {
     previewItem.classList.add('deleted');
     const checkboxInput = previewItem.querySelector('input[type=checkbox]');
@@ -195,7 +221,7 @@ function handleRemoveImage(previewItem) {
     previewItem.parentElement.removeChild(previewItem);
   }
 
-  updateAllIndexes(previewItem.closest('.iuw-inline-root'));
+  updateAllIndexes(root);
 }
 
 document.addEventListener('click', function(evt) {
@@ -234,6 +260,7 @@ document.addEventListener('click', function(evt) {
 document.addEventListener('dragenter', function(evt) {
   const root = evt.target.closest('.iuw-inline-root');
   if (!root) { return; }
+  if (root.classList.contains('dragging')) { return; }
 
   window.dragCounter = window.dragCounter + 1;
   window.draggingEditor = root;
@@ -255,12 +282,12 @@ document.addEventListener('dragleave', function(evt) {
   if (!window.draggingEditor) {
     return;
   }
-  if (e.relatedTarget && e.relatedTarget.closest('.iuw-inline-root') === window.draggingEditor) {
-      return;
+  if (evt.relatedTarget && evt.relatedTarget.closest('.iuw-inline-root') === window.draggingEditor) {
+    return;
   }
 
   const root = window.draggingEditor;
-  root.remove('drop-zone');
+  root.classList.remove('drop-zone');
 });
 
 document.addEventListener('dragend', function(evt) {
@@ -271,33 +298,37 @@ document.addEventListener('dragend', function(evt) {
   if (!window.draggingEditor) {
     return;
   }
-  if (e.relatedTarget && e.relatedTarget.closest('.iuw-inline-root') === window.draggingEditor) {
+  if (evt.relatedTarget && evt.relatedTarget.closest('.iuw-inline-root') === window.draggingEditor) {
       return;
   }
 
   const root = window.draggingEditor;
+  if (root.classList.contains('dragging')) { return; }
+
   root.remove('drop-zone');
 });
 
 document.addEventListener('drop', function(evt) {
-  const root = window.draggingWidget;
+  const root = window.draggingEditor;
   if (!root) { return; }
 
+  if (root.classList.contains('dragging')) { return; }
+
   evt.preventDefault();
-  window.draggingWidget = null;
+  window.draggingEditor = null;
   root.classList.remove('drop-zone');
 
-  if (!e.dataTransfer.files.length) {
+  if (!evt.dataTransfer.files.length) {
     return;
   }
-  /*
-  for (const file of e.dataTransfer.files) {
-    handleAddNewImage(editor, file);
+  for (const file of evt.dataTransfer.files) {
+    handleAddNewImage(root, null, file);
   }
-  */
 });
 
 function handleFinishOrdering (previewsContainer) {
+  const root = previewsContainer.closest('.iuw-inline-root');
+  root.classList.remove('dragging');
   const inlineGroup = previewsContainer.closest('.inline-group');
   const orderField = inlineGroup.getAttribute('data-order-field');
   if (!orderField) {
@@ -312,7 +343,12 @@ function handleFinishOrdering (previewsContainer) {
     orderInput.value = order;
   }
 
-  updateAllIndexes(previewsContainer.closest('.iuw-inline-root'));
+  updateAllIndexes(root);
+}
+
+function handleBeginOrdering(previewsContainer) {
+  const root = previewsContainer.closest('.iuw-inline-root');
+  root.classList.add('dragging');
 }
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -327,6 +363,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     new Sortable(item, {
+      onStart: function(evt) {
+        handleBeginOrdering(evt.to);
+      },
       onEnd: function(evt) {
         handleFinishOrdering(evt.to);
       }
