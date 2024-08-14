@@ -182,6 +182,18 @@ function handlePreviewImage(previewItem) {
   IUWPreviewModal.openPreviewModal();
 }
 
+function handleRemoveImage(previewItem) {
+  if (previewItem.classList.contains('has_original')) {
+    previewItem.classList.add('deleted');
+    const checkboxInput = previewItem.querySelector('input[type=checkbox]');
+    checkboxInput.checked = true;
+  } else {
+    previewItem.parentElement.removeChild(previewItem);
+  }
+
+  updateAllIndexes(previewItem.closest('.iuw-inline-root'));
+}
+
 document.addEventListener('click', function(evt) {
   const target = evt.target;
   const root = target.closest('.iuw-inline-root');
@@ -194,12 +206,12 @@ document.addEventListener('click', function(evt) {
   if (emptyMarker) {
     return handleEmptyMarkerClick(emptyMarker);
   }
+  */
 
   const deleteButton = target.closest('.iuw-delete-icon');
   if (deleteButton) {
-    return handleRemoveImage(target.closest('.iuw-root'));
+    return handleRemoveImage(target.closest('.inline-related'));
   }
-  */
 
   if (target.closest('.iuw-add-image-btn')) {
     root.querySelector('.temp_file').click();
