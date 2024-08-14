@@ -4,7 +4,7 @@ from django.test import tag
 from tests import models, test_case
 
 
-@tag("functional")
+@tag("functional", "inline", "functional_inline", "functional_inline_simple")
 class InlineEditorTests(test_case.IUWTestCase):
     model = "inline"
 

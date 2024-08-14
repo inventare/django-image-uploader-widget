@@ -4,6 +4,7 @@ from django.test import tag
 from tests import models, test_case
 
 
+@tag("functional", "functional_widget", "widget")
 class WidgetRequiredTests(test_case.IUWTestCase):
     model = "testrequired"
 
@@ -50,7 +51,7 @@ class WidgetRequiredTests(test_case.IUWTestCase):
 
         form_row = self.page.query_selector(".form-row.field-image")
         preview = form_row.query_selector(".iuw-image-preview")
-        self.assertEqual(preview, None)
+        self.assertFalse(preview.is_visible())
 
         file_input = form_row.query_selector("input[type=file]")
         self.assertEqual(file_input.get_attribute("value"), None)
@@ -114,7 +115,7 @@ class WidgetRequiredTests(test_case.IUWTestCase):
         self.goto_add_page()
 
         form_row = self.find_widget_form_row()
-        self.assertIsNone(self.find_widget_preview(form_row))
+        self.assertFalse(self.find_widget_preview(form_row).is_visible())
 
         file_input = form_row.query_selector("input[type=file]")
         file_input.set_input_files(self.image2)
@@ -141,7 +142,7 @@ class WidgetRequiredTests(test_case.IUWTestCase):
 
         form_row = self.find_widget_form_row()
         preview = self.find_widget_preview(form_row)
-        self.assertIsNone(preview)
+        self.assertFalse(preview.is_visible())
         file_input = form_row.query_selector("input[type=file]")
         file_input.set_input_files(self.image2)
 
@@ -173,12 +174,12 @@ class WidgetRequiredTests(test_case.IUWTestCase):
 
         form_row = self.find_widget_form_row()
         preview = self.find_widget_preview(form_row)
-        self.assertIsNone(preview)
+        self.assertFalse(preview.is_visible())
         file_input = form_row.query_selector("input[type=file]")
         file_input.set_input_files(self.image1)
 
         preview = self.find_widget_preview(form_row)
-        self.assertIsNotNone(preview)
+        self.assertIsNotNone(preview.is_visible)
         preview_img = preview.query_selector("img")
 
         preview_button = self.find_preview_icon(preview)
@@ -213,7 +214,7 @@ class WidgetRequiredTests(test_case.IUWTestCase):
 
         form_row = self.find_widget_form_row()
         preview = self.find_widget_preview(form_row)
-        self.assertIsNone(preview)
+        self.assertFalse(preview.is_visible())
         file_input = form_row.query_selector("input[type=file]")
         file_input.set_input_files(self.image1)
 

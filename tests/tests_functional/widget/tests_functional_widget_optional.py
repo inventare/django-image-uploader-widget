@@ -4,6 +4,7 @@ from django.test.utils import tag
 from tests import models, test_case
 
 
+@tag("functional", "functional_widget", "widget")
 class OptionalWidgetTestCase(test_case.IUWTestCase):
     model = "testnonrequired"
 
@@ -37,7 +38,7 @@ class OptionalWidgetTestCase(test_case.IUWTestCase):
 
         form_row = self.find_widget_form_row()
         preview = self.find_widget_preview(form_row)
-        self.assertIsNone(preview)
+        self.assertFalse(preview.is_visible())
 
         file_input = form_row.query_selector("input[type=file]")
         file_input.set_input_files(self.image1)
@@ -74,7 +75,7 @@ class OptionalWidgetTestCase(test_case.IUWTestCase):
         delete_button.click()
 
         preview = self.find_widget_preview(form_row)
-        self.assertIsNone(preview)
+        self.assertFalse(preview.is_visible())
 
     def test_image_with_database_data(self):
         item = self.goto_change_page()
@@ -112,7 +113,7 @@ class OptionalWidgetTestCase(test_case.IUWTestCase):
         delete_button.click()
 
         preview = self.find_widget_preview(form_row)
-        self.assertIsNone(preview)
+        self.assertFalse(preview.is_visible())
 
         self.assertTrue(checkbox.is_checked())
 
@@ -128,7 +129,7 @@ class OptionalWidgetTestCase(test_case.IUWTestCase):
 
         form_row = self.find_widget_form_row()
         preview = self.find_widget_preview(form_row)
-        self.assertIsNone(preview)
+        self.assertFalse(preview.is_visible())
         file_input = form_row.query_selector("input[type=file]")
         file_input.set_input_files(self.image1)
 
@@ -143,7 +144,7 @@ class OptionalWidgetTestCase(test_case.IUWTestCase):
 
         form_row = self.find_widget_form_row()
         preview = self.find_widget_preview(form_row)
-        self.assertIsNone(preview)
+        self.assertFalse(preview.is_visible())
         file_input = form_row.query_selector("input[type=file]")
         file_input.set_input_files(self.image2)
 
@@ -160,7 +161,7 @@ class OptionalWidgetTestCase(test_case.IUWTestCase):
 
         form_row = self.find_widget_form_row()
         preview = self.find_widget_preview(form_row)
-        self.assertIsNone(preview)
+        self.assertFalse(preview.is_visible())
 
         file_input = form_row.query_selector("input[type=file]")
         file_input.set_input_files(self.image2)
@@ -184,7 +185,7 @@ class OptionalWidgetTestCase(test_case.IUWTestCase):
 
         form_row = self.find_widget_form_row()
         preview = self.find_widget_preview(form_row)
-        self.assertIsNone(preview)
+        self.assertFalse(preview.is_visible())
 
         file_input = form_row.query_selector("input[type=file]")
         file_input.set_input_files(self.image2)

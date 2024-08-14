@@ -1,255 +1,140 @@
-document.addEventListener('DOMContentLoaded', function () {
-    window.uploaderWidgets = {};
-    const DELETE_ICON = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" width="100%" height="100%"><path xmlns="http://www.w3.org/2000/svg" d="m289.94 256 95-95A24 24 0 0 0 351 127l-95 95-95-95a24 24 0 0 0-34 34l95 95-95 95a24 24 0 1 0 34 34l95-95 95 95a24 24 0 0 0 34-34z"></path></svg>';
-    const PREVIEW_ICON = '<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-zoom-in" viewBox="0 0 16 16" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" width="100%" height="100%"><path xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"></path><path xmlns="http://www.w3.org/2000/svg" d="M10.344 11.742c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1 6.538 6.538 0 0 1-1.398 1.4z"></path><path xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" d="M6.5 3a.5.5 0 0 1 .5.5V6h2.5a.5.5 0 0 1 0 1H7v2.5a.5.5 0 0 1-1 0V7H3.5a.5.5 0 0 1 0-1H6V3.5a.5.5 0 0 1 .5-.5z"></path></svg>';
-    let DRAGGING_WIDGET = null;
+function changeImagePreview(root, input) {
+  if (!input) {
+    input = root.querySelector('input[type=file]');
+  }
 
-    function renderPreview(url, canDelete, canPreview) {
-        let deleteIcon = "";
-        let previewIcon = "";
-        if (canDelete) {
-            deleteIcon = '<span class="iuw-delete-icon">' + DELETE_ICON + '</span>'
-        }
-        if (canPreview) {
-            let className = "iuw-preview-icon";
-            if (!canDelete) {
-                className += " iuw-only-preview";
-            }
-            previewIcon = '<span class="' + className + '">' + PREVIEW_ICON + '</span>';
-        }
-        const div = document.createElement('div');
-        div.className = "iuw-image-preview"
-        div.innerHTML = '<img src="' + url + '" />' + deleteIcon + previewIcon;
-        return div;
-    }
+  const [file] = input.files;
+  const url = URL.createObjectURL(file);
+  root.classList.remove('empty');
 
-    function getWidget(element) {
-        const root = element.closest('.iuw-root');
-        if (!root) {
-            return null;
-        }
-        const id = root.getAttribute('data-widget');
-        if (!id) {
-            return null;
-        }
-        if (!Object.prototype.hasOwnProperty.call(window.uploaderWidgets, id)) {
-            return null;
-        }
-        return window.uploaderWidgets[id];
-    }
+  const checkbox = root.querySelector('input[type="checkbox"]');
+  if (checkbox) {
+    checkbox.checked = false;
+  }
 
-    function handleEmptyMarkerClick(e) {
-        const widget = getWidget(e.target);
-        if (!widget) {
-            return;
-        }
-        widget.fileInput.click();
-    }
+  const previewImage = root.querySelector('.iuw-image-preview img');
+  if (!previewImage) {
+    const previewRoot = root.querySelector('.iuw-image-preview');
 
-    function handleFileInputChange(e) {
-        const widget = getWidget(e.target);
-        if (!widget) {
-            return;
-        }
-        if (!widget.fileInput.files.length) {
-            return;
-        }
-        widget.file = widget.fileInput.files[0];
-        updateWidgetRenderState(widget);
-    }
+    const img = document.createElement('img');
+    img.src = url;
+    previewRoot.appendChild(img);
+    return;
+  }
+  previewImage.src = url;
+}
 
-    function handleRemoveImage(imageElement) {
-        const widget = getWidget(imageElement);
-        if (!widget) {
-            return;
-        }
+document.addEventListener('change', function(evt) {
+  const { target } = evt;
+  const root = target.closest('.iuw-root');
+  if (!root) { return; }
 
-        imageElement.parentElement.removeChild(imageElement);
-        if (widget.checkboxInput) {
-            widget.checkboxInput.checked = true;
-        }
+  const input = root.querySelector('input[type="file"]');
+  if (!input.files.length) { return; }
 
-        widget.fileInput.value = '';
-        widget.file = null;
-        widget.raw = null;
-        updateWidgetRenderState(widget);
-    }
+  changeImagePreview(root, input);
+});
 
-    function handlePreviewImage(imageElement) {
-        let image = imageElement.querySelector('img');
-        if (!image) {
-            return;
-        }
-        image = image.cloneNode(true);
-        IUWPreviewModal.createPreviewModal(image);
-        IUWPreviewModal.openPreviewModal();
-    }
+function handleEmptyMarkerClick(emptyMarker) {
+  const root = emptyMarker.closest('.iuw-root');
+  if (!root) { return; }
 
-    function handleImagePreviewClick(e) {
-        if (!e || !e.target) {
-            return;
-        }
-        const targetElement = e.target;
-        if (targetElement.closest('.iuw-delete-icon')) {
-            const element = targetElement.closest('.iuw-image-preview');
-            handleRemoveImage(element);
-            return;
-        }
-        if (targetElement.closest('.iuw-preview-icon')) {
-            const element = targetElement.closest('.iuw-image-preview');
-            handlePreviewImage(element);
-            return;
-        }
-        const widget = getWidget(targetElement);
-        widget.fileInput.click();
-    }
+  root.querySelector('input[type="file"]').click();
+}
 
-    function handleDragLeave(e) {
-        if (e.relatedTarget && getWidget(e.relatedTarget) === DRAGGING_WIDGET) {
-            return;
-        }
-        DRAGGING_WIDGET.dragging = false;
-        DRAGGING_WIDGET.element.classList.remove('drop-zone');
-        DRAGGING_WIDGET = null;
-    }
+function handlePreviewImage(previewItem) {
+  let image = previewItem.querySelector('img');
+  if (!image) {
+      return;
+  }
+  image = image.cloneNode(true);
+  IUWPreviewModal.createPreviewModal(image);
+  IUWPreviewModal.openPreviewModal();
+}
 
-    function handleDragEnter(e) {
-        const widget = getWidget(e.target);
-        if (!widget) {
-            return;
-        }
-        DRAGGING_WIDGET = widget;
-        widget.dragging = true;
-        widget.element.classList.add('drop-zone');
-    }
+function handleRemoveImage(root) {
+  const checkbox = root.querySelector('input[type="checkbox"]');
+  if (checkbox) {
+    checkbox.checked = true;
+  }
 
-    function handleDragOver (e) {
-        if (!e) {
-            return;
-        }
-        e.preventDefault();
-    }
+  const fileInput = root.querySelector('input[type="file"]');
+  fileInput.value = '';
+  root.classList.add('empty');
+}
 
-    function handleDrop (e) {
-        e.preventDefault();
+document.addEventListener('click', function(evt) {
+  const { target } = evt;
+  const emptyMarker = target.closest('.iuw-empty');
+  if (emptyMarker) {
+    return handleEmptyMarkerClick(emptyMarker);
+  }
 
-        const widget = DRAGGING_WIDGET;
-        if (!widget) {
-            return;
-        }
-        widget.dragging = false;
-        widget.element.classList.remove('drop-zone');
-        
-        DRAGGING_WIDGET = null;
+  const deleteButton = target.closest('.iuw-delete-icon');
+  if (deleteButton) {
+    return handleRemoveImage(target.closest('.iuw-root'));
+  }
 
-        if (!e.dataTransfer.files.length) {
-            return;
-        }
-        widget.fileInput.files = e.dataTransfer.files;
-        widget.file = widget.fileInput.files[0];
-        widget.raw = null;
+  const previewButton = target.closest('.iuw-preview-icon');
+  if (previewButton) {
+    return handlePreviewImage(target.closest('.iuw-image-preview'));
+  }
 
-        updateWidgetRenderState(widget);
-    }
+  const previewItem = target.closest('.iuw-image-preview');
+  if (previewItem) {
+    const root = target.closest('.iuw-root');
+    const fileInput = root.querySelector('input[type="file"]');
+    fileInput.click();
+  }
+});
 
-    function updateCheckboxAndEmptyState(widget) {
-        if (!widget.file && !widget.raw) {
-            widget.element.classList.add('empty');
-            if (!widget.checkboxInput) {
-                return;
-            }
-            widget.checkboxInput.checked = true;
-            return;
-        }
-        widget.element.classList.remove('empty');
-        if (!widget.checkboxInput) {
-            return;
-        }
-        widget.checkboxInput.checked = false;
-    }
+document.addEventListener('dragenter', function(evt) {
+  const root = evt.target.closest('.iuw-root');
+  if (!root) { return; }
 
-    function updateWidgetRenderState(widget) {
-        updateCheckboxAndEmptyState(widget);
+  window.draggingWidget = root;
+  root.classList.add('drop-zone');
+});
 
-        let previews = widget.element.querySelectorAll('.iuw-image-preview');
-        for (const preview of previews) {
-            widget.element.removeChild(preview);
-        }
+document.addEventListener('dragover', function(evt) {
+  const root = evt.target.closest('.iuw-root');
+  if (!root) { return; }
 
-        if (!!widget.file) {
-            const url = URL.createObjectURL(widget.file);
-            widget.element.appendChild(renderPreview(url, widget.canDelete, widget.canPreview));
-        } else if (!!widget.raw) {
-            widget.element.appendChild(renderPreview(widget.raw, widget.canDelete, widget.canPreview));
-        }
+  evt.preventDefault();
+});
 
-        previews = widget.element.querySelectorAll('.iuw-image-preview');
-        for (const preview of previews) {
-            preview.addEventListener('click', handleImagePreviewClick)
-        }
-    }
+document.addEventListener('dragleave', function(evt) {
+  if (evt.relatedTarget && evt.relatedTarget.closest('.iuw-root') === window.draggingWidget) {
+    return;
+  }
+  const root = evt.target.closest('.iuw-root');
+  if (!root) { return; }
 
-    function bindWidgetEvents(widget) {
-        widget.fileInput.addEventListener('change', handleFileInputChange);
-        widget.element.addEventListener('dragenter', handleDragEnter);
-        widget.element.addEventListener('dragover', handleDragOver);
-        widget.element.addEventListener('dragleave', handleDragLeave);
-        widget.element.addEventListener('dragend', handleDragLeave);
-        widget.element.addEventListener('drop', handleDrop);
+  root.classList.remove('drop-zone');
+  window.draggingWidget = null;
+});
 
-        if (!widget.emptyMarker) {
-            return;
-        }
-        widget.emptyMarker.addEventListener('click', handleEmptyMarkerClick);
-    }
-    
-    function buildWidget(element) {
-        const fileInput = element.querySelector('input[type=file]');
-        const id = fileInput.id;
-        element.setAttribute('data-widget', id);
+document.addEventListener('dragend', function(evt) {
+  const root = evt.target.closest('.iuw-root');
+  if (!root) { return; }
 
-        const widget = {
-            id: id,
-            element: element,
-            fileInput: fileInput,
-            checkboxInput: element.querySelector('input[type=checkbox]'),
-            emptyMarker: element.querySelector('.iuw-empty'),
-            canDelete: element.getAttribute('data-candelete') === 'true',
-            canPreview: true,
-            dragging: false,
-            // values
-            raw: element.getAttribute('data-raw'),
-            file: null,
-        };
-        
-        window.uploaderWidgets[id] = widget;
+  root.classList.remove('drop-zone');
+});
 
-        bindWidgetEvents(widget);
-        updateWidgetRenderState(widget);
-        
-        return widget;
-    }
+document.addEventListener('drop', function(evt) {
+  const root = window.draggingWidget;
+  if (!root) { return; }
 
-    function initializeWidgets(element) {
-        const widgets = document.querySelectorAll('.iuw-root');
-        for (const widgetElement of widgets) {
-            buildWidget(widgetElement);
-        }
-    }
+  evt.preventDefault();
 
-    initializeWidgets(document);
+  window.draggingWidget = null;
+  root.classList.remove('drop-zone');
+  if (!evt.dataTransfer.files.length) {
+      return;
+  }
 
-    if (window && window.django && window.django.jQuery) {
-        const $ = window.django.jQuery;
+  const fileInput = root.querySelector('input[type="file"]');
 
-        $(document).on('formset:added', (e, rows) => {
-            if (!rows || !rows.length) {
-                rows = [e.target]
-            }
-            if (!rows || !rows.length) {
-                return;
-            }
-            initializeWidgets(rows[0]);
-        });
-    }
+  fileInput.files = evt.dataTransfer.files;
+  changeImagePreview(root, fileInput);
 });

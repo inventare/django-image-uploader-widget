@@ -4,7 +4,7 @@ from django.test import tag
 from tests import models, test_case
 
 
-@tag("functional", "ordered")
+@tag("functional", "ordered", "inline", "functional_inline")
 class OrderedInlineEditorTests(test_case.IUWTestCase):
     model = "orderedinline"
 
@@ -466,10 +466,11 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
         items = models.OrderedInlineItem.objects.order_by("id").all()
         self.assertEqual(len(items), 2)
         item1, item2 = items
-        self.assertIsNotNone(item1.image)
-        self.assertEqual(str(item1.order), "2")
-        self.assertIsNotNone(item2.image)
-        self.assertEqual(str(item2.order), "1")
+
+        self.assertTrue("image2" in item1.image.path)
+        self.assertEqual(str(item1.order), "1")
+        self.assertFalse("image2" in item2.image.path)
+        self.assertEqual(str(item2.order), "2")
 
     def test_should_reorder_two_items_from_last_to_first(self):
         self.assertEqual(len(models.OrderedInlineItem.objects.all()), 0)
@@ -523,10 +524,11 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
         items = models.OrderedInlineItem.objects.order_by("id").all()
         self.assertEqual(len(items), 2)
         item1, item2 = items
-        self.assertIsNotNone(item1.image)
-        self.assertEqual(str(item1.order), "2")
-        self.assertIsNotNone(item2.image)
-        self.assertEqual(str(item2.order), "1")
+
+        self.assertTrue("image2" in item1.image.path)
+        self.assertEqual(str(item1.order), "1")
+        self.assertTrue("image1" in item2.image.path)
+        self.assertEqual(str(item2.order), "2")
 
     def test_should_reorder_three_items(self):
         self.assertEqual(len(models.OrderedInlineItem.objects.all()), 0)
@@ -546,7 +548,7 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
         previews = self.find_inline_previews(root)
         self.assertEqual(len(previews), 2)
 
-        temp_file.set_input_files(self.image1)
+        temp_file.set_input_files(self.image3)
         previews = self.find_inline_previews(root)
         self.assertEqual(len(previews), 3)
 
@@ -594,12 +596,12 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
         items = models.OrderedInlineItem.objects.order_by("id").all()
         self.assertEqual(len(items), 3)
         item1, item2, item3 = items
-        self.assertIsNotNone(item3.image)
-        self.assertEqual(str(item3.order), "1")
-        self.assertIsNotNone(item2.image)
+        self.assertTrue("image3" in item1.image.path)
+        self.assertEqual(str(item1.order), "1")
+        self.assertTrue("image2" in item2.image.path)
         self.assertEqual(str(item2.order), "2")
-        self.assertIsNotNone(item1.image)
-        self.assertEqual(str(item1.order), "3")
+        self.assertTrue("image1" in item3.image.path)
+        self.assertEqual(str(item3.order), "3")
 
     def test_should_reorder_with_deleted_item(self):
         self.assertEqual(len(models.OrderedInlineItem.objects.all()), 0)
@@ -619,7 +621,7 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
         previews = self.find_inline_previews(root)
         self.assertEqual(len(previews), 2)
 
-        temp_file.set_input_files(self.image1)
+        temp_file.set_input_files(self.image3)
         previews = self.find_inline_previews(root)
         self.assertEqual(len(previews), 3)
 
@@ -671,11 +673,11 @@ class OrderedInlineEditorTests(test_case.IUWTestCase):
 
         items = models.OrderedInlineItem.objects.order_by("id").all()
         self.assertEqual(len(items), 2)
-        item1, item3 = items
-        self.assertIsNotNone(item3.image)
-        self.assertEqual(str(item3.order), "1")
-        self.assertIsNotNone(item1.image)
-        self.assertEqual(str(item1.order), "2")
+        item1, item2 = items
+        self.assertTrue("image3" in item1.image.path)
+        self.assertEqual(str(item1.order), "1")
+        self.assertTrue("image1" in item2.image.path)
+        self.assertEqual(str(item2.order), "2")
 
     def test_should_reorder_and_delete_item(self):
         self.assertEqual(len(models.OrderedInlineItem.objects.all()), 0)

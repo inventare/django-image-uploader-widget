@@ -6,4 +6,5 @@ media/
 build
 *.egg-info
 dist
-site
+site/
+node_modules

@@ -106,6 +106,7 @@ class ImageUploaderArrayWidget(SplitArrayWidget):
     def media(self):
         return forms.Media(
             js=(
+                "admin/js/sortable.min.js",
                 "admin/js/image-uploader-modal.js",
                 "admin/js/image-uploader-inline.js",
             ),

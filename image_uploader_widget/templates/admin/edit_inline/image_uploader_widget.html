@@ -1,0 +1,14 @@
+{% if widget.is_initial %}
+  {% with url=widget.value.url can_preview=True required=False %}
+    {% include 'admin/edit_inline/image_uploader_preview.html' %}
+  {% endwith %}
+{% else %}
+  {% with url=None can_preview=True required=False %}
+    {% include 'admin/edit_inline/image_uploader_preview.html' %}
+  {% endwith %}
+{% endif %}
+
+{% if not widget.required %}
+  <input type="checkbox" name="{{ widget.checkbox_name }}" id="{{ widget.checkbox_id }}"{% if widget.attrs.disabled %} disabled{% endif %}{% if widget.attrs.checked %} checked{% endif %} />
+{% endif %}
+<input type="{{ widget.type }}" name="{{ widget.name }}"{% include "django/forms/widgets/attrs.html" %} />

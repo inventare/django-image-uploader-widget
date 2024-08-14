@@ -3,7 +3,7 @@ from django.test import tag
 from tests import test_case
 
 
-@tag("functional")
+@tag("functional", "inline", "functional_inline")
 class CustomizedInlineEditorTestCase(test_case.IUWTestCase):
     model = "custominline"
 

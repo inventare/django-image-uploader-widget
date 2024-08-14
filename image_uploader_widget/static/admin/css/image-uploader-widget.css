@@ -143,6 +143,9 @@ html[data-theme="dark"] {
 .iuw-root .iuw-empty > span span {
   color: var(--iuw-placeholder-destak-color);
 }
+.iuw-root.empty .iuw-image-preview {
+  display: none;
+}
 .iuw-root.empty .iuw-empty {
   height: 100%;
   opacity: 1;
