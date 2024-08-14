@@ -3,7 +3,7 @@ from django.test import TestCase, tag
 from tests.forms import TestCustomForm
 
 
-@tag("unit")
+@tag("unit", "widget")
 class WidgetCustomTestCase(TestCase):
     def test_render_custom_icons_and_texts(self):
         form = TestCustomForm()

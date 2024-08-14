@@ -4,7 +4,7 @@ from django.test import tag
 from tests import models, test_case
 
 
-@tag("functional", "ordered")
+@tag("functional", "ordered", "inline", "functional_inline")
 class OrderedInlineEditorTests(test_case.IUWTestCase):
     model = "orderedinline"
 

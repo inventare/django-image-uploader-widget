@@ -33,23 +33,6 @@ document.addEventListener('DOMContentLoaded', function() {
         };
     }
 
-    function getFromEmptyTemplate(editor) {
-        const template = editor.element.querySelector('.inline-related.empty-form');
-        if (!template) {
-            return null;
-        }
-
-        const row = template.cloneNode(true);
-        row.classList.remove('empty-form');
-        row.classList.remove('last-related');
-        row.setAttribute('data-candelete', 'true');
-        row.id = editor.inlineFormset.options.prefix + '-' + editor.next;
-
-        template.parentElement.insertBefore(row, editor.addImageButton);
-
-        return row;
-    }
-
     function getAndUpdateDataRaw(element) {
         if (element.classList.contains('empty-form')) {
             return null;
@@ -92,9 +75,9 @@ document.addEventListener('DOMContentLoaded', function() {
             related.addEventListener('dragstart', handleItemPreviewDragStart);
             related.addEventListener('dragend', handleItemPreviewDragEnd);
         }
-        
+
         related.querySelector('input[type=file]').addEventListener('change', handleItemPreviewFileChange);
-        
+
         if (related.getAttribute('data-candelete') === 'true') {
             deleteIcon = document.createElement('span');
             deleteIcon.classList.add('iuw-delete-icon');
@@ -114,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const img = document.createElement('img');
         img.src = url;
         element.appendChild(img);
-        
+
         if (deleteIcon) {
             element.appendChild(deleteIcon);
         }
@@ -159,7 +142,7 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             element.parentElement.removeChild(element);
         }
-        
+
         updateEmptyState(editor);
         updateAllIndexes(editor);
     }
@@ -225,44 +208,15 @@ document.addEventListener('DOMContentLoaded', function() {
             const orderField = row.querySelector('input[name$="' + editor.orderField + '"]');
             orderField.value = newOrder;
         }
-        
+
         if (!!file) {
             const rowFileInput = row.querySelector('input[type=file]');
-            
+
             const dataTransferList = new DataTransfer();
             dataTransferList.items.add(file);
 
             rowFileInput.files = dataTransferList.files;
         } else {
-            if (!editor.tempFileInput) {
-                return;
-            }
-            file = (editor.tempFileInput.files || [null])[0];
-            if (!file) {
-                return;
-            }
-            const rowFileInput = row.querySelector('input[type=file]');
-            const parent = rowFileInput.parentElement;
-
-            const className = rowFileInput.className;
-            const name = rowFileInput.getAttribute('name');
-            parent.removeChild(rowFileInput);
-
-            clonedInput = editor.tempFileInput.cloneNode(true)
-            clonedInput.className = className;
-            clonedInput.setAttribute('name', name || '');
-
-            //
-            // TODO: Safari not clone files inside the input.
-            //
-            //
-            const dataTransferList = new DataTransfer();
-            dataTransferList.items.add(file);
-            clonedInput.files = dataTransferList.files;
-
-            editor.tempFileInput.value = null
-
-            parent.appendChild(clonedInput);
         }
 
         updatePreviewState(editor, row, URL.createObjectURL(file));
@@ -290,7 +244,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         e.preventDefault();
     }
-    
+
     function handleDragLeave(e) {
         DRAGGING_COUNTER = DRAGGING_COUNTER - 1;
         if (DRAGGING_COUNTER > 0) {
@@ -369,7 +323,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .forEach(function(item){
                 const orderField = item.item.querySelector(orderSelector);
                 orderField.value = item.order;
-                
+
                 const parent = item.item.parentElement;
                 parent.removeChild(item.item);
                 parent.insertBefore(item.item, editor.addImageButton);
@@ -411,103 +365,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    function handleTempFileInputChange(e) {
-        const editor = getEditor(e.target);
-        
-        const filesList = editor.tempFileInput.files;
-        if (!filesList || filesList.length <= 0) {
-            return;
-        }
-        handleAddFile(editor);
-    }
-
-    function handleAddImageClick(e) {
-        const editor = getEditor(e.target);
-
-        if(!editor.tempFileInput) {
-            return;
-        }
-        editor.tempFileInput.click();
-    }
-
     function updateEmptyState(editor) {
         const items = editor.element.querySelectorAll('.inline-related:not(.empty-form):not(.deleted)');
         editor.element.classList.toggle('empty', items.length == 0);
-    }
-
-    function updateElementIndex(element, prefix, index) {
-        const findRegex = new RegExp('(' + prefix + '-(\\d+|__prefix__))');
-        const replacement = prefix + '-' + index;
-        // replace at [for]
-        const forAttr = element.getAttribute('for');
-        if (forAttr) {
-            element.setAttribute('for', forAttr.replace(findRegex, replacement));
-        }
-        // replace at [id]
-        const idAttr = element.getAttribute('id');
-        if (idAttr) {
-            element.setAttribute('id', idAttr.replace(findRegex, replacement));
-        }
-        // replace at [name]
-        const nameAttr = element.getAttribute('name');
-        if (nameAttr) {
-            element.setAttribute('name', nameAttr.replace(findRegex, replacement));
-        }
-    }
-
-    function updateAllElementsIndexes(element, prefix, index) {
-        updateElementIndex(element, prefix, index);
-        const elements = element.querySelectorAll('*');
-        for (const child of elements) {
-            updateElementIndex(child, prefix, index);
-        }
-    }
-
-    function updateAllIndexes(editor) {
-        const prefix = editor.inlineFormset.options.prefix;
-        const elements = editor.element.querySelectorAll('.inline-related:not(.empty-form)');
-        
-        let index = 0;
-        for (const item of elements) {
-            updateAllElementsIndexes(item, prefix, index);
-            index += 1;
-        }
-        
-        editor.next = elements.length;
-        editor.management.totalForms.value = editor.next.toString();
-        editor.addImageButton.classList.toggle('visible-by-number', editor.maxCount - editor.next > 0);
-
-        if (!editor.orderField) {
-            return;
-        }
-        const orderSelector = 'input[name$="' + editor.orderField + '"]';
-        Array
-            .from(editor.element.querySelectorAll('.inline-related:not(.empty-form):not(.deleted)'))
-            .map(function(item){
-                const orderField = item.querySelector(orderSelector);
-
-                return {
-                    item: item,
-                    order: parseInt(orderField.value),
-                };
-            })
-            .sort(function(a, b) {
-                return a.order - b.order;
-            })
-            .map(function(item, index) {
-                return {
-                    item: item.item,
-                    order: index + 1,
-                }
-            })
-            .forEach(function(item){
-                const orderField = item.item.querySelector(orderSelector);
-                orderField.value = item.order;
-                
-                const parent = item.item.parentElement;
-                parent.removeChild(item.item);
-                parent.insertBefore(item.item, editor.addImageButton);
-            });
     }
 
     function bindEvents(editor) {
@@ -565,7 +425,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         window.uploaderEditors[id] = editor;
-        
+
         updateEmptyState(editor);
         updateAllIndexes(editor);
 

@@ -48,9 +48,11 @@ class ImageUploaderWidget(widgets.ClearableFileInput):
 
     @property
     def media(self):
-        extra = "" if settings.DEBUG else ".min"
         return forms.Media(
-            js=("admin/js/image-uploader-widget%s.js" % extra,),
+            js=(
+                "admin/js/image-uploader-modal.js",
+                "admin/js/image-uploader-widget.js",
+            ),
             css={
                 "screen": ("admin/css/image-uploader-widget.css",),
             },

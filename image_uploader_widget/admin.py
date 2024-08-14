@@ -1,6 +1,10 @@
 from django import forms
-from django.conf import settings
 from django.contrib import admin
+from django.db import models
+
+
+class ImageUploaderInlineWidget(forms.ClearableFileInput):
+    template_name = "admin/edit_inline/image_uploader_widget.html"
 
 
 class ImageUploaderInline(admin.StackedInline):
@@ -13,6 +17,8 @@ class ImageUploaderInline(admin.StackedInline):
     drop_icon = ""
     add_icon = ""
     accept = "image/*"
+
+    formfield_overrides = {models.ImageField: {"widget": ImageUploaderInlineWidget()}}
 
     def get_add_image_text(self):
         return self.add_image_text
@@ -48,10 +54,10 @@ class ImageUploaderInline(admin.StackedInline):
 
     @property
     def media(self):
-        extra = "" if settings.DEBUG else ".min"
         return forms.Media(
             js=[
-                "admin/js/image-uploader-inline%s.js" % extra,
+                "admin/js/image-uploader-modal.js",
+                "admin/js/image-uploader-inline.js",
             ],
             css={
                 "screen": [
@@ -79,3 +85,18 @@ class OrderedImageUploaderInline(ImageUploaderInline):
         queryset = super().get_queryset(request)
         field = self.get_order_field(request)
         return queryset.order_by(field)
+
+    @property
+    def media(self):
+        return forms.Media(
+            js=[
+                "admin/js/sortable.min.js",
+                "admin/js/image-uploader-modal.js",
+                "admin/js/image-uploader-inline.js",
+            ],
+            css={
+                "screen": [
+                    "admin/css/image-uploader-inline.css",
+                ]
+            },
+        )

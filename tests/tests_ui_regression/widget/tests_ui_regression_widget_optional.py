@@ -5,7 +5,7 @@ from django.test.utils import tag
 from tests import models, test_case
 
 
-@tag("ui-regression")
+@tag("ui-regression", "widget")
 class OptionaldWidgetTestCase(test_case.IUWTestCase):
     model = "testnonrequired"
 
