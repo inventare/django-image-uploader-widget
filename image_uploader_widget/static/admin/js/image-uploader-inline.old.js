@@ -224,43 +224,6 @@ document.addEventListener('DOMContentLoaded', function() {
         updateAllIndexes(editor);
     }
 
-    function handleDragEnter(e) {
-        DRAGGING_COUNTER = DRAGGING_COUNTER + 1;
-        const editor = getEditor(e.target);
-        if (!editor) {
-            return;
-        }
-        DRAGGING_EDITOR = editor;
-
-        if (editor.element.getAttribute('dragging-element')) {
-            return;
-        }
-        editor.element.classList.add('drop-zone');
-    }
-
-    function handleDragOver(e) {
-        if (!e) {
-            return;
-        }
-        e.preventDefault();
-    }
-
-    function handleDragLeave(e) {
-        DRAGGING_COUNTER = DRAGGING_COUNTER - 1;
-        if (DRAGGING_COUNTER > 0) {
-            return;
-        }
-
-        if (!DRAGGING_EDITOR) {
-            return;
-        }
-        if (e.relatedTarget && e.relatedTarget.closest('.iuw-inline-root') === DRAGGING_EDITOR.element) {
-            return;
-        }
-        DRAGGING_EDITOR.element.classList.remove('drop-zone');
-        DRAGGING_EDITOR = null;
-    }
-
     function getElementNewPosition(editor, dragging, x, y) {
         const items = editor.element.querySelectorAll('.inline-related:not(.empty-form):not(.deleted)');
         let index = 0;
@@ -363,11 +326,6 @@ document.addEventListener('DOMContentLoaded', function() {
         for (const file of e.dataTransfer.files) {
             handleAddFile(editor, file);
         }
-    }
-
-    function updateEmptyState(editor) {
-        const items = editor.element.querySelectorAll('.inline-related:not(.empty-form):not(.deleted)');
-        editor.element.classList.toggle('empty', items.length == 0);
     }
 
     function bindEvents(editor) {

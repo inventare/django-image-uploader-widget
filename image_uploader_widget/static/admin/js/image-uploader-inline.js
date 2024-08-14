@@ -1,3 +1,11 @@
+window.dragCounter = 0;
+window.draggingEditor = null;
+
+function updateEmptyState(root) {
+  const items = root.querySelectorAll('.inline-related:not(.empty-form):not(.deleted)');
+  root.classList.toggle('empty', items.length == 0);
+}
+
 function updateElementIndex(element, prefix, index) {
   const findRegex = new RegExp('(' + prefix + '-(\\d+|__prefix__))');
   const replacement = prefix + '-' + index;
@@ -85,12 +93,8 @@ function updateAllIndexes(root) {
   totalForms.value = index.toString();
   root.querySelector('.iuw-add-image-btn').classList.toggle('visible-by-number', maxCount - elements.length > 0);
 
+  updateEmptyState(root);
   updateOrderFields(root);
-  /*if (!orderField) {
-    return;
-  }
-  */
-  // TODO: update order fields here...
 }
 
 function getNext(root, prefix) {
@@ -201,12 +205,10 @@ document.addEventListener('click', function(evt) {
     return;
   }
 
-  /*
   const emptyMarker = target.closest('.iuw-empty');
   if (emptyMarker) {
-    return handleEmptyMarkerClick(emptyMarker);
+    return root.querySelector('.temp_file').click();
   }
-  */
 
   const deleteButton = target.closest('.iuw-delete-icon');
   if (deleteButton) {
@@ -227,6 +229,72 @@ document.addEventListener('click', function(evt) {
     const fileInput = inlineRelated.querySelector('input[type="file"]');
     fileInput.click();
   }
+});
+
+document.addEventListener('dragenter', function(evt) {
+  const root = evt.target.closest('.iuw-inline-root');
+  if (!root) { return; }
+
+  window.dragCounter = window.dragCounter + 1;
+  window.draggingEditor = root;
+  root.classList.add('drop-zone');
+});
+
+document.addEventListener('dragover', function(evt) {
+  const root = evt.target.closest('.iuw-inline-root');
+  if (!root) { return; }
+
+  evt.preventDefault();
+});
+
+document.addEventListener('dragleave', function(evt) {
+  window.dragCounter = window.dragCounter - 1;
+  if (window.dragCounter > 0) {
+    return;
+  }
+  if (!window.draggingEditor) {
+    return;
+  }
+  if (e.relatedTarget && e.relatedTarget.closest('.iuw-inline-root') === window.draggingEditor) {
+      return;
+  }
+
+  const root = window.draggingEditor;
+  root.remove('drop-zone');
+});
+
+document.addEventListener('dragend', function(evt) {
+  window.dragCounter = window.dragCounter - 1;
+  if (window.dragCounter > 0) {
+    return;
+  }
+  if (!window.draggingEditor) {
+    return;
+  }
+  if (e.relatedTarget && e.relatedTarget.closest('.iuw-inline-root') === window.draggingEditor) {
+      return;
+  }
+
+  const root = window.draggingEditor;
+  root.remove('drop-zone');
+});
+
+document.addEventListener('drop', function(evt) {
+  const root = window.draggingWidget;
+  if (!root) { return; }
+
+  evt.preventDefault();
+  window.draggingWidget = null;
+  root.classList.remove('drop-zone');
+
+  if (!e.dataTransfer.files.length) {
+    return;
+  }
+  /*
+  for (const file of e.dataTransfer.files) {
+    handleAddNewImage(editor, file);
+  }
+  */
 });
 
 function handleFinishOrdering (previewsContainer) {
