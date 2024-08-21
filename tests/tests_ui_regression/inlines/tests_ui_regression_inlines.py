@@ -112,8 +112,18 @@ class InlineEditorUIRegressionTestCase(test_case.IUWTestCase):
         self.goto_change_page()
         self.page.set_viewport_size({"width": 800, "height": 800})
 
-        root = self.find_inline_root()
-        self.assert_match_snapshot(root, "in_test_add_button_on_small_screen")
+        self.wait(0.5)
+
+        has_scrollbars = self.page.evaluate(
+            """() => {
+            var element = document.querySelector(".iuw-inline-root");
+            return element.scrollWidth > element.clientWidth;
+        }"""
+        )
+        self.assertTrue(has_scrollbars)
+
+        add_button = self.page.query_selector(".iuw-add-image-btn")
+        self.assert_match_snapshot(add_button, "in_test_add_button_on_small_screen")
 
     def test_ui_initialized_toggle_dark_theme(self):
         major, minor, _, _, _ = django.VERSION

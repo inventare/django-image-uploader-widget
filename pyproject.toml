@@ -60,3 +60,7 @@ env = { DATABASE_USE_POSTGRES = "1" }
 [tool.poe.tasks.test_pg_currently]
 cmd = "python manage.py test --tag currently"
 env = { DATABASE_USE_POSTGRES = "1" }
+
+[tool.poe.tasks.run_pg]
+cmd = "python manage.py runserver"
+env = { DATABASE_USE_POSTGRES = "1" }
