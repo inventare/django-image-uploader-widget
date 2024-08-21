@@ -8,3 +8,4 @@ build
 dist
 site/
 node_modules
+tests/__errors__
