@@ -63,7 +63,7 @@ html[data-theme="dark"] {
     "Segoe UI Emoji",
     "Segoe UI Symbol",
     "Noto Color Emoji";
-    
+
   /* base widget */
   /* behaviour */
   user-select: none;
@@ -295,6 +295,7 @@ html[data-theme="dark"] {
   padding: 15px;
   width: 160px;
   max-width: 160px;
+  min-width: 160px;
   /* styles */
   border: 1px solid var(--iuw-image-preview-border);
   box-shadow: 0 0 4px 0 var(--iuw-image-preview-shadow);

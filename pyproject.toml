@@ -29,7 +29,7 @@ classifiers = [
 ]
 
 [project.optional-dependencies]
-dev = ["black", "isort", "pre-commit"]
+dev = ["black", "isort", "pre-commit", "poethepoet"]
 test = ["playwright", "tiny-match-snapshot==0.0.2"]
 docs = ["mkdocs", "mkdocs-material", "mkdocs-glightbox", "mkdocs-awesome-pages-plugin"]
 
@@ -52,3 +52,15 @@ profile = 'black'
 include-package-data = true
 zip-safe = false
 packages = ["image_uploader_widget"]
+
+[tool.poe.tasks.test_pg]
+cmd = "python manage.py test"
+env = { DATABASE_USE_POSTGRES = "1" }
+
+[tool.poe.tasks.test_pg_currently]
+cmd = "python manage.py test --tag currently"
+env = { DATABASE_USE_POSTGRES = "1" }
+
+[tool.poe.tasks.run_pg]
+cmd = "python manage.py runserver"
+env = { DATABASE_USE_POSTGRES = "1" }
