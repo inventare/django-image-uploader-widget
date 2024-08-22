@@ -1,0 +1,19 @@
+<form
+  hx-post="/{{ post_url }}/{% if instance %}{{ instance.pk }}/{% endif %}"
+  hx-target="this"
+  hx-swap="outerHTML"
+  enctype="multipart/form-data"
+  id="my-widget-form"
+>
+  {% if messages %}
+    <ul class="messagelist">
+      {% for message in messages %}
+        <li class="{{ message.tags }}">{{ message }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  {{ form }}
+
+  <button class="btn-submit" type="submit">Submit</button>
+</form>

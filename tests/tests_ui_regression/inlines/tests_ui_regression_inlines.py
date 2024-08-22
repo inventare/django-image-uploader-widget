@@ -107,7 +107,6 @@ class InlineEditorUIRegressionTestCase(test_case.IUWTestCase):
 
         self.assert_match_snapshot(root, "in_test_hover_add_button")
 
-    @tag("currently")
     def test_add_button_on_small_screen(self):
         self.goto_change_page()
         self.page.set_viewport_size({"width": 800, "height": 800})
