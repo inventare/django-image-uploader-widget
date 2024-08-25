@@ -1,4 +1,4 @@
-<div class="iuw-image-preview">
+<div class="iuw-image-preview" {% if url %}data-raw="{{ url }}"{% endif %}>
   {% if url %}
     <img src="{{ url }}" />
   {% endif %}

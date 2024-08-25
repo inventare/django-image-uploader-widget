@@ -1,8 +1,8 @@
 from django.contrib.messages import SUCCESS, add_message
 from django.shortcuts import render
 
-from .forms import TestForm
-from .models import TestNonRequired, TestRequired
+from .forms import TestForm, TestWithArrayFieldForm
+from .models import TestNonRequired, TestRequired, TestWithArrayField
 
 
 class TestRequiredForm(TestForm):
@@ -47,7 +47,7 @@ def render_widget_optional(request, pk=None):
         if form.is_valid():
             form.save()
             instance = form.instance
-            form = TestRequiredForm(instance=instance)
+            form = TestNonRequiredForm(instance=instance)
             add_message(request, SUCCESS, "Saved")
     else:
         form = TestNonRequiredForm(instance=instance)
@@ -61,9 +61,36 @@ def render_widget_optional(request, pk=None):
     return render(request, template, context=context)
 
 
+def render_array_field_required(request, pk=None):
+    instance = TestWithArrayField.objects.get(pk=pk) if pk else None
+    if request.method == "POST":
+        form = TestWithArrayFieldForm(
+            instance=instance, data=request.POST, files=request.FILES
+        )
+        if form.is_valid():
+            form.save()
+            instance = form.instance
+            form = TestWithArrayFieldForm(instance=instance)
+            add_message(request, SUCCESS, "Saved")
+    else:
+        form = TestWithArrayFieldForm(instance=instance)
+
+    context = {
+        "form": form,
+        "instance": instance,
+        "post_url": "test-htmx-image-widget/array_field",
+    }
+    template = "test_htmx_widget.html"
+    return render(request, template, context=context)
+
+
 def render_base(request):
     destination = request.GET.get("destination")
     form = TestRequiredForm()
-    context = {"destination": destination, "media": form.media}
+    form2 = TestWithArrayFieldForm()
+    context = {
+        "destination": destination,
+        "media": form.media + form2.media,
+    }
     template = "test_htmx.html"
     return render(request, template, context=context)

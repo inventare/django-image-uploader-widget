@@ -13,6 +13,11 @@ urlpatterns = (
         path("test-htmx-image-widget/required/<pk>/", views.render_widget_required),
         path("test-htmx-image-widget/optional/", views.render_widget_optional),
         path("test-htmx-image-widget/optional/<pk>/", views.render_widget_optional),
+        path("test-htmx-image-widget/array_field/", views.render_array_field_required),
+        path(
+            "test-htmx-image-widget/array_field/<pk>/",
+            views.render_array_field_required,
+        ),
         path("test-htmx/", views.render_base),
         path("", lambda _: redirect(reverse("admin:index"))),
     ]
