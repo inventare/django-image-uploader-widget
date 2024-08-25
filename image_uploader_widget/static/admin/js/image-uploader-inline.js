@@ -351,8 +351,11 @@ function handleBeginOrdering(previewsContainer) {
   root.classList.add('dragging');
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-  const items = Array.from(document.querySelectorAll('.iuw-inline-root .previews'));
+function initialize(doc) {
+  if (!doc) {
+    doc = document;
+  }
+  const items = Array.from(doc.querySelectorAll('.iuw-inline-root .previews'));
   for (const item of items) {
     const root = item.closest('.iuw-inline-root');
     const inlineGroup = root.closest('.inline-group');
@@ -371,4 +374,11 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  initialize();
 });
+document.addEventListener('htmx:afterSwap', function(ev) {
+  initialize(ev.target);
+})
