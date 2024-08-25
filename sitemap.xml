@@ -2,92 +2,92 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://inventare.github.io/django-image-uploader-widget/</loc>
-         <lastmod>2024-08-22</lastmod>
+         <lastmod>2024-08-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://inventare.github.io/django-image-uploader-widget/array_field/prevent-raw-change/</loc>
-         <lastmod>2024-08-22</lastmod>
+         <lastmod>2024-08-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://inventare.github.io/django-image-uploader-widget/array_field/tutorial/</loc>
-         <lastmod>2024-08-22</lastmod>
+         <lastmod>2024-08-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://inventare.github.io/django-image-uploader-widget/customization/colors/</loc>
-         <lastmod>2024-08-22</lastmod>
+         <lastmod>2024-08-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://inventare.github.io/django-image-uploader-widget/customization/text-and-icons/</loc>
-         <lastmod>2024-08-22</lastmod>
+         <lastmod>2024-08-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://inventare.github.io/django-image-uploader-widget/development/tests/</loc>
-         <lastmod>2024-08-22</lastmod>
+         <lastmod>2024-08-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://inventare.github.io/django-image-uploader-widget/development/architecture-decision-records/0000-why-jquery/</loc>
-         <lastmod>2024-08-22</lastmod>
+         <lastmod>2024-08-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://inventare.github.io/django-image-uploader-widget/development/architecture-decision-records/0001-why-functional-tests/</loc>
-         <lastmod>2024-08-22</lastmod>
+         <lastmod>2024-08-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://inventare.github.io/django-image-uploader-widget/development/architecture-decision-records/0002-why-ui-regression-tests/</loc>
-         <lastmod>2024-08-22</lastmod>
+         <lastmod>2024-08-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://inventare.github.io/django-image-uploader-widget/development/architecture-decision-records/0003-why-playwright/</loc>
-         <lastmod>2024-08-22</lastmod>
+         <lastmod>2024-08-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://inventare.github.io/django-image-uploader-widget/development/architecture-decision-records/0004-why-mkdocs/</loc>
-         <lastmod>2024-08-22</lastmod>
+         <lastmod>2024-08-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://inventare.github.io/django-image-uploader-widget/inline_admin/accept/</loc>
-         <lastmod>2024-08-22</lastmod>
+         <lastmod>2024-08-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://inventare.github.io/django-image-uploader-widget/inline_admin/ordered/</loc>
-         <lastmod>2024-08-22</lastmod>
+         <lastmod>2024-08-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://inventare.github.io/django-image-uploader-widget/inline_admin/tutorial/</loc>
-         <lastmod>2024-08-22</lastmod>
+         <lastmod>2024-08-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://inventare.github.io/django-image-uploader-widget/widget/accept/</loc>
-         <lastmod>2024-08-22</lastmod>
+         <lastmod>2024-08-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://inventare.github.io/django-image-uploader-widget/widget/multiple-instances-of-same-form/</loc>
-         <lastmod>2024-08-22</lastmod>
+         <lastmod>2024-08-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://inventare.github.io/django-image-uploader-widget/widget/resumed/</loc>
-         <lastmod>2024-08-22</lastmod>
+         <lastmod>2024-08-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://inventare.github.io/django-image-uploader-widget/widget/tutorial/</loc>
-         <lastmod>2024-08-22</lastmod>
+         <lastmod>2024-08-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
 </urlset>
