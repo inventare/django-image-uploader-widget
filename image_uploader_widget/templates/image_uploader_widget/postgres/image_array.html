@@ -34,7 +34,7 @@
           />
 
           {% with url=item.value can_preview=True required=False %}
-            {% include 'postgres/widgets/image_array_preview.html' %}
+            {% include 'image_uploader_widget/postgres/image_array_preview.html' %}
           {% endwith %}
 
           <p class="file-upload">
@@ -69,7 +69,7 @@
         data-candelete="true"
       >
         {% with url=None can_preview=True required=False %}
-          {% include 'postgres/widgets/image_array_preview.html' %}
+          {% include 'image_uploader_widget/postgres/image_array_preview.html' %}
         {% endwith %}
 
         <input

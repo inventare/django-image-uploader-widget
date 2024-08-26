@@ -8,7 +8,7 @@ from django.core.files.uploadedfile import InMemoryUploadedFile
 
 
 class ImageUploaderArrayWidget(SplitArrayWidget):
-    template_name = "postgres/widgets/image_array.html"
+    template_name = "image_uploader_widget/postgres/image_array.html"
     drop_text = ""
     empty_text = ""
     empty_icon = ""
@@ -106,11 +106,11 @@ class ImageUploaderArrayWidget(SplitArrayWidget):
     def media(self):
         return forms.Media(
             js=(
-                "admin/js/sortable.min.js",
-                "admin/js/image-uploader-modal.js",
-                "admin/js/image-uploader-inline.js",
+                "image_uploader_widget/js/vendor/sortable.min.js",
+                "image_uploader_widget/js/image-uploader-modal.js",
+                "image_uploader_widget/js/image-uploader-inline.js",
             ),
             css={
-                "screen": ("admin/css/image-uploader-inline.css",),
+                "screen": ("image_uploader_widget/css/image-uploader-inline.css",),
             },
         )

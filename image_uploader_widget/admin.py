@@ -4,11 +4,13 @@ from django.db import models
 
 
 class ImageUploaderInlineWidget(forms.ClearableFileInput):
-    template_name = "admin/edit_inline/image_uploader_widget.html"
+    template_name = (
+        "image_uploader_widget/admin/inline_image_uploader_preview_widget.html"
+    )
 
 
 class ImageUploaderInline(admin.StackedInline):
-    template = "admin/edit_inline/image_uploader.html"
+    template = "image_uploader_widget/admin/inline_image_uploader.html"
     extra = 0
     add_image_text = ""
     drop_text = ""
@@ -56,19 +58,19 @@ class ImageUploaderInline(admin.StackedInline):
     def media(self):
         return forms.Media(
             js=[
-                "admin/js/image-uploader-modal.js",
-                "admin/js/image-uploader-inline.js",
+                "image_uploader_widget/js/image-uploader-modal.js",
+                "image_uploader_widget/js/image-uploader-inline.js",
             ],
             css={
                 "screen": [
-                    "admin/css/image-uploader-inline.css",
+                    "image_uploader_widget/css/image-uploader-inline.css",
                 ]
             },
         )
 
 
 class OrderedImageUploaderInline(ImageUploaderInline):
-    template = "admin/edit_inline/ordered_image_uploader.html"
+    template = "image_uploader_widget/admin/ordered_inline_image_uploader.html"
     order_field = "order"
 
     def get_order_field(self, request):
@@ -90,13 +92,13 @@ class OrderedImageUploaderInline(ImageUploaderInline):
     def media(self):
         return forms.Media(
             js=[
-                "admin/js/sortable.min.js",
-                "admin/js/image-uploader-modal.js",
-                "admin/js/image-uploader-inline.js",
+                "image_uploader_widget/js/vendor/sortable.min.js",
+                "image_uploader_widget/js/image-uploader-modal.js",
+                "image_uploader_widget/js/image-uploader-inline.js",
             ],
             css={
                 "screen": [
-                    "admin/css/image-uploader-inline.css",
+                    "image_uploader_widget/css/image-uploader-inline.css",
                 ]
             },
         )
