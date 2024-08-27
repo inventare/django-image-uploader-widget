@@ -38,11 +38,11 @@
 
   {% if widget.is_initial %}
     {% with url=widget.value.url can_preview=True required=widget.required %}
-      {% include 'admin/widgets/image_uploader_widget_preview.html' %}
+      {% include 'image_uploader_widget/widget/image_uploader_widget_preview.html' %}
     {% endwith %}
   {% else %}
     {% with url=None can_preview=True required=widget.required %}
-      {% include 'admin/widgets/image_uploader_widget_preview.html' %}
+      {% include 'image_uploader_widget/widget/image_uploader_widget_preview.html' %}
     {% endwith %}
   {% endif %}
 </div>

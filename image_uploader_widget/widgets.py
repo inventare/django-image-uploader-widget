@@ -3,7 +3,7 @@ from django.forms import widgets
 
 
 class ImageUploaderWidget(widgets.ClearableFileInput):
-    template_name = "admin/widgets/image_uploader_widget.html"
+    template_name = "image_uploader_widget/widget/image_uploader_widget.html"
     drop_text = ""
     empty_text = ""
     empty_icon = ""
@@ -49,10 +49,10 @@ class ImageUploaderWidget(widgets.ClearableFileInput):
     def media(self):
         return forms.Media(
             js=(
-                "admin/js/image-uploader-modal.js",
-                "admin/js/image-uploader-widget.js",
+                "image_uploader_widget/js/image-uploader-modal.js",
+                "image_uploader_widget/js/image-uploader-widget.js",
             ),
             css={
-                "screen": ("admin/css/image-uploader-widget.css",),
+                "screen": ("image_uploader_widget/css/image-uploader-widget.css",),
             },
         )
