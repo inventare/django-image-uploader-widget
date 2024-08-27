@@ -1,7 +1,7 @@
 [project]
 requires-python = ">= 3.8"
 name = 'django-image-uploader-widget'
-version = '0.6.0'
+version = '0.7.0'
 description='Simple Image Uploader Widget for Django-Admin'
 dependencies = [
   'django>=3.2',
