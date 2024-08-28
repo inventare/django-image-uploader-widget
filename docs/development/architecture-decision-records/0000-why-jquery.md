@@ -20,3 +20,8 @@ At the `Django 3.2` and `Django 4.0` version, the `inlines.js` script (a script 
 At `Django 4.1.x` version, this event dispatch was transformed to use native browser `CustomEvent` [[inlines.js#L91](https://github.com/django/django/blob/stable/4.1.x/django/contrib/admin/static/admin/js/inlines.js#L91)]. The other side way is valid: if we dispatched the event using native `CustomEvent` can be catched by the jQuery `on()` method. Then, to maintain compatibility with `Django 4.0.x` and `Django 3.2.x`, we decided to use jQuery at this project with one restriction:
 
 - jQuery is used, and your use is alowed only in this case, to start the widget inside inlines formset.
+
+!!! info "Version Information"
+
+    jQuery is no more used on 0.6.0+ versions because the widget no need more initialization. This is commented on [ADR 0005: Why using event bubbling on widget](./0005-why-event-bubbling-widget.md)
+
