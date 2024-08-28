@@ -8,13 +8,11 @@
       
       
       
-        <link rel="canonical" href="https://inventare.github.io/django-image-uploader-widget/development/architecture-decision-records/0004-why-mkdocs/">
+        <link rel="canonical" href="https://inventare.github.io/django-image-uploader-widget/development/architecture-decision-records/0005-why-event-bubbling-widget/">
       
       
-        <link rel="prev" href="../0003-why-playwright/">
+        <link rel="prev" href="../0004-why-mkdocs/">
       
-      
-        <link rel="next" href="../0005-why-event-bubbling-widget/">
       
       
       <link rel="icon" href="../../../images/favicon.png">
@@ -22,7 +20,7 @@
     
     
       
-        <title>ADR 0004: Why Mkdocs instead of docusaurus? - image-uploader-widget</title>
+        <title>ADR 0005: Why using event bubbling on widget - image-uploader-widget</title>
       
     
     
@@ -83,7 +81,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#adr-0004-why-mkdocs-instead-of-docusaurus" class="md-skip">
+        <a href="#adr-0005-why-using-event-bubbling-on-widget" class="md-skip">
           Skip to content
         </a>
       
@@ -119,7 +117,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              ADR 0004: Why Mkdocs instead of docusaurus?
+              ADR 0005: Why using event bubbling on widget
             
           </span>
         </div>
@@ -1121,6 +1119,27 @@
                 
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../0004-why-mkdocs/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR 0004: Why Mkdocs instead of docusaurus?
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
     
   
   
@@ -1137,7 +1156,7 @@
           
   
   <span class="md-ellipsis">
-    ADR 0004: Why Mkdocs instead of docusaurus?
+    ADR 0005: Why using event bubbling on widget
   </span>
   
 
@@ -1148,7 +1167,7 @@
         
   
   <span class="md-ellipsis">
-    ADR 0004: Why Mkdocs instead of docusaurus?
+    ADR 0005: Why using event bubbling on widget
   </span>
   
 
@@ -1209,27 +1228,6 @@
   
 </nav>
       
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../0005-why-event-bubbling-widget/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    ADR 0005: Why using event bubbling on widget
-  </span>
-  
-
-      </a>
     </li>
   
 
@@ -1330,12 +1328,12 @@
   
 
 
-<h1 id="adr-0004-why-mkdocs-instead-of-docusaurus">ADR 0004: Why Mkdocs instead of docusaurus?</h1>
+<h1 id="adr-0005-why-using-event-bubbling-on-widget">ADR 0005: Why using event bubbling on widget</h1>
 <table>
 <thead>
 <tr>
 <th class="adr-emoji" style="text-align: center;"><img alt="📅" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/1f4c5.svg" title=":date:" /></th>
-<th class="adr-text" style="text-align: left;">March 2024.</th>
+<th class="adr-text" style="text-align: left;">August 2024.</th>
 </tr>
 </thead>
 <tbody>
@@ -1346,26 +1344,24 @@
 </tbody>
 </table>
 <h2 id="context">Context</h2>
-<p>The documentation of the <code>django-image-uploader-widget</code> is full based on a <a href="https://docusaurus.io/">docusaurus</a> documentation generation. This was decided, by me, for some reasons. The most important reason is: i have a large expertise working with JavaScript and i known the docusaurus usage and, then, i created the documentation with small effort.</p>
-<p>Based on the first paragraph, we need to talk about one point: the docusaurus insert much complexity for the documentation with some <code>React</code> code and various node configurations, only for the documentation.</p>
+<p>We decided to add out of box support for HTMX on this package and we need to choice the way to do this.</p>
 <h2 id="decision-drivers">Decision Drivers</h2>
 <ul>
-<li>We need to simplify the tolling for this open-source package.</li>
-<li>Docusaurus insert much complexity and configuration files.</li>
-<li>Docusaurus is not known by most part of the python and django community.</li>
+<li>We need to add out of box support for HTMX: the HTMX do a swap and, then, the widget is ready to use, without need of call anything in <strong>JavaScript</strong>.</li>
+<li>We need to change our scripts and code to support it.</li>
 </ul>
 <h2 id="considered-options">Considered Options</h2>
-<p>We considered the two options bellow:</p>
+<p>We considered only the two options bellow:</p>
 <ul>
-<li>Maintain the <code>docusaurus</code> documentation and continue using it.</li>
-<li>Change to the <code>mkdocs</code> documentation.</li>
+<li>Add initialization support on the <a href="https://v1.htmx.org/events/#htmx:afterSwap">htmx:afterSwap</a> event.</li>
+<li>Rewrite the JavaScript to use <strong>Event Bubbling</strong>, and change the responsibility of adjusts the render to templates, to dispense the initialization of the widget.</li>
 </ul>
 <h2 id="decision">Decision</h2>
-<p>We decided to change the documentation to the <code>mkdocs</code> based on some points:</p>
+<p>We decided to rewrite the JavaScript to use <strong>Event Bubbling</strong>, and change the responsibility of adjusts the render to templates, to dispense the initialization of the widget, for some reasons:</p>
 <ul>
-<li>Move all the possible tolling to the python community tools.</li>
-<li>The <code>FastAPI</code> documentation, writen in <code>mkdocs</code> is a very important success case for <code>mkdocs</code>.</li>
-<li>We have some tooling, like <a href="https://github.com/tomchristie/mkautodoc">mkautodoc</a> to better support things like the <code>API Reference</code> full integrated from code to documentation.</li>
+<li>This way we add support too for other libraries that works with ajax style requests and is not <strong>HTMX</strong>.</li>
+<li>Transfer the responsability of rendering from JavaScript to template engines make more easy to customize the widget.</li>
+<li>Remove dependêncies from <strong>jQuery</strong>.</li>
 </ul>
 
 

@@ -8,28 +8,28 @@
       
       
       
-        <link rel="canonical" href="https://inventare.github.io/django-image-uploader-widget/development/architecture-decision-records/0004-why-mkdocs/">
+        <link rel="canonical" href="https://inventare.github.io/django-image-uploader-widget/widget/htmx/">
       
       
-        <link rel="prev" href="../0003-why-playwright/">
+        <link rel="prev" href="../accept/">
       
       
-        <link rel="next" href="../0005-why-event-bubbling-widget/">
+        <link rel="next" href="../multiple-instances-of-same-form/">
       
       
-      <link rel="icon" href="../../../images/favicon.png">
+      <link rel="icon" href="../../images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.33">
     
     
       
-        <title>ADR 0004: Why Mkdocs instead of docusaurus? - image-uploader-widget</title>
+        <title>Out of Box HTMX Support - image-uploader-widget</title>
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.3cba04c6.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.3cba04c6.min.css">
       
         
-        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
       
       
 
@@ -48,16 +48,16 @@
       
     
     
-      <link rel="stylesheet" href="../../../_stylesheets/extra.css">
+      <link rel="stylesheet" href="../../_stylesheets/extra.css">
     
-    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
     
     
     
-   <link href="../../../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
+   <link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
     html.glightbox-open { overflow: initial; height: 100%; }
     .gslide-title { margin-top: 0px; user-select: text; }
     .gslide-desc { color: #666; user-select: text; }
@@ -66,7 +66,7 @@
     .gdesc-inner { font-size: 0.75rem; }
     body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color);}
     body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color);}
-    body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color);}</style> <script src="../../../assets/javascripts/glightbox.min.js"></script></head>
+    body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color);}</style> <script src="../../assets/javascripts/glightbox.min.js"></script></head>
   
   
     
@@ -83,7 +83,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#adr-0004-why-mkdocs-instead-of-docusaurus" class="md-skip">
+        <a href="#out-of-box-htmx-support" class="md-skip">
           Skip to content
         </a>
       
@@ -119,7 +119,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              ADR 0004: Why Mkdocs instead of docusaurus?
+              Out of Box HTMX Support
             
           </span>
         </div>
@@ -196,7 +196,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../.." class="md-tabs__link">
+      <a href="../.." class="md-tabs__link">
         
   
     
@@ -211,11 +211,13 @@
         
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../../../widget/resumed/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../resumed/" class="md-tabs__link">
           
   
   Widget
@@ -233,7 +235,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../array_field/tutorial/" class="md-tabs__link">
+        <a href="../../array_field/tutorial/" class="md-tabs__link">
           
   
   ArrayField
@@ -251,7 +253,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../htmx/widget/" class="md-tabs__link">
+        <a href="../../htmx/widget/" class="md-tabs__link">
           
   
   HTMX
@@ -269,7 +271,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../inline_admin/tutorial/" class="md-tabs__link">
+        <a href="../../inline_admin/tutorial/" class="md-tabs__link">
           
   
   Inline Admin
@@ -287,7 +289,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../customization/colors/" class="md-tabs__link">
+        <a href="../../customization/colors/" class="md-tabs__link">
           
   
   Customization
@@ -301,13 +303,11 @@
         
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="../../tests/" class="md-tabs__link">
+      <li class="md-tabs__item">
+        <a href="../../development/tests/" class="md-tabs__link">
           
   
   Development
@@ -376,7 +376,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../.." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -393,23 +393,28 @@
       
   
   
+    
   
   
+  
     
     
     
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
         
           
-          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
             
   
   <span class="md-ellipsis">
@@ -420,7 +425,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             Widget
@@ -434,7 +439,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../widget/resumed/" class="md-nav__link">
+      <a href="../resumed/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -455,7 +460,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../widget/tutorial/" class="md-nav__link">
+      <a href="../tutorial/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -476,7 +481,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../widget/accept/" class="md-nav__link">
+      <a href="../accept/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -494,10 +499,19 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../../widget/htmx/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -506,6 +520,7 @@
   
 
       </a>
+      
     </li>
   
 
@@ -518,7 +533,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../widget/multiple-instances-of-same-form/" class="md-nav__link">
+      <a href="../multiple-instances-of-same-form/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -584,7 +599,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../array_field/tutorial/" class="md-nav__link">
+      <a href="../../array_field/tutorial/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -605,7 +620,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../array_field/htmx/" class="md-nav__link">
+      <a href="../../array_field/htmx/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -626,7 +641,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../array_field/prevent-raw-change/" class="md-nav__link">
+      <a href="../../array_field/prevent-raw-change/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -692,7 +707,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../htmx/widget/" class="md-nav__link">
+      <a href="../../htmx/widget/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -713,7 +728,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../htmx/array_field/" class="md-nav__link">
+      <a href="../../htmx/array_field/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -779,7 +794,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../inline_admin/tutorial/" class="md-nav__link">
+      <a href="../../inline_admin/tutorial/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -800,7 +815,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../inline_admin/accept/" class="md-nav__link">
+      <a href="../../inline_admin/accept/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -821,7 +836,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../inline_admin/ordered/" class="md-nav__link">
+      <a href="../../inline_admin/ordered/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -887,7 +902,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../customization/colors/" class="md-nav__link">
+      <a href="../../customization/colors/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -908,7 +923,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../customization/text-and-icons/" class="md-nav__link">
+      <a href="../../customization/text-and-icons/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -933,28 +948,23 @@
       
   
   
-    
   
   
-  
     
     
     
       
-        
-        
-      
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
         
           
-          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -965,7 +975,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_7">
             <span class="md-nav__icon md-icon"></span>
             Development
@@ -979,7 +989,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tests/" class="md-nav__link">
+      <a href="../../development/tests/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -997,8 +1007,6 @@
                 
   
   
-    
-  
   
   
     
@@ -1008,11 +1016,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2" >
         
           
           <label class="md-nav__link" for="__nav_7_2" id="__nav_7_2_label" tabindex="0">
@@ -1026,7 +1034,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_2_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_7_2">
             <span class="md-nav__icon md-icon"></span>
             Architecture Decision Records
@@ -1040,7 +1048,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../0000-why-jquery/" class="md-nav__link">
+      <a href="../../development/architecture-decision-records/0000-why-jquery/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1061,7 +1069,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../0001-why-functional-tests/" class="md-nav__link">
+      <a href="../../development/architecture-decision-records/0001-why-functional-tests/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1082,7 +1090,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../0002-why-ui-regression-tests/" class="md-nav__link">
+      <a href="../../development/architecture-decision-records/0002-why-ui-regression-tests/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1103,7 +1111,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../0003-why-playwright/" class="md-nav__link">
+      <a href="../../development/architecture-decision-records/0003-why-playwright/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1121,30 +1129,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    ADR 0004: Why Mkdocs instead of docusaurus?
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../development/architecture-decision-records/0004-why-mkdocs/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1153,62 +1141,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#context" class="md-nav__link">
-    <span class="md-ellipsis">
-      Context
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#decision-drivers" class="md-nav__link">
-    <span class="md-ellipsis">
-      Decision Drivers
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#considered-options" class="md-nav__link">
-    <span class="md-ellipsis">
-      Considered Options
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#decision" class="md-nav__link">
-    <span class="md-ellipsis">
-      Decision
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1221,7 +1153,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../0005-why-event-bubbling-widget/" class="md-nav__link">
+      <a href="../../development/architecture-decision-records/0005-why-event-bubbling-widget/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1270,50 +1202,6 @@
     
   
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#context" class="md-nav__link">
-    <span class="md-ellipsis">
-      Context
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#decision-drivers" class="md-nav__link">
-    <span class="md-ellipsis">
-      Decision Drivers
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#considered-options" class="md-nav__link">
-    <span class="md-ellipsis">
-      Considered Options
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#decision" class="md-nav__link">
-    <span class="md-ellipsis">
-      Decision
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -1330,43 +1218,12 @@
   
 
 
-<h1 id="adr-0004-why-mkdocs-instead-of-docusaurus">ADR 0004: Why Mkdocs instead of docusaurus?</h1>
-<table>
-<thead>
-<tr>
-<th class="adr-emoji" style="text-align: center;"><img alt="📅" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/1f4c5.svg" title=":date:" /></th>
-<th class="adr-text" style="text-align: left;">March 2024.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="adr-emoji" style="text-align: center;"><img alt="✍" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/270d.svg" title=":writing_hand:" /></td>
-<td class="adr-text" style="text-align: left;"><a href="https://github.com/EduardoJM">Eduardo Oliveira</a></td>
-</tr>
-</tbody>
-</table>
-<h2 id="context">Context</h2>
-<p>The documentation of the <code>django-image-uploader-widget</code> is full based on a <a href="https://docusaurus.io/">docusaurus</a> documentation generation. This was decided, by me, for some reasons. The most important reason is: i have a large expertise working with JavaScript and i known the docusaurus usage and, then, i created the documentation with small effort.</p>
-<p>Based on the first paragraph, we need to talk about one point: the docusaurus insert much complexity for the documentation with some <code>React</code> code and various node configurations, only for the documentation.</p>
-<h2 id="decision-drivers">Decision Drivers</h2>
-<ul>
-<li>We need to simplify the tolling for this open-source package.</li>
-<li>Docusaurus insert much complexity and configuration files.</li>
-<li>Docusaurus is not known by most part of the python and django community.</li>
-</ul>
-<h2 id="considered-options">Considered Options</h2>
-<p>We considered the two options bellow:</p>
-<ul>
-<li>Maintain the <code>docusaurus</code> documentation and continue using it.</li>
-<li>Change to the <code>mkdocs</code> documentation.</li>
-</ul>
-<h2 id="decision">Decision</h2>
-<p>We decided to change the documentation to the <code>mkdocs</code> based on some points:</p>
-<ul>
-<li>Move all the possible tolling to the python community tools.</li>
-<li>The <code>FastAPI</code> documentation, writen in <code>mkdocs</code> is a very important success case for <code>mkdocs</code>.</li>
-<li>We have some tooling, like <a href="https://github.com/tomchristie/mkautodoc">mkautodoc</a> to better support things like the <code>API Reference</code> full integrated from code to documentation.</li>
-</ul>
+<h1 id="out-of-box-htmx-support">Out of Box HTMX Support</h1>
+<div class="admonition warning">
+<p class="admonition-title">Version Information</p>
+<p>Introduced at the 0.6.0 version.</p>
+</div>
+<p>The widget, now, has out of box support for HTMX. <a href="../../htmx/widget/">see docs here</a>.</p>
 
 
 
@@ -1419,10 +1276,10 @@
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.top", "search.suggest", "search.highlight"], "search": "../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.top", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.af256bd8.min.js"></script>
+      <script src="../../assets/javascripts/bundle.af256bd8.min.js"></script>
       
     
   <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
