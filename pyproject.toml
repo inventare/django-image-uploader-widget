@@ -64,3 +64,6 @@ env = { DATABASE_USE_POSTGRES = "1" }
 [tool.poe.tasks.run_pg]
 cmd = "python manage.py runserver"
 env = { DATABASE_USE_POSTGRES = "1" }
+
+[tool.poe.tasks.docs]
+cmd = "mkdocs serve"
