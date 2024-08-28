@@ -50,12 +50,15 @@ nav:
     - widget/resumed.md
     - widget/tutorial.md
     - ... | flat | widget/*.md
-  - Inline Admin:
-    - inline_admin/tutorial.md
-    - ... | flat | inline_admin/*.md
   - ArrayField:
     - array_field/tutorial.md
     - ... | flat | array_field/*.md
+  - HTMX:
+    - htmx/widget.md
+    - ... | flat | htmx/*.md
+  - Inline Admin:
+    - inline_admin/tutorial.md
+    - ... | flat | inline_admin/*.md
   - Customization:
     - ... | flat | customization/*.md
   - Development:
