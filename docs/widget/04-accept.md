@@ -1,8 +1,4 @@
----
-sidebar_position: 3
----
-
-# Accept Input Attribute
+# Change Accept Formats
 
 When working with **HTML** `<input />` element, we have an `accept=""` attribute that works defining the visible file types into the file picker dialog. An better, and complete, description of this attribute can be found at [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/accept).
 

@@ -1,12 +1,8 @@
----
-sidebar_position: 1
----
-
-# Tutorial
+# Full Usage Tutorial
 
 First, we need of some context: the image uploader widget is a widget to handle image uploading with a beautiful interface with click to select file and a drop file behaviour handler. It is used with django forms.
 
-This is a more long and for newbies tutorial of how to use this widget. If you is an advanced user, see the [Resumed](./resumed.md) version.
+This is a more long and for newbies tutorial of how to use this widget. If you is an advanced user, see the [Resumed](./01-resumed.md) version.
 
 To write this tutorial of this documentation we go to create an empty django project, then if you don't want to see this part, skip to [using the widget section](#installing-the-widget). Another information is: we're assuming you already know the basics of **django** and already have it installed in your machine.
 
@@ -93,9 +89,9 @@ INSTALLED_APPS = [
 # ...
 ```
 
-### Warning
+!!! info "Observation"
 
-**Observation**: note that the application name to be added on the `INSTALLED_APPS` are not equals to the pip package name / install name.
+    Note that the application name to be added on the `INSTALLED_APPS` are not equals to the pip package name / install name.
 
 ## Using the widget
 
@@ -119,7 +115,7 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
-    
+
     class Meta:
         verbose_name = 'Product'
         verbose_name_plural = 'Products'
@@ -231,7 +227,7 @@ Now, we can create an `templates` folder in the `ecommerce` application and insi
 <body>
 
     {{ form.as_p }}
-    
+
 </body>
 </html>
 ```
