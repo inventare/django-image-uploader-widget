@@ -1,9 +1,6 @@
-# Text And Icons
+# Custom Text and Icons
 
-To customize the image uploader widget or inline you can set some variables (this feature is based on the issue [#77](https://github.com/inventare/django-image-uploader-widget/issues/77)). In this page we talk about how to, easy, change the texts and icons on that lib.
-
-
-## Widget
+To customize the image uploader widget, you can set some variables (this feature is based on the issue [#77](https://github.com/inventare/django-image-uploader-widget/issues/77)). In this page we talk about how to, easy, change the texts and icons on that lib.
 
 For the widget, to customize the icon and the text we need to set some variables in the `ImageUploaderWidget` constructor, like it:
 
@@ -27,6 +24,7 @@ In this example, we set all four properties (`drop_icon`, `drop_text`, `empty_ic
 
 Another way for customize it is create an new widget class based on that and use it for your forms:
 
+
 ```python
 class MyCustomWidget(ImageUploaderWidget):
     drop_text = ""
@@ -34,7 +32,7 @@ class MyCustomWidget(ImageUploaderWidget):
 
     def get_empty_icon(self):
         return render(...)
-    
+
     def get_drop_icon(self):
         return render(...)
 
@@ -45,29 +43,4 @@ class TestCustomForm(forms.ModelForm):
             'image': MyCustomWidget()
         }
         fields = '__all__'
-```
-
-## Inline Editor
-
-To customize the text and the icons of the inline editor is a little bit faster too. We can set some variables on the `InlineAdmin` of your model, like this:
-
-```python
-class CustomInlineEditor(ImageUploaderInline):
-    model = models.CustomInlineItem
-    add_image_text = "add_image_text"
-    drop_text = "drop_text"
-    empty_text = "empty_text"
-
-    def get_empty_icon(self):
-        return render(...)
-
-    def get_add_icon(self):
-        return render(...)
-
-    def get_drop_icon(self):
-        return render(...)
-
-@admin.register(models.CustomInline)
-class CustomInlineAdmin(admin.ModelAdmin):
-    inlines = [CustomInlineEditor]
 ```

@@ -1,4 +1,4 @@
-# Use ImageListField to store Multiple Images
+# Getting Started
 
 !!! warning "Version Information"
 
@@ -8,9 +8,9 @@
 
     Supported only on PostgreSQL Database's.
 
-The `widget` only supports ImageField and this is a limitation to upload only one image per widget. The `inline admin` support multiple images upload but it is only supported by the `django.contrib.admin` pages.
+The `widget` only supports `ImageField` and this is a limitation to upload only one image per widget. The `inline admin` support multiple images upload but it is only supported by the `django.contrib.admin` pages.
 
-Some comments, like the [Discussion #97](https://github.com/inventare/django-image-uploader-widget/discussions/97), [Issue #146](https://github.com/inventare/django-image-uploader-widget/issues/146) and [Issue #110](https://github.com/inventare/django-image-uploader-widget/issues/110) make some feature requests and the Issue #146 takes one proposition: uses the `ArrayField`. The `ArrayField` is a `PostgreSQL` specific field and support for storing multiple values into one field.
+Some comments, like the [Discussion #97](https://github.com/inventare/django-image-uploader-widget/discussions/97), [Issue #146](https://github.com/inventare/django-image-uploader-widget/issues/146) and [Issue #110](https://github.com/inventare/django-image-uploader-widget/issues/110) make some feature requests and the [Issue #146](https://github.com/inventare/django-image-uploader-widget/issues/146) takes one proposition: uses the `ArrayField`. The `ArrayField` is a `PostgreSQL` specific field and support for storing multiple values into one field.
 
 ## Experimental for Now?
 
@@ -18,7 +18,7 @@ Currently, we have added support, addaptating the `inline admin` feature to work
 
 !!! warning "Attention Point"
 
-    See the attention point on the [Prevent Raw Images Path Change](./prevent-raw-change.md) page.
+    See the attention point on the [Prevent Raw Images Path Change](./02-prevent-raw-change.md) page.
 
 ## Usage
 

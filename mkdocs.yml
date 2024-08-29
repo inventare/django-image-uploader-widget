@@ -11,7 +11,7 @@ theme:
   icon:
     repo: fontawesome/brands/github
     logo: material/image
-  favicon: images/favicon.png
+  favicon: _images/favicon.png
   features:
     - navigation.tabs
     - navigation.tabs.sticky
@@ -47,20 +47,15 @@ extra:
 nav:
   - index.md
   - Widget:
-    - widget/resumed.md
-    - widget/tutorial.md
     - ... | flat | widget/*.md
+    - Specific Cases:
+      - ... | flat | widget/specific-cases/*.md
   - ArrayField:
-    - array_field/tutorial.md
     - ... | flat | array_field/*.md
   - HTMX:
-    - htmx/widget.md
     - ... | flat | htmx/*.md
   - Inline Admin:
-    - inline_admin/tutorial.md
     - ... | flat | inline_admin/*.md
-  - Customization:
-    - ... | flat | customization/*.md
   - Development:
     - ... | flat | development/*.md
     - Architecture Decision Records:

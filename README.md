@@ -30,6 +30,8 @@
 - [x] Support custom inline for **django-admin** usage.
 - [x] Support reordering inside **django-admin** inline.
 - [x] Support `ArrayField` for `PostgreSQL` databases.
+- [x] Support upload by dropping file.
+- [x] Out of box HTML support.
 
 ## Future Roadmap
 

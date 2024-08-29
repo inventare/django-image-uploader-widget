@@ -4,7 +4,7 @@
 
     Introduced at the 0.4.1 version.
 
-The first thing needed to understand the ordered version of the `ImageUploaderInline` is read the [inline tutorial](./tutorial.md). This page has a documentation of how to extend the `ImageUploaderInline` with order field to allow to reorder, by clicking and dragging, the images inside the inline.
+The first thing needed to understand the ordered version of the `ImageUploaderInline` is read the [inline tutorial](./01-tutorial.md). This page has a documentation of how to extend the `ImageUploaderInline` with order field to allow to reorder, by clicking and dragging, the images inside the inline.
 
 <div class="images-container" markdown="block">
 
@@ -25,7 +25,7 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
-    
+
     class Meta:
         verbose_name = 'Product'
         verbose_name_plural = 'Products'
@@ -41,7 +41,7 @@ class ProductImage(models.Model):
 
     def __str__(self):
         return str(self.image)
-    
+
     class Meta:
         verbose_name = 'Product Image'
         verbose_name_plural = 'Product Images'
@@ -83,3 +83,11 @@ class MyInlineAdminAdmin(OrderedImageUploaderInline):
     order_field = "my_custom_field"
 
 ```
+
+## Mobile Touch Support
+
+!!! warning "Version Information"
+
+    Introduced at the 0.6.0 version.
+
+The original behaviour for `OrderedImageUploaderInline` is manual created and don't support mobile touch events. On the version `0.6.0` the sorting uses the [Sortable](https://sortablejs.github.io/Sortable/) and, then, the mobile touch events are supported.
