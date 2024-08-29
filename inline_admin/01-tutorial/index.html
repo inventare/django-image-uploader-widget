@@ -8,13 +8,13 @@
       
       
       
-        <link rel="canonical" href="https://inventare.github.io/django-image-uploader-widget/development/tests/">
+        <link rel="canonical" href="https://inventare.github.io/django-image-uploader-widget/inline_admin/01-tutorial/">
       
       
-        <link rel="prev" href="../../inline_admin/05-custom-colors/">
+        <link rel="prev" href="../../htmx/02-array_field/">
       
       
-        <link rel="next" href="../architecture-decision-records/0000-why-jquery/">
+        <link rel="next" href="../02-ordered/">
       
       
       <link rel="icon" href="../../_images/favicon.png">
@@ -22,7 +22,7 @@
     
     
       
-        <title>Tests - image-uploader-widget</title>
+        <title>Tutorial - image-uploader-widget</title>
       
     
     
@@ -83,7 +83,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#tests" class="md-skip">
+        <a href="#tutorial" class="md-skip">
           Skip to content
         </a>
       
@@ -119,7 +119,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Tests
+              Tutorial
             
           </span>
         </div>
@@ -265,11 +265,13 @@
         
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../../inline_admin/01-tutorial/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
           
   
   Inline Admin
@@ -283,13 +285,11 @@
         
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="./" class="md-tabs__link">
+      <li class="md-tabs__item">
+        <a href="../../development/tests/" class="md-tabs__link">
           
   
   Development
@@ -808,23 +808,28 @@
       
   
   
+    
   
   
+  
     
     
     
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
         
           
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
             
   
   <span class="md-ellipsis">
@@ -835,7 +840,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             Inline Admin
@@ -846,10 +851,30 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../inline_admin/01-tutorial/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Tutorial
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -858,6 +883,68 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#creating-a-django-project" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creating a django project
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installing-the-widget" class="md-nav__link">
+    <span class="md-ellipsis">
+      Installing the widget
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Installing the widget">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#warning" class="md-nav__link">
+    <span class="md-ellipsis">
+      Warning
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-the-inline-editor" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using the inline editor
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -870,7 +957,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../inline_admin/02-ordered/" class="md-nav__link">
+      <a href="../02-ordered/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -891,7 +978,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../inline_admin/03-accept/" class="md-nav__link">
+      <a href="../03-accept/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -912,7 +999,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../inline_admin/04-custom-text-and-icons/" class="md-nav__link">
+      <a href="../04-custom-text-and-icons/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -933,7 +1020,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../inline_admin/05-custom-colors/" class="md-nav__link">
+      <a href="../05-custom-colors/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -958,28 +1045,23 @@
       
   
   
-    
   
   
-  
     
     
     
       
-        
-        
-      
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
         
           
-          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -990,7 +1072,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             Development
@@ -1001,30 +1083,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Tests
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../development/tests/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1033,86 +1095,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#functional-tests" class="md-nav__link">
-    <span class="md-ellipsis">
-      Functional Tests
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#some-unit-tests" class="md-nav__link">
-    <span class="md-ellipsis">
-      Some unit tests
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#ui-regression-tests" class="md-nav__link">
-    <span class="md-ellipsis">
-      UI Regression Tests
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#some-tests-decisions-and-workarounds" class="md-nav__link">
-    <span class="md-ellipsis">
-      Some Tests Decisions and Workarounds
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Some Tests Decisions and Workarounds">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#an-test-project" class="md-nav__link">
-    <span class="md-ellipsis">
-      An test project
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#test-cases" class="md-nav__link">
-    <span class="md-ellipsis">
-      Test Cases
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1163,7 +1145,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../architecture-decision-records/0000-why-jquery/" class="md-nav__link">
+      <a href="../../development/architecture-decision-records/0000-why-jquery/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1184,7 +1166,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../architecture-decision-records/0001-why-functional-tests/" class="md-nav__link">
+      <a href="../../development/architecture-decision-records/0001-why-functional-tests/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1205,7 +1187,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../architecture-decision-records/0002-why-ui-regression-tests/" class="md-nav__link">
+      <a href="../../development/architecture-decision-records/0002-why-ui-regression-tests/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1226,7 +1208,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../architecture-decision-records/0003-why-playwright/" class="md-nav__link">
+      <a href="../../development/architecture-decision-records/0003-why-playwright/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1247,7 +1229,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../architecture-decision-records/0004-why-mkdocs/" class="md-nav__link">
+      <a href="../../development/architecture-decision-records/0004-why-mkdocs/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1268,7 +1250,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../architecture-decision-records/0005-why-event-bubbling-widget/" class="md-nav__link">
+      <a href="../../development/architecture-decision-records/0005-why-event-bubbling-widget/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1324,46 +1306,28 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#functional-tests" class="md-nav__link">
+  <a href="#creating-a-django-project" class="md-nav__link">
     <span class="md-ellipsis">
-      Functional Tests
+      Creating a django project
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#some-unit-tests" class="md-nav__link">
+  <a href="#installing-the-widget" class="md-nav__link">
     <span class="md-ellipsis">
-      Some unit tests
+      Installing the widget
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#ui-regression-tests" class="md-nav__link">
-    <span class="md-ellipsis">
-      UI Regression Tests
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#some-tests-decisions-and-workarounds" class="md-nav__link">
-    <span class="md-ellipsis">
-      Some Tests Decisions and Workarounds
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Some Tests Decisions and Workarounds">
+    <nav class="md-nav" aria-label="Installing the widget">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#an-test-project" class="md-nav__link">
+  <a href="#warning" class="md-nav__link">
     <span class="md-ellipsis">
-      An test project
+      Warning
     </span>
   </a>
   
@@ -1375,9 +1339,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#test-cases" class="md-nav__link">
+  <a href="#using-the-inline-editor" class="md-nav__link">
     <span class="md-ellipsis">
-      Test Cases
+      Using the inline editor
     </span>
   </a>
   
@@ -1401,29 +1365,132 @@
   
 
 
-<h1 id="tests">Tests</h1>
-<p>To maintain the integrity of the features of this project we have written some integration tests to grant that main features of the widget and inline admin is really good.</p>
-<h2 id="functional-tests">Functional Tests</h2>
-<p>In the decision to write the tests we opted for writing only integration tests using the selenium. And the reason for it is: our project uses much more JavaScript for web browser than Python code for back-end and runs in high coupling with the django-admin. In this context, unit tests are expendable.</p>
-<h2 id="some-unit-tests">Some unit tests</h2>
-<p>In the note block above i talked about not using unit test cases, and in the decisions of the issue <a href="https://github.com/inventare/django-image-uploader-widget/issues/77">#77</a> we decided to add one unit test for the translation of the widget (<a href="https://github.com/inventare/django-image-uploader-widget/blob/main/tests/widget/functional/tests_functional_widget_custom.py#L5">tests/widget/functional/tests_functional_widget_custom.py</a>).</p>
-<h2 id="ui-regression-tests">UI Regression Tests</h2>
-<p>In some versions of django, specially in some django 4.x versions, the style of the widget was broken. The behaviour is described in the issue <a href="https://github.com/inventare/django-image-uploader-widget/issues/96#issuecomment-1690740705">#96</a>. Due this behaviour, we decided to implements some <strong>UI Regression Tests</strong> and make some fixes to solve this problem.</p>
-<h2 id="some-tests-decisions-and-workarounds">Some Tests Decisions and Workarounds</h2>
-<p>When testing with selenium is not possible to hack the file picker to choose some file. And in this project, in some moments we use an <em>temporary file input</em> for choosing files without compromise the current choosed file. Based on those context, to test correctly fires to onClick event of the <em>temporary file input</em>, we added an JavaScript to add an onClick event showing an alert and test for this alert into the screen.</p>
-<h3 id="an-test-project">An test project</h3>
-<p>For easy testing, we used the <strong>demo</strong> project <code>image_uploader_widget_demo</code> for writing base models for test add the tests for this project instead of the main component project.</p>
-<h2 id="test-cases">Test Cases</h2>
-<p>You can read (or contribute, if you want to improve this project) the test cases inside the <code>/tests</code> path inside the github repository <a href="https://github.com/inventare/django-image-uploader-widget/tree/main/tests">here</a>.</p>
+<h1 id="tutorial">Tutorial</h1>
+<p>First, we need of some context: the image uploader inline is an inline admin editor (like the <a href="https://docs.djangoproject.com/en/4.0/ref/contrib/admin/#django.contrib.admin.StackedInline">StackedInline</a> or the <a href="https://docs.djangoproject.com/en/4.0/ref/contrib/admin/#django.contrib.admin.TabularInline">TabularInline</a> of the original django). This inline editor is created to make an multiple images manager widget using an model with an image field.</p>
+<h2 id="creating-a-django-project">Creating a django project</h2>
+<p>First, create a project folder. Here we call it as <code>my-ecommerce</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a><a href="#__codelineno-0-1"><span class="linenos" data-linenos="1 "></span></a>mkdir<span class="w"> </span>my-ecommerce
+<a id="__codelineno-0-2" name="__codelineno-0-2"></a><a href="#__codelineno-0-2"><span class="linenos" data-linenos="2 "></span></a><span class="nb">cd</span><span class="w"> </span>my-ecommerce
+</code></pre></div>
+<p>And, now, create a django project in this folder:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1"></a><a href="#__codelineno-1-1"><span class="linenos" data-linenos="1 "></span></a>django-admin<span class="w"> </span>startproject<span class="w"> </span>core<span class="w"> </span>.
+</code></pre></div>
+<p>And, then, we have the folder structure:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1"></a><a href="#__codelineno-2-1"><span class="linenos" data-linenos="1 "></span></a>| - my-ecommerce
+<a id="__codelineno-2-2" name="__codelineno-2-2"></a><a href="#__codelineno-2-2"><span class="linenos" data-linenos="2 "></span></a>  | - core
+<a id="__codelineno-2-3" name="__codelineno-2-3"></a><a href="#__codelineno-2-3"><span class="linenos" data-linenos="3 "></span></a>    | - asgi.py
+<a id="__codelineno-2-4" name="__codelineno-2-4"></a><a href="#__codelineno-2-4"><span class="linenos" data-linenos="4 "></span></a>    | - __init__.py
+<a id="__codelineno-2-5" name="__codelineno-2-5"></a><a href="#__codelineno-2-5"><span class="linenos" data-linenos="5 "></span></a>    | - settings.py
+<a id="__codelineno-2-6" name="__codelineno-2-6"></a><a href="#__codelineno-2-6"><span class="linenos" data-linenos="6 "></span></a>    | - urls.py
+<a id="__codelineno-2-7" name="__codelineno-2-7"></a><a href="#__codelineno-2-7"><span class="linenos" data-linenos="7 "></span></a>    | - wsgi.py
+<a id="__codelineno-2-8" name="__codelineno-2-8"></a><a href="#__codelineno-2-8"><span class="linenos" data-linenos="8 "></span></a>  | - manage.py
+</code></pre></div>
+<p>Create our <strong>django</strong> application by running the command:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1"></a><a href="#__codelineno-3-1"><span class="linenos" data-linenos="1 "></span></a>python manage.py startapp ecommerce
+</code></pre></div>
+<p>And, now, we have a new, and more complex, folder structure:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1"></a><a href="#__codelineno-4-1"><span class="linenos" data-linenos=" 1 "></span></a>| - my-ecommerce
+<a id="__codelineno-4-2" name="__codelineno-4-2"></a><a href="#__codelineno-4-2"><span class="linenos" data-linenos=" 2 "></span></a>  | - core
+<a id="__codelineno-4-3" name="__codelineno-4-3"></a><a href="#__codelineno-4-3"><span class="linenos" data-linenos=" 3 "></span></a>    | - asgi.py
+<a id="__codelineno-4-4" name="__codelineno-4-4"></a><a href="#__codelineno-4-4"><span class="linenos" data-linenos=" 4 "></span></a>    | - __init__.py
+<a id="__codelineno-4-5" name="__codelineno-4-5"></a><a href="#__codelineno-4-5"><span class="linenos" data-linenos=" 5 "></span></a>    | - settings.py
+<a id="__codelineno-4-6" name="__codelineno-4-6"></a><a href="#__codelineno-4-6"><span class="linenos" data-linenos=" 6 "></span></a>    | - urls.py
+<a id="__codelineno-4-7" name="__codelineno-4-7"></a><a href="#__codelineno-4-7"><span class="linenos" data-linenos=" 7 "></span></a>    | - wsgi.py
+<a id="__codelineno-4-8" name="__codelineno-4-8"></a><a href="#__codelineno-4-8"><span class="linenos" data-linenos=" 8 "></span></a>  | - ecommerce
+<a id="__codelineno-4-9" name="__codelineno-4-9"></a><a href="#__codelineno-4-9"><span class="linenos" data-linenos=" 9 "></span></a>    | - migrations
+<a id="__codelineno-4-10" name="__codelineno-4-10"></a><a href="#__codelineno-4-10"><span class="linenos" data-linenos="10 "></span></a>      | - __init__.py
+<a id="__codelineno-4-11" name="__codelineno-4-11"></a><a href="#__codelineno-4-11"><span class="linenos" data-linenos="11 "></span></a>    | - admin.py
+<a id="__codelineno-4-12" name="__codelineno-4-12"></a><a href="#__codelineno-4-12"><span class="linenos" data-linenos="12 "></span></a>    | - apps.py
+<a id="__codelineno-4-13" name="__codelineno-4-13"></a><a href="#__codelineno-4-13"><span class="linenos" data-linenos="13 "></span></a>    | - __init__.py
+<a id="__codelineno-4-14" name="__codelineno-4-14"></a><a href="#__codelineno-4-14"><span class="linenos" data-linenos="14 "></span></a>    | - models.py
+<a id="__codelineno-4-15" name="__codelineno-4-15"></a><a href="#__codelineno-4-15"><span class="linenos" data-linenos="15 "></span></a>    | - tests.py
+<a id="__codelineno-4-16" name="__codelineno-4-16"></a><a href="#__codelineno-4-16"><span class="linenos" data-linenos="16 "></span></a>    | - views.py
+<a id="__codelineno-4-17" name="__codelineno-4-17"></a><a href="#__codelineno-4-17"><span class="linenos" data-linenos="17 "></span></a>  | - manage.py
+</code></pre></div>
+<h2 id="installing-the-widget">Installing the widget</h2>
+<p>To install the widget, is possible to use the same instructions of the <a href="../../">Getting started</a>, and the first step is to install the package with pip:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1"></a><a href="#__codelineno-5-1"><span class="linenos" data-linenos="1 "></span></a>pip<span class="w"> </span>install<span class="w"> </span>django-image-uploader-widget
+</code></pre></div>
+<p>then, add it to the <code>INSTALLED_APPS</code> on the <code>settings.py</code>, in the case of this example: <code>core/settings.py</code> file. To understand better the Applications, see the django documentation: <a href="https://docs.djangoproject.com/en/3.2/ref/applications/">Applications</a>.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1"></a><a href="#__codelineno-6-1"><span class="linenos" data-linenos=" 1 "></span></a><span class="c1"># core/settings.py</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2"></a><a href="#__codelineno-6-2"><span class="linenos" data-linenos=" 2 "></span></a><span class="c1"># ...</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3"></a><a href="#__codelineno-6-3"><span class="linenos" data-linenos=" 3 "></span></a>
+<a id="__codelineno-6-4" name="__codelineno-6-4"></a><a href="#__codelineno-6-4"><span class="linenos" data-linenos=" 4 "></span></a><span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">[</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5"></a><a href="#__codelineno-6-5"><span class="linenos" data-linenos=" 5 "></span></a>    <span class="s1">&#39;django.contrib.admin&#39;</span><span class="p">,</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6"></a><a href="#__codelineno-6-6"><span class="linenos" data-linenos=" 6 "></span></a>    <span class="s1">&#39;django.contrib.auth&#39;</span><span class="p">,</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7"></a><a href="#__codelineno-6-7"><span class="linenos" data-linenos=" 7 "></span></a>    <span class="s1">&#39;django.contrib.contenttypes&#39;</span><span class="p">,</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8"></a><a href="#__codelineno-6-8"><span class="linenos" data-linenos=" 8 "></span></a>    <span class="s1">&#39;django.contrib.sessions&#39;</span><span class="p">,</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9"></a><a href="#__codelineno-6-9"><span class="linenos" data-linenos=" 9 "></span></a>    <span class="s1">&#39;django.contrib.messages&#39;</span><span class="p">,</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10"></a><a href="#__codelineno-6-10"><span class="linenos" data-linenos="10 "></span></a>    <span class="s1">&#39;django.contrib.staticfiles&#39;</span><span class="p">,</span>
+<a id="__codelineno-6-11" name="__codelineno-6-11"></a><a href="#__codelineno-6-11"><span class="linenos" data-linenos="11 "></span></a>    <span class="s1">&#39;image_uploader_widget&#39;</span><span class="p">,</span>
+<a id="__codelineno-6-12" name="__codelineno-6-12"></a><a href="#__codelineno-6-12"><span class="linenos" data-linenos="12 "></span></a><span class="p">]</span>
+<a id="__codelineno-6-13" name="__codelineno-6-13"></a><a href="#__codelineno-6-13"><span class="linenos" data-linenos="13 "></span></a>
+<a id="__codelineno-6-14" name="__codelineno-6-14"></a><a href="#__codelineno-6-14"><span class="linenos" data-linenos="14 "></span></a><span class="c1"># ...</span>
+</code></pre></div>
+<h3 id="warning">Warning</h3>
+<p><strong>Observation</strong>: note that the application name to be added on the <code>INSTALLED_APPS</code> are not equals to the pip package name / install name.</p>
+<h2 id="using-the-inline-editor">Using the inline editor</h2>
+<p>This inline editor is created to be used directly with the django-admin interface. To show how to use it, go to create two basic models inside the <code>ecommerce</code> app (Add your app, <code>ecommerce</code> in my case, at <code>INSTALLED_APPS</code> is recommended):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1"></a><a href="#__codelineno-7-1"><span class="linenos" data-linenos=" 1 "></span></a><span class="c1"># ecommerce/models.py</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2"></a><a href="#__codelineno-7-2"><span class="linenos" data-linenos=" 2 "></span></a><span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3"></a><a href="#__codelineno-7-3"><span class="linenos" data-linenos=" 3 "></span></a>
+<a id="__codelineno-7-4" name="__codelineno-7-4"></a><a href="#__codelineno-7-4"><span class="linenos" data-linenos=" 4 "></span></a><span class="k">class</span> <span class="nc">Product</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5"></a><a href="#__codelineno-7-5"><span class="linenos" data-linenos=" 5 "></span></a>    <span class="n">name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6"></a><a href="#__codelineno-7-6"><span class="linenos" data-linenos=" 6 "></span></a>
+<a id="__codelineno-7-7" name="__codelineno-7-7"></a><a href="#__codelineno-7-7"><span class="linenos" data-linenos=" 7 "></span></a>    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-7-8" name="__codelineno-7-8"></a><a href="#__codelineno-7-8"><span class="linenos" data-linenos=" 8 "></span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+<a id="__codelineno-7-9" name="__codelineno-7-9"></a><a href="#__codelineno-7-9"><span class="linenos" data-linenos=" 9 "></span></a>
+<a id="__codelineno-7-10" name="__codelineno-7-10"></a><a href="#__codelineno-7-10"><span class="linenos" data-linenos="10 "></span></a>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+<a id="__codelineno-7-11" name="__codelineno-7-11"></a><a href="#__codelineno-7-11"><span class="linenos" data-linenos="11 "></span></a>        <span class="n">verbose_name</span> <span class="o">=</span> <span class="s1">&#39;Product&#39;</span>
+<a id="__codelineno-7-12" name="__codelineno-7-12"></a><a href="#__codelineno-7-12"><span class="linenos" data-linenos="12 "></span></a>        <span class="n">verbose_name_plural</span> <span class="o">=</span> <span class="s1">&#39;Products&#39;</span>
+<a id="__codelineno-7-13" name="__codelineno-7-13"></a><a href="#__codelineno-7-13"><span class="linenos" data-linenos="13 "></span></a>
+<a id="__codelineno-7-14" name="__codelineno-7-14"></a><a href="#__codelineno-7-14"><span class="linenos" data-linenos="14 "></span></a><span class="k">class</span> <span class="nc">ProductImage</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+<a id="__codelineno-7-15" name="__codelineno-7-15"></a><a href="#__codelineno-7-15"><span class="linenos" data-linenos="15 "></span></a>    <span class="n">product</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span>
+<a id="__codelineno-7-16" name="__codelineno-7-16"></a><a href="#__codelineno-7-16"><span class="linenos" data-linenos="16 "></span></a>        <span class="n">Product</span><span class="p">,</span>
+<a id="__codelineno-7-17" name="__codelineno-7-17"></a><a href="#__codelineno-7-17"><span class="linenos" data-linenos="17 "></span></a>        <span class="n">related_name</span><span class="o">=</span><span class="s2">&quot;images&quot;</span><span class="p">,</span>
+<a id="__codelineno-7-18" name="__codelineno-7-18"></a><a href="#__codelineno-7-18"><span class="linenos" data-linenos="18 "></span></a>        <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CASCADE</span>
+<a id="__codelineno-7-19" name="__codelineno-7-19"></a><a href="#__codelineno-7-19"><span class="linenos" data-linenos="19 "></span></a>    <span class="p">)</span>
+<a id="__codelineno-7-20" name="__codelineno-7-20"></a><a href="#__codelineno-7-20"><span class="linenos" data-linenos="20 "></span></a>    <span class="n">image</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ImageField</span><span class="p">(</span><span class="s2">&quot;image&quot;</span><span class="p">)</span>
+<a id="__codelineno-7-21" name="__codelineno-7-21"></a><a href="#__codelineno-7-21"><span class="linenos" data-linenos="21 "></span></a>
+<a id="__codelineno-7-22" name="__codelineno-7-22"></a><a href="#__codelineno-7-22"><span class="linenos" data-linenos="22 "></span></a>    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-7-23" name="__codelineno-7-23"></a><a href="#__codelineno-7-23"><span class="linenos" data-linenos="23 "></span></a>        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="p">)</span>
+<a id="__codelineno-7-24" name="__codelineno-7-24"></a><a href="#__codelineno-7-24"><span class="linenos" data-linenos="24 "></span></a>
+<a id="__codelineno-7-25" name="__codelineno-7-25"></a><a href="#__codelineno-7-25"><span class="linenos" data-linenos="25 "></span></a>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+<a id="__codelineno-7-26" name="__codelineno-7-26"></a><a href="#__codelineno-7-26"><span class="linenos" data-linenos="26 "></span></a>        <span class="n">verbose_name</span> <span class="o">=</span> <span class="s1">&#39;Product Image&#39;</span>
+<a id="__codelineno-7-27" name="__codelineno-7-27"></a><a href="#__codelineno-7-27"><span class="linenos" data-linenos="27 "></span></a>        <span class="n">verbose_name_plural</span> <span class="o">=</span> <span class="s1">&#39;Product Images&#39;</span>
+</code></pre></div>
+<p>Now, inside our admin, we can create an primary ModelAdmin for the product:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1"></a><a href="#__codelineno-8-1"><span class="linenos" data-linenos="1 "></span></a><span class="c1"># ecommerce/admin.py</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2"></a><a href="#__codelineno-8-2"><span class="linenos" data-linenos="2 "></span></a><span class="kn">from</span> <span class="nn">django.contrib</span> <span class="kn">import</span> <span class="n">admin</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3"></a><a href="#__codelineno-8-3"><span class="linenos" data-linenos="3 "></span></a><span class="kn">from</span> <span class="nn">ecommerce.models</span> <span class="kn">import</span> <span class="n">Product</span><span class="p">,</span> <span class="n">ProductImage</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4"></a><a href="#__codelineno-8-4"><span class="linenos" data-linenos="4 "></span></a>
+<a id="__codelineno-8-5" name="__codelineno-8-5"></a><a href="#__codelineno-8-5"><span class="linenos" data-linenos="5 "></span></a><span class="nd">@admin</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Product</span><span class="p">)</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6"></a><a href="#__codelineno-8-6"><span class="linenos" data-linenos="6 "></span></a><span class="k">class</span> <span class="nc">ProductAdmin</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">ModelAdmin</span><span class="p">):</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7"></a><a href="#__codelineno-8-7"><span class="linenos" data-linenos="7 "></span></a>    <span class="k">pass</span>
+</code></pre></div>
+<p>And, now, we can define our inline widget:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1"></a><a href="#__codelineno-9-1"><span class="linenos" data-linenos=" 1 "></span></a><span class="c1"># ecommerce/admin.py</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2"></a><a href="#__codelineno-9-2"><span class="linenos" data-linenos=" 2 "></span></a><span class="kn">from</span> <span class="nn">django.contrib</span> <span class="kn">import</span> <span class="n">admin</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3"></a><a href="#__codelineno-9-3"><span class="linenos" data-linenos=" 3 "></span></a><span class="kn">from</span> <span class="nn">ecommerce.models</span> <span class="kn">import</span> <span class="n">Product</span><span class="p">,</span> <span class="n">ProductImage</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4"></a><a href="#__codelineno-9-4"><span class="linenos" data-linenos=" 4 "></span></a><span class="kn">from</span> <span class="nn">image_uploader_widget.admin</span> <span class="kn">import</span> <span class="n">ImageUploaderInline</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5"></a><a href="#__codelineno-9-5"><span class="linenos" data-linenos=" 5 "></span></a>
+<a id="__codelineno-9-6" name="__codelineno-9-6"></a><a href="#__codelineno-9-6"><span class="linenos" data-linenos=" 6 "></span></a><span class="k">class</span> <span class="nc">ProductImageAdmin</span><span class="p">(</span><span class="n">ImageUploaderInline</span><span class="p">):</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7"></a><a href="#__codelineno-9-7"><span class="linenos" data-linenos=" 7 "></span></a>    <span class="n">model</span> <span class="o">=</span> <span class="n">ProductImage</span>
+<a id="__codelineno-9-8" name="__codelineno-9-8"></a><a href="#__codelineno-9-8"><span class="linenos" data-linenos=" 8 "></span></a>
+<a id="__codelineno-9-9" name="__codelineno-9-9"></a><a href="#__codelineno-9-9"><span class="linenos" data-linenos=" 9 "></span></a><span class="nd">@admin</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Product</span><span class="p">)</span>
+<a id="__codelineno-9-10" name="__codelineno-9-10"></a><a href="#__codelineno-9-10"><span class="linenos" data-linenos="10 "></span></a><span class="k">class</span> <span class="nc">ProductAdmin</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">ModelAdmin</span><span class="p">):</span>
+<a id="__codelineno-9-11" name="__codelineno-9-11"></a><a href="#__codelineno-9-11"><span class="linenos" data-linenos="11 "></span></a>    <span class="n">inlines</span> <span class="o">=</span> <span class="p">[</span><span class="n">ProductImageAdmin</span><span class="p">]</span>
+</code></pre></div>
+<p>And we got the inline editor working as well:</p>
+<div class="images-container">
+<p><a class="glightbox" href="../images/admin_demo.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="Image Uploader Widget" loading="lazy" src="../images/admin_demo.png" /></a></p>
+</div>
 
 
 
 
 
 
-
-  
-  
 
 
 

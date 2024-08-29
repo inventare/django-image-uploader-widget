@@ -8,28 +8,28 @@
       
       
       
-        <link rel="canonical" href="https://inventare.github.io/django-image-uploader-widget/development/architecture-decision-records/0003-why-playwright/">
+        <link rel="canonical" href="https://inventare.github.io/django-image-uploader-widget/array_field/02-prevent-raw-change/">
       
       
-        <link rel="prev" href="../0002-why-ui-regression-tests/">
+        <link rel="prev" href="../01-tutorial/">
       
       
-        <link rel="next" href="../0004-why-mkdocs/">
+        <link rel="next" href="../03-htmx/">
       
       
-      <link rel="icon" href="../../../_images/favicon.png">
+      <link rel="icon" href="../../_images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.33">
     
     
       
-        <title>ADR 0003: Why Playwright? - image-uploader-widget</title>
+        <title>Prevent Raw Images Path Change - image-uploader-widget</title>
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.3cba04c6.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.3cba04c6.min.css">
       
         
-        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
       
       
 
@@ -48,16 +48,16 @@
       
     
     
-      <link rel="stylesheet" href="../../../_stylesheets/extra.css">
+      <link rel="stylesheet" href="../../_stylesheets/extra.css">
     
-    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
     
     
     
-   <link href="../../../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
+   <link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
     html.glightbox-open { overflow: initial; height: 100%; }
     .gslide-title { margin-top: 0px; user-select: text; }
     .gslide-desc { color: #666; user-select: text; }
@@ -66,7 +66,7 @@
     .gdesc-inner { font-size: 0.75rem; }
     body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color);}
     body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color);}
-    body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color);}</style> <script src="../../../assets/javascripts/glightbox.min.js"></script></head>
+    body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color);}</style> <script src="../../assets/javascripts/glightbox.min.js"></script></head>
   
   
     
@@ -83,7 +83,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#adr-0003-why-playwright" class="md-skip">
+        <a href="#prevent-raw-images-path-change" class="md-skip">
           Skip to content
         </a>
       
@@ -119,7 +119,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              ADR 0003: Why Playwright?
+              Prevent Raw Images Path Change
             
           </span>
         </div>
@@ -196,7 +196,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../.." class="md-tabs__link">
+      <a href="../.." class="md-tabs__link">
         
   
     
@@ -215,7 +215,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../widget/01-resumed/" class="md-tabs__link">
+        <a href="../../widget/01-resumed/" class="md-tabs__link">
           
   
   Widget
@@ -229,11 +229,13 @@
         
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../../../array_field/01-tutorial/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../01-tutorial/" class="md-tabs__link">
           
   
   ArrayField
@@ -251,7 +253,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../htmx/01-widget/" class="md-tabs__link">
+        <a href="../../htmx/01-widget/" class="md-tabs__link">
           
   
   HTMX
@@ -269,7 +271,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../inline_admin/01-tutorial/" class="md-tabs__link">
+        <a href="../../inline_admin/01-tutorial/" class="md-tabs__link">
           
   
   Inline Admin
@@ -283,13 +285,11 @@
         
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="../../tests/" class="md-tabs__link">
+      <li class="md-tabs__item">
+        <a href="../../development/tests/" class="md-tabs__link">
           
   
   Development
@@ -358,7 +358,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../.." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -416,7 +416,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../widget/01-resumed/" class="md-nav__link">
+      <a href="../../widget/01-resumed/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -437,7 +437,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../widget/02-tutorial/" class="md-nav__link">
+      <a href="../../widget/02-tutorial/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -458,7 +458,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../widget/04-accept/" class="md-nav__link">
+      <a href="../../widget/04-accept/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -479,7 +479,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../widget/05-htmx/" class="md-nav__link">
+      <a href="../../widget/05-htmx/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -500,7 +500,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../widget/06-custom-text-and-icons/" class="md-nav__link">
+      <a href="../../widget/06-custom-text-and-icons/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -521,7 +521,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../widget/07-custom-colors/" class="md-nav__link">
+      <a href="../../widget/07-custom-colors/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -580,7 +580,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../widget/specific-cases/03-multiple-instances-of-same-form/" class="md-nav__link">
+      <a href="../../widget/specific-cases/03-multiple-instances-of-same-form/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -613,23 +613,28 @@
       
   
   
+    
   
   
+  
     
     
     
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
             
   
   <span class="md-ellipsis">
@@ -640,7 +645,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             ArrayField
@@ -654,7 +659,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../array_field/01-tutorial/" class="md-nav__link">
+      <a href="../01-tutorial/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -672,10 +677,30 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../../array_field/02-prevent-raw-change/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Prevent Raw Images Path Change
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -684,6 +709,35 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-prevent-this-behaviour" class="md-nav__link">
+    <span class="md-ellipsis">
+      How to prevent this behaviour?
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -696,7 +750,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../array_field/03-htmx/" class="md-nav__link">
+      <a href="../03-htmx/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -762,7 +816,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../htmx/01-widget/" class="md-nav__link">
+      <a href="../../htmx/01-widget/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -783,7 +837,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../htmx/02-array_field/" class="md-nav__link">
+      <a href="../../htmx/02-array_field/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -849,7 +903,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../inline_admin/01-tutorial/" class="md-nav__link">
+      <a href="../../inline_admin/01-tutorial/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -870,7 +924,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../inline_admin/02-ordered/" class="md-nav__link">
+      <a href="../../inline_admin/02-ordered/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -891,7 +945,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../inline_admin/03-accept/" class="md-nav__link">
+      <a href="../../inline_admin/03-accept/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -912,7 +966,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../inline_admin/04-custom-text-and-icons/" class="md-nav__link">
+      <a href="../../inline_admin/04-custom-text-and-icons/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -933,7 +987,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../inline_admin/05-custom-colors/" class="md-nav__link">
+      <a href="../../inline_admin/05-custom-colors/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -958,28 +1012,23 @@
       
   
   
-    
   
   
-  
     
     
     
       
-        
-        
-      
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
         
           
-          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -990,7 +1039,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             Development
@@ -1004,7 +1053,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tests/" class="md-nav__link">
+      <a href="../../development/tests/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1022,8 +1071,6 @@
                 
   
   
-    
-  
   
   
     
@@ -1033,11 +1080,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_2" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_2" >
         
           
           <label class="md-nav__link" for="__nav_6_2" id="__nav_6_2_label" tabindex="0">
@@ -1051,7 +1098,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_2_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_6_2">
             <span class="md-nav__icon md-icon"></span>
             Architecture Decision Records
@@ -1065,7 +1112,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../0000-why-jquery/" class="md-nav__link">
+      <a href="../../development/architecture-decision-records/0000-why-jquery/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1086,7 +1133,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../0001-why-functional-tests/" class="md-nav__link">
+      <a href="../../development/architecture-decision-records/0001-why-functional-tests/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1107,7 +1154,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../0002-why-ui-regression-tests/" class="md-nav__link">
+      <a href="../../development/architecture-decision-records/0002-why-ui-regression-tests/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1125,30 +1172,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    ADR 0003: Why Playwright?
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../development/architecture-decision-records/0003-why-playwright/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1157,62 +1184,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#context" class="md-nav__link">
-    <span class="md-ellipsis">
-      Context
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#decision-drivers" class="md-nav__link">
-    <span class="md-ellipsis">
-      Decision Drivers
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#considered-options" class="md-nav__link">
-    <span class="md-ellipsis">
-      Considered Options
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#decision" class="md-nav__link">
-    <span class="md-ellipsis">
-      Decision
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1225,7 +1196,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../0004-why-mkdocs/" class="md-nav__link">
+      <a href="../../development/architecture-decision-records/0004-why-mkdocs/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1246,7 +1217,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../0005-why-event-bubbling-widget/" class="md-nav__link">
+      <a href="../../development/architecture-decision-records/0005-why-event-bubbling-widget/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1302,36 +1273,9 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#context" class="md-nav__link">
+  <a href="#how-to-prevent-this-behaviour" class="md-nav__link">
     <span class="md-ellipsis">
-      Context
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#decision-drivers" class="md-nav__link">
-    <span class="md-ellipsis">
-      Decision Drivers
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#considered-options" class="md-nav__link">
-    <span class="md-ellipsis">
-      Considered Options
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#decision" class="md-nav__link">
-    <span class="md-ellipsis">
-      Decision
+      How to prevent this behaviour?
     </span>
   </a>
   
@@ -1355,37 +1299,43 @@
   
 
 
-<h1 id="adr-0003-why-playwright">ADR 0003: Why Playwright?</h1>
-<table>
-<thead>
-<tr>
-<th class="adr-emoji" style="text-align: center;"><img alt="📅" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/1f4c5.svg" title=":date:" /></th>
-<th class="adr-text" style="text-align: left;">December 2023.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="adr-emoji" style="text-align: center;"><img alt="✍" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/270d.svg" title=":writing_hand:" /></td>
-<td class="adr-text" style="text-align: left;"><a href="https://github.com/EduardoJM">Eduardo Oliveira</a></td>
-</tr>
-</tbody>
-</table>
-<h2 id="context">Context</h2>
-<p>The selenium is very slow to run our tests and we decided to switch from the selenium to another e2e testing framework.</p>
-<h2 id="decision-drivers">Decision Drivers</h2>
-<ul>
-<li>We need to switch to another e2e testing framework to test our widget. See the <a href="../0001-why-functional-tests/">ADR 0001</a> and the <a href="../0002-why-ui-regression-tests/">ADR 0002</a> to understand the motivation for the e2e testing framework.</li>
-<li>We need to get a testing framework that we can rewrite the tests fast.</li>
-<li>we need to get support to take screenshot of elements for the <a href="../0002-why-ui-regression-tests/">ADR 0002</a>.</li>
-</ul>
-<h2 id="considered-options">Considered Options</h2>
-<p>We considered only the two options bellow:</p>
-<ul>
-<li><strong>Playwright:</strong> enables reliable end-to-end testing for modern web apps.</li>
-<li><strong>Selenium:</strong> automates browsers.</li>
-</ul>
-<h2 id="decision">Decision</h2>
-<p>The playwright API is a little bit more semantic than the selenium and is faster. For this reason, we decided to use playwright and rewrite our integration and ui-regression tests with playwright.</p>
+<h1 id="prevent-raw-images-path-change">Prevent Raw Images Path Change</h1>
+<p>Like various other <code>multiple</code> instances or values support, we have an tiny problem at this component, for now: when we save a form with some "unchanged" values, i.e., with the current file path string instead of an uploaded file, this string is used to store in the database. Is planed, in the future, change this to use the original array values to confirm the sended values. But, for this first version, this is a issue that is not resolved.</p>
+<p>Example of how this works: navigate to widget change, and find for the hidden input with <code>-RAW</code> name. Change the value to another and saves. The wrong value is correctly saved.</p>
+<div class="images-container">
+<p><a class="glightbox" href="../images/hidden-tree.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="hidden tree" src="../images/hidden-tree.png" /></a></p>
+</div>
+<h2 id="how-to-prevent-this-behaviour">How to prevent this behaviour?</h2>
+<p>One of the way to prevent this behaviour is create a custom <code>ModelForm</code> and raises a <code>ValidationError</code> for string values that is not present on the original value. See a example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a><a href="#__codelineno-0-1"><span class="linenos" data-linenos=" 1 "></span></a><span class="kn">from</span> <span class="nn">django</span> <span class="kn">import</span> <span class="n">forms</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2"></a><a href="#__codelineno-0-2"><span class="linenos" data-linenos=" 2 "></span></a><span class="kn">from</span> <span class="nn">django.core.exceptions</span> <span class="kn">import</span> <span class="n">ValidationError</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3"></a><a href="#__codelineno-0-3"><span class="linenos" data-linenos=" 3 "></span></a>
+<a id="__codelineno-0-4" name="__codelineno-0-4"></a><a href="#__codelineno-0-4"><span class="linenos" data-linenos=" 4 "></span></a>
+<a id="__codelineno-0-5" name="__codelineno-0-5"></a><a href="#__codelineno-0-5"><span class="linenos" data-linenos=" 5 "></span></a><span class="k">class</span> <span class="nc">TestWithArrayFieldForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">ModelForm</span><span class="p">):</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6"></a><a href="#__codelineno-0-6"><span class="linenos" data-linenos=" 6 "></span></a>    <span class="n">old_values</span> <span class="o">=</span> <span class="p">[]</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7"></a><a href="#__codelineno-0-7"><span class="linenos" data-linenos=" 7 "></span></a>
+<a id="__codelineno-0-8" name="__codelineno-0-8"></a><a href="#__codelineno-0-8"><span class="linenos" data-linenos=" 8 "></span></a>    <span class="k">def</span> <span class="nf">map_is_valid_images</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9"></a><a href="#__codelineno-0-9"><span class="linenos" data-linenos=" 9 "></span></a>        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10"></a><a href="#__codelineno-0-10"><span class="linenos" data-linenos="10 "></span></a>            <span class="k">return</span> <span class="kc">False</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11"></a><a href="#__codelineno-0-11"><span class="linenos" data-linenos="11 "></span></a>        <span class="k">return</span> <span class="n">value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">old_values</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12"></a><a href="#__codelineno-0-12"><span class="linenos" data-linenos="12 "></span></a>
+<a id="__codelineno-0-13" name="__codelineno-0-13"></a><a href="#__codelineno-0-13"><span class="linenos" data-linenos="13 "></span></a>    <span class="k">def</span> <span class="nf">clean</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14"></a><a href="#__codelineno-0-14"><span class="linenos" data-linenos="14 "></span></a>        <span class="n">data</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">clean</span><span class="p">()</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15"></a><a href="#__codelineno-0-15"><span class="linenos" data-linenos="15 "></span></a>
+<a id="__codelineno-0-16" name="__codelineno-0-16"></a><a href="#__codelineno-0-16"><span class="linenos" data-linenos="16 "></span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">old_values</span> <span class="o">=</span> <span class="p">[]</span>
+<a id="__codelineno-0-17" name="__codelineno-0-17"></a><a href="#__codelineno-0-17"><span class="linenos" data-linenos="17 "></span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">instance</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-0-18" name="__codelineno-0-18"></a><a href="#__codelineno-0-18"><span class="linenos" data-linenos="18 "></span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">old_values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="o">.</span><span class="n">images</span>
+<a id="__codelineno-0-19" name="__codelineno-0-19"></a><a href="#__codelineno-0-19"><span class="linenos" data-linenos="19 "></span></a>
+<a id="__codelineno-0-20" name="__codelineno-0-20"></a><a href="#__codelineno-0-20"><span class="linenos" data-linenos="20 "></span></a>        <span class="n">has_changed</span> <span class="o">=</span> <span class="nb">any</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">map_is_valid_images</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;images&#39;</span><span class="p">))))</span>
+<a id="__codelineno-0-21" name="__codelineno-0-21"></a><a href="#__codelineno-0-21"><span class="linenos" data-linenos="21 "></span></a>        <span class="k">if</span> <span class="n">has_changed</span><span class="p">:</span>
+<a id="__codelineno-0-22" name="__codelineno-0-22"></a><a href="#__codelineno-0-22"><span class="linenos" data-linenos="22 "></span></a>            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s1">&#39;One of the non-changed value is corrupted.&#39;</span><span class="p">)</span>
+<a id="__codelineno-0-23" name="__codelineno-0-23"></a><a href="#__codelineno-0-23"><span class="linenos" data-linenos="23 "></span></a>
+<a id="__codelineno-0-24" name="__codelineno-0-24"></a><a href="#__codelineno-0-24"><span class="linenos" data-linenos="24 "></span></a>        <span class="k">return</span> <span class="n">data</span>
+<a id="__codelineno-0-25" name="__codelineno-0-25"></a><a href="#__codelineno-0-25"><span class="linenos" data-linenos="25 "></span></a>
+<a id="__codelineno-0-26" name="__codelineno-0-26"></a><a href="#__codelineno-0-26"><span class="linenos" data-linenos="26 "></span></a>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+<a id="__codelineno-0-27" name="__codelineno-0-27"></a><a href="#__codelineno-0-27"><span class="linenos" data-linenos="27 "></span></a>        <span class="n">model</span> <span class="o">=</span> <span class="n">TestWithArrayField</span>
+<a id="__codelineno-0-28" name="__codelineno-0-28"></a><a href="#__codelineno-0-28"><span class="linenos" data-linenos="28 "></span></a>        <span class="n">fields</span> <span class="o">=</span> <span class="s2">&quot;__all__&quot;</span>
+</code></pre></div>
 
 
 
@@ -1438,10 +1388,10 @@
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.top", "search.suggest", "search.highlight"], "search": "../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.top", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.af256bd8.min.js"></script>
+      <script src="../../assets/javascripts/bundle.af256bd8.min.js"></script>
       
     
   <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
