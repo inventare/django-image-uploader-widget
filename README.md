@@ -31,7 +31,7 @@
 - [x] Support reordering inside **django-admin** inline.
 - [x] Support `ArrayField` for `PostgreSQL` databases.
 - [x] Support upload by dropping file.
-- [x] Out of box HTML support.
+- [x] Out of box HTMX support.
 
 ## Future Roadmap
 
