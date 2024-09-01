@@ -22,7 +22,7 @@ class FunctionalWidgetForceThemeTests(test_case.IUWTestCase):
         self.goto_add_page()
         self.load_widget()
 
-        root = self.page.query_selector('.iuw-root')
+        root = self.page.query_selector(".iuw-root")
         file_input = root.query_selector("input[type=file]")
         file_input.set_input_files(self.image2)
 
@@ -38,7 +38,7 @@ class FunctionalWidgetForceThemeTests(test_case.IUWTestCase):
         self.goto_add_page("dark")
         self.load_widget()
 
-        root = self.page.query_selector('.iuw-root')
+        root = self.page.query_selector(".iuw-root")
         file_input = root.query_selector("input[type=file]")
         file_input.set_input_files(self.image2)
 

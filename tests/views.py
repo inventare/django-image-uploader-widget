@@ -98,8 +98,10 @@ def render_base(request, extra_context=None):
     template = "test_htmx.html"
     return render(request, template, context=context)
 
+
 def render_base_light(request):
-    return render_base(request, extra_context={ 'theme': 'iuw-light' })
+    return render_base(request, extra_context={"theme": "iuw-light"})
+
 
 def render_base_dark(request):
-    return render_base(request, extra_context={ 'theme': 'iuw-dark' })
+    return render_base(request, extra_context={"theme": "iuw-dark"})
