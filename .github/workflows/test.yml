@@ -10,20 +10,21 @@ jobs:
     name: Run Tests (Python ${{ matrix.python-version }}, Django ${{ matrix.django-version }})
     runs-on: ubuntu-latest
     strategy:
-      fail-fast: false
+      fail-fast: true
       max-parallel: 5
       matrix:
         python-version: ['3.8', '3.9', '3.10', '3.11', '3.12']
-        django-version: ['3.2', '4.0', '4.1', '4.2', '5.0']
+        django-version: ['4.2', '5.0', '5.1']
         exclude:
           # exclude django 5.0 not supported python versions
           - python-version: '3.8'
             django-version: '5.0'
           - python-version: '3.9'
             django-version: '5.0'
-          # exclude django 3.2 not supported python versions
-          - python-version: '3.12'
-            django-version: '3.2'
+          - python-version: '3.8'
+            django-version: '5.1'
+          - python-version: '3.9'
+            django-version: '5.1'
 
     services:
       postgres:
@@ -40,10 +41,10 @@ jobs:
 
     steps:
     - name: Clone Repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
 
@@ -53,7 +54,7 @@ jobs:
         pip install .[test]
         pip install psycopg2
         pip install django==${{ matrix.django-version }}
-        
+
     - name: Ensure browsers are installed
       run: python -m playwright install --with-deps
 

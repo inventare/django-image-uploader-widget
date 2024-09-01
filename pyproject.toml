@@ -4,7 +4,7 @@ name = 'django-image-uploader-widget'
 version = '0.7.1'
 description='Simple Image Uploader Widget for Django-Admin'
 dependencies = [
-  'django>=3.2',
+  'django>=4.2',
   'Pillow',
 ]
 authors = [{name = "Eduardo Oliveira", email = "eduardo_y05@outlook.com"}]

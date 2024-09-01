@@ -32,6 +32,14 @@ To get started, install this plugin with the pip package manager:
 pip install django-image-uploader-widget
 ```
 
+!!! warning "Version Information"
+
+    On the `1.0.0` release of this package we droped the support for `Django 3.2`, `Django 4.0` and `Django 4.1`. We, currently, maintain the support for `Django 4.2` (LTS), `Django 5.0` and `Django 5.1`. Then, if you are using `Django 3.2`, `4.0` or `4.1`, installs `0.7.1` version:
+
+    ```bash
+    pip install django-image-uploader-widget==0.7.1
+    ```
+
 then, go to the `settings.py` file and add the `image_uploader_widget` to the installed apps:
 
 ```python
