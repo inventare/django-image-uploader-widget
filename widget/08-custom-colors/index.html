@@ -8,13 +8,13 @@
       
       
       
-        <link rel="canonical" href="https://inventare.github.io/django-image-uploader-widget/inline_admin/04-custom-text-and-icons/">
+        <link rel="canonical" href="https://inventare.github.io/django-image-uploader-widget/widget/08-custom-colors/">
       
       
-        <link rel="prev" href="../03-accept/">
+        <link rel="prev" href="../07-force-color-scheme/">
       
       
-        <link rel="next" href="../05-custom-colors/">
+        <link rel="next" href="../specific-cases/03-multiple-instances-of-same-form/">
       
       
       <link rel="icon" href="../../_images/favicon.png">
@@ -22,7 +22,7 @@
     
     
       
-        <title>Custom Text and Icons - image-uploader-widget</title>
+        <title>Custom Colors - image-uploader-widget</title>
       
     
     
@@ -83,7 +83,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#custom-text-and-icons" class="md-skip">
+        <a href="#custom-colors" class="md-skip">
           Skip to content
         </a>
       
@@ -119,7 +119,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Custom Text and Icons
+              Custom Colors
             
           </span>
         </div>
@@ -211,11 +211,13 @@
         
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../../widget/01-resumed/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../01-resumed/" class="md-tabs__link">
           
   
   Widget
@@ -265,13 +267,11 @@
         
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="../01-tutorial/" class="md-tabs__link">
+      <li class="md-tabs__item">
+        <a href="../../inline_admin/01-tutorial/" class="md-tabs__link">
           
   
   Inline Admin
@@ -375,23 +375,28 @@
       
   
   
+    
   
   
+  
     
     
     
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
         
           
-          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
             
   
   <span class="md-ellipsis">
@@ -402,7 +407,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             Widget
@@ -416,7 +421,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../widget/01-resumed/" class="md-nav__link">
+      <a href="../01-resumed/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -437,7 +442,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../widget/02-tutorial/" class="md-nav__link">
+      <a href="../02-tutorial/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -458,7 +463,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../widget/04-accept/" class="md-nav__link">
+      <a href="../04-accept/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -479,7 +484,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../widget/05-htmx/" class="md-nav__link">
+      <a href="../05-htmx/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -500,7 +505,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../widget/06-custom-text-and-icons/" class="md-nav__link">
+      <a href="../06-custom-text-and-icons/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -521,7 +526,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../widget/07-force-color-scheme/" class="md-nav__link">
+      <a href="../07-force-color-scheme/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -539,10 +544,19 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../widget/08-custom-colors/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -551,6 +565,7 @@
   
 
       </a>
+      
     </li>
   
 
@@ -601,7 +616,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../widget/specific-cases/03-multiple-instances-of-same-form/" class="md-nav__link">
+      <a href="../specific-cases/03-multiple-instances-of-same-form/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -850,28 +865,23 @@
       
   
   
-    
   
   
-  
     
     
     
       
-        
-        
-      
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
         
           
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -882,7 +892,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             Inline Admin
@@ -896,7 +906,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../01-tutorial/" class="md-nav__link">
+      <a href="../../inline_admin/01-tutorial/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -917,7 +927,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../02-ordered/" class="md-nav__link">
+      <a href="../../inline_admin/02-ordered/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -938,7 +948,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../03-accept/" class="md-nav__link">
+      <a href="../../inline_admin/03-accept/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -956,19 +966,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../inline_admin/04-custom-text-and-icons/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -977,7 +978,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -990,7 +990,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../05-custom-colors/" class="md-nav__link">
+      <a href="../../inline_admin/05-custom-colors/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1306,27 +1306,22 @@
   
 
 
-<h1 id="custom-text-and-icons">Custom Text and Icons</h1>
-<p>To customize the text and the icons of the inline editor is a little bit faster too. We can set some variables on the <code>InlineAdmin</code> of your model, like this:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a><a href="#__codelineno-0-1"><span class="linenos" data-linenos=" 1 "></span></a><span class="k">class</span> <span class="nc">CustomInlineEditor</span><span class="p">(</span><span class="n">ImageUploaderInline</span><span class="p">):</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2"></a><a href="#__codelineno-0-2"><span class="linenos" data-linenos=" 2 "></span></a>    <span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CustomInlineItem</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3"></a><a href="#__codelineno-0-3"><span class="linenos" data-linenos=" 3 "></span></a>    <span class="n">add_image_text</span> <span class="o">=</span> <span class="s2">&quot;add_image_text&quot;</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4"></a><a href="#__codelineno-0-4"><span class="linenos" data-linenos=" 4 "></span></a>    <span class="n">drop_text</span> <span class="o">=</span> <span class="s2">&quot;drop_text&quot;</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5"></a><a href="#__codelineno-0-5"><span class="linenos" data-linenos=" 5 "></span></a>    <span class="n">empty_text</span> <span class="o">=</span> <span class="s2">&quot;empty_text&quot;</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6"></a><a href="#__codelineno-0-6"><span class="linenos" data-linenos=" 6 "></span></a>
-<a id="__codelineno-0-7" name="__codelineno-0-7"></a><a href="#__codelineno-0-7"><span class="linenos" data-linenos=" 7 "></span></a>    <span class="k">def</span> <span class="nf">get_empty_icon</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<a id="__codelineno-0-8" name="__codelineno-0-8"></a><a href="#__codelineno-0-8"><span class="linenos" data-linenos=" 8 "></span></a>        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
-<a id="__codelineno-0-9" name="__codelineno-0-9"></a><a href="#__codelineno-0-9"><span class="linenos" data-linenos=" 9 "></span></a>
-<a id="__codelineno-0-10" name="__codelineno-0-10"></a><a href="#__codelineno-0-10"><span class="linenos" data-linenos="10 "></span></a>    <span class="k">def</span> <span class="nf">get_add_icon</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<a id="__codelineno-0-11" name="__codelineno-0-11"></a><a href="#__codelineno-0-11"><span class="linenos" data-linenos="11 "></span></a>        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
-<a id="__codelineno-0-12" name="__codelineno-0-12"></a><a href="#__codelineno-0-12"><span class="linenos" data-linenos="12 "></span></a>
-<a id="__codelineno-0-13" name="__codelineno-0-13"></a><a href="#__codelineno-0-13"><span class="linenos" data-linenos="13 "></span></a>    <span class="k">def</span> <span class="nf">get_drop_icon</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<a id="__codelineno-0-14" name="__codelineno-0-14"></a><a href="#__codelineno-0-14"><span class="linenos" data-linenos="14 "></span></a>        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
-<a id="__codelineno-0-15" name="__codelineno-0-15"></a><a href="#__codelineno-0-15"><span class="linenos" data-linenos="15 "></span></a>
-<a id="__codelineno-0-16" name="__codelineno-0-16"></a><a href="#__codelineno-0-16"><span class="linenos" data-linenos="16 "></span></a><span class="nd">@admin</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">CustomInline</span><span class="p">)</span>
-<a id="__codelineno-0-17" name="__codelineno-0-17"></a><a href="#__codelineno-0-17"><span class="linenos" data-linenos="17 "></span></a><span class="k">class</span> <span class="nc">CustomInlineAdmin</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">ModelAdmin</span><span class="p">):</span>
-<a id="__codelineno-0-18" name="__codelineno-0-18"></a><a href="#__codelineno-0-18"><span class="linenos" data-linenos="18 "></span></a>    <span class="n">inlines</span> <span class="o">=</span> <span class="p">[</span><span class="n">CustomInlineEditor</span><span class="p">]</span>
+<h1 id="custom-colors">Custom Colors</h1>
+<p>To customize the image uploader widget colors you can use your own css file to override the css variables defined by the <code>image-uploader-widget.css</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a><a href="#__codelineno-0-1"><span class="linenos" data-linenos=" 1 "></span></a><span class="nt">body</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2"></a><a href="#__codelineno-0-2"><span class="linenos" data-linenos=" 2 "></span></a><span class="w">    </span><span class="nt">--iuw-background</span><span class="nd">:</span><span class="w"> </span><span class="nn">#FFF</span><span class="o">;</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3"></a><a href="#__codelineno-0-3"><span class="linenos" data-linenos=" 3 "></span></a><span class="w">    </span><span class="nt">--iuw-border-color</span><span class="nd">:</span><span class="w"> </span><span class="nn">#CCC</span><span class="o">;</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4"></a><a href="#__codelineno-0-4"><span class="linenos" data-linenos=" 4 "></span></a><span class="w">    </span><span class="nt">--iuw-color</span><span class="nd">:</span><span class="w"> </span><span class="nn">#333</span><span class="o">;</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5"></a><a href="#__codelineno-0-5"><span class="linenos" data-linenos=" 5 "></span></a><span class="w">    </span><span class="nt">--iuw-placeholder-text-color</span><span class="nd">:</span><span class="w"> </span><span class="nn">#AAA</span><span class="o">;</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6"></a><a href="#__codelineno-0-6"><span class="linenos" data-linenos=" 6 "></span></a><span class="w">    </span><span class="nt">--iuw-placeholder-destak-color</span><span class="nd">:</span><span class="w"> </span><span class="nn">#417690</span><span class="o">;</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7"></a><a href="#__codelineno-0-7"><span class="linenos" data-linenos=" 7 "></span></a><span class="w">    </span><span class="nt">--iuw-dropzone-background</span><span class="nd">:</span><span class="w"> </span><span class="nt">rgba</span><span class="o">(</span><span class="nt">255</span><span class="o">,</span><span class="w"> </span><span class="nt">255</span><span class="o">,</span><span class="w"> </span><span class="nt">255</span><span class="o">,</span><span class="w"> </span><span class="nt">0</span><span class="nc">.8</span><span class="o">);</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8"></a><a href="#__codelineno-0-8"><span class="linenos" data-linenos=" 8 "></span></a><span class="w">    </span><span class="nt">--iuw-image-preview-border</span><span class="nd">:</span><span class="w"> </span><span class="nn">#BFBFBF</span><span class="o">;</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9"></a><a href="#__codelineno-0-9"><span class="linenos" data-linenos=" 9 "></span></a><span class="w">    </span><span class="nt">--iuw-image-preview-shadow</span><span class="nd">:</span><span class="w"> </span><span class="nt">rgba</span><span class="o">(</span><span class="nt">0</span><span class="o">,</span><span class="w"> </span><span class="nt">0</span><span class="o">,</span><span class="w"> </span><span class="nt">0</span><span class="o">,</span><span class="w"> </span><span class="nt">0</span><span class="nc">.3</span><span class="o">);</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10"></a><a href="#__codelineno-0-10"><span class="linenos" data-linenos="10 "></span></a><span class="w">    </span><span class="nt">--iuw-add-image-background</span><span class="nd">:</span><span class="w"> </span><span class="nn">#EFEFEF</span><span class="o">;</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11"></a><a href="#__codelineno-0-11"><span class="linenos" data-linenos="11 "></span></a><span class="w">    </span><span class="nt">--iuw-add-image-color</span><span class="nd">:</span><span class="w"> </span><span class="nn">#AAA</span><span class="o">;</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12"></a><a href="#__codelineno-0-12"><span class="linenos" data-linenos="12 "></span></a><span class="p">}</span>
 </code></pre></div>
+<p><strong>Observation</strong>: To see better the variables name, check the css file at the GitHub repository: <a href="https://github.com/inventare/django-image-uploader-widget/blob/main/image_uploader_widget/static/image_uploader_widget/css/image-uploader-widget.css">here</a>.</p>
 
 
 

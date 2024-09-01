@@ -8,28 +8,26 @@
       
       
       
-        <link rel="canonical" href="https://inventare.github.io/django-image-uploader-widget/widget/07-custom-colors/">
+        <link rel="canonical" href="https://inventare.github.io/django-image-uploader-widget/development/architecture-decision-records/0006-why-enforce-light-theme-by-class/">
       
       
-        <link rel="prev" href="../06-custom-text-and-icons/">
+        <link rel="prev" href="../0005-why-event-bubbling-widget/">
       
       
-        <link rel="next" href="../specific-cases/03-multiple-instances-of-same-form/">
       
-      
-      <link rel="icon" href="../../_images/favicon.png">
+      <link rel="icon" href="../../../_images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.34">
     
     
       
-        <title>Custom Colors - image-uploader-widget</title>
+        <title>ADR 0006: Why enforce light theme by class? - image-uploader-widget</title>
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.35f28582.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.35f28582.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
       
       
 
@@ -48,16 +46,16 @@
       
     
     
-      <link rel="stylesheet" href="../../_stylesheets/extra.css">
+      <link rel="stylesheet" href="../../../_stylesheets/extra.css">
     
-    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
     
     
     
-   <link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
+   <link href="../../../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
     html.glightbox-open { overflow: initial; height: 100%; }
     .gslide-title { margin-top: 0px; user-select: text; }
     .gslide-desc { color: #666; user-select: text; }
@@ -66,7 +64,7 @@
     .gdesc-inner { font-size: 0.75rem; }
     body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color);}
     body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color);}
-    body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color);}</style> <script src="../../assets/javascripts/glightbox.min.js"></script></head>
+    body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color);}</style> <script src="../../../assets/javascripts/glightbox.min.js"></script></head>
   
   
     
@@ -83,7 +81,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#custom-colors" class="md-skip">
+        <a href="#adr-0006-why-enforce-light-theme-by-class" class="md-skip">
           Skip to content
         </a>
       
@@ -119,7 +117,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Custom Colors
+              ADR 0006: Why enforce light theme by class?
             
           </span>
         </div>
@@ -196,7 +194,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../.." class="md-tabs__link">
+      <a href="../../.." class="md-tabs__link">
         
   
     
@@ -211,13 +209,11 @@
         
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="../01-resumed/" class="md-tabs__link">
+      <li class="md-tabs__item">
+        <a href="../../../widget/01-resumed/" class="md-tabs__link">
           
   
   Widget
@@ -235,7 +231,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../array_field/01-tutorial/" class="md-tabs__link">
+        <a href="../../../array_field/01-tutorial/" class="md-tabs__link">
           
   
   ArrayField
@@ -253,7 +249,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../htmx/01-widget/" class="md-tabs__link">
+        <a href="../../../htmx/01-widget/" class="md-tabs__link">
           
   
   HTMX
@@ -271,7 +267,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../inline_admin/01-tutorial/" class="md-tabs__link">
+        <a href="../../../inline_admin/01-tutorial/" class="md-tabs__link">
           
   
   Inline Admin
@@ -285,11 +281,13 @@
         
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../../development/tests/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../tests/" class="md-tabs__link">
           
   
   Development
@@ -358,7 +356,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../.." class="md-nav__link">
+      <a href="../../.." class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -375,28 +373,23 @@
       
   
   
-    
   
   
-  
     
     
     
       
-        
-        
-      
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
         
           
-          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -407,7 +400,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             Widget
@@ -421,7 +414,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../01-resumed/" class="md-nav__link">
+      <a href="../../../widget/01-resumed/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -442,7 +435,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../02-tutorial/" class="md-nav__link">
+      <a href="../../../widget/02-tutorial/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -463,7 +456,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../04-accept/" class="md-nav__link">
+      <a href="../../../widget/04-accept/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -484,7 +477,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../05-htmx/" class="md-nav__link">
+      <a href="../../../widget/05-htmx/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -505,7 +498,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../06-custom-text-and-icons/" class="md-nav__link">
+      <a href="../../../widget/06-custom-text-and-icons/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -523,19 +516,31 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
+    <li class="md-nav__item">
+      <a href="../../../widget/07-force-color-scheme/" class="md-nav__link">
         
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+  
+  <span class="md-ellipsis">
+    Force dark or light color scheme
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../widget/08-custom-colors/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -544,7 +549,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -567,10 +571,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_7" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_8" >
         
           
-          <label class="md-nav__link" for="__nav_2_7" id="__nav_2_7_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_2_8" id="__nav_2_8_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -581,8 +585,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_7_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_7">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_8">
             <span class="md-nav__icon md-icon"></span>
             Specific Cases
           </label>
@@ -595,7 +599,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../specific-cases/03-multiple-instances-of-same-form/" class="md-nav__link">
+      <a href="../../../widget/specific-cases/03-multiple-instances-of-same-form/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -669,7 +673,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../array_field/01-tutorial/" class="md-nav__link">
+      <a href="../../../array_field/01-tutorial/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -690,7 +694,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../array_field/02-prevent-raw-change/" class="md-nav__link">
+      <a href="../../../array_field/02-prevent-raw-change/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -711,11 +715,32 @@
   
   
     <li class="md-nav__item">
-      <a href="../../array_field/03-htmx/" class="md-nav__link">
+      <a href="../../../array_field/03-htmx/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
     Out of Box HTMX Support
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../array_field/04-force-color-scheme/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Force dark or light color scheme
   </span>
   
 
@@ -777,7 +802,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../htmx/01-widget/" class="md-nav__link">
+      <a href="../../../htmx/01-widget/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -798,7 +823,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../htmx/02-array_field/" class="md-nav__link">
+      <a href="../../../htmx/02-array_field/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -864,7 +889,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../inline_admin/01-tutorial/" class="md-nav__link">
+      <a href="../../../inline_admin/01-tutorial/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -885,7 +910,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../inline_admin/02-ordered/" class="md-nav__link">
+      <a href="../../../inline_admin/02-ordered/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -906,7 +931,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../inline_admin/03-accept/" class="md-nav__link">
+      <a href="../../../inline_admin/03-accept/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -927,7 +952,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../inline_admin/04-custom-text-and-icons/" class="md-nav__link">
+      <a href="../../../inline_admin/04-custom-text-and-icons/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -948,7 +973,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../inline_admin/05-custom-colors/" class="md-nav__link">
+      <a href="../../../inline_admin/05-custom-colors/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -973,23 +998,28 @@
       
   
   
+    
   
   
+  
     
     
     
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
         
           
-          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
             
   
   <span class="md-ellipsis">
@@ -1000,7 +1030,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             Development
@@ -1014,7 +1044,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../development/tests/" class="md-nav__link">
+      <a href="../../tests/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1032,6 +1062,8 @@
                 
   
   
+    
+  
   
   
     
@@ -1041,11 +1073,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_2" checked>
         
           
           <label class="md-nav__link" for="__nav_6_2" id="__nav_6_2_label" tabindex="0">
@@ -1059,7 +1091,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_2_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_2_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_6_2">
             <span class="md-nav__icon md-icon"></span>
             Architecture Decision Records
@@ -1073,7 +1105,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../development/architecture-decision-records/0000-why-jquery/" class="md-nav__link">
+      <a href="../0000-why-jquery/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1094,7 +1126,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../development/architecture-decision-records/0001-why-functional-tests/" class="md-nav__link">
+      <a href="../0001-why-functional-tests/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1115,7 +1147,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../development/architecture-decision-records/0002-why-ui-regression-tests/" class="md-nav__link">
+      <a href="../0002-why-ui-regression-tests/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1136,7 +1168,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../development/architecture-decision-records/0003-why-playwright/" class="md-nav__link">
+      <a href="../0003-why-playwright/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1157,7 +1189,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../development/architecture-decision-records/0004-why-mkdocs/" class="md-nav__link">
+      <a href="../0004-why-mkdocs/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1178,7 +1210,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../development/architecture-decision-records/0005-why-event-bubbling-widget/" class="md-nav__link">
+      <a href="../0005-why-event-bubbling-widget/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1187,6 +1219,94 @@
   
 
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    ADR 0006: Why enforce light theme by class?
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    ADR 0006: Why enforce light theme by class?
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#context" class="md-nav__link">
+    <span class="md-ellipsis">
+      Context
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#decision-drivers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision Drivers
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#decision" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1227,6 +1347,41 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#context" class="md-nav__link">
+    <span class="md-ellipsis">
+      Context
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#decision-drivers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision Drivers
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#decision" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -1243,22 +1398,29 @@
   
 
 
-<h1 id="custom-colors">Custom Colors</h1>
-<p>To customize the image uploader widget colors you can use your own css file to override the css variables defined by the <code>image-uploader-widget.css</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a><a href="#__codelineno-0-1"><span class="linenos" data-linenos=" 1 "></span></a><span class="nt">body</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2"></a><a href="#__codelineno-0-2"><span class="linenos" data-linenos=" 2 "></span></a><span class="w">    </span><span class="nt">--iuw-background</span><span class="nd">:</span><span class="w"> </span><span class="nn">#FFF</span><span class="o">;</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3"></a><a href="#__codelineno-0-3"><span class="linenos" data-linenos=" 3 "></span></a><span class="w">    </span><span class="nt">--iuw-border-color</span><span class="nd">:</span><span class="w"> </span><span class="nn">#CCC</span><span class="o">;</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4"></a><a href="#__codelineno-0-4"><span class="linenos" data-linenos=" 4 "></span></a><span class="w">    </span><span class="nt">--iuw-color</span><span class="nd">:</span><span class="w"> </span><span class="nn">#333</span><span class="o">;</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5"></a><a href="#__codelineno-0-5"><span class="linenos" data-linenos=" 5 "></span></a><span class="w">    </span><span class="nt">--iuw-placeholder-text-color</span><span class="nd">:</span><span class="w"> </span><span class="nn">#AAA</span><span class="o">;</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6"></a><a href="#__codelineno-0-6"><span class="linenos" data-linenos=" 6 "></span></a><span class="w">    </span><span class="nt">--iuw-placeholder-destak-color</span><span class="nd">:</span><span class="w"> </span><span class="nn">#417690</span><span class="o">;</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7"></a><a href="#__codelineno-0-7"><span class="linenos" data-linenos=" 7 "></span></a><span class="w">    </span><span class="nt">--iuw-dropzone-background</span><span class="nd">:</span><span class="w"> </span><span class="nt">rgba</span><span class="o">(</span><span class="nt">255</span><span class="o">,</span><span class="w"> </span><span class="nt">255</span><span class="o">,</span><span class="w"> </span><span class="nt">255</span><span class="o">,</span><span class="w"> </span><span class="nt">0</span><span class="nc">.8</span><span class="o">);</span>
-<a id="__codelineno-0-8" name="__codelineno-0-8"></a><a href="#__codelineno-0-8"><span class="linenos" data-linenos=" 8 "></span></a><span class="w">    </span><span class="nt">--iuw-image-preview-border</span><span class="nd">:</span><span class="w"> </span><span class="nn">#BFBFBF</span><span class="o">;</span>
-<a id="__codelineno-0-9" name="__codelineno-0-9"></a><a href="#__codelineno-0-9"><span class="linenos" data-linenos=" 9 "></span></a><span class="w">    </span><span class="nt">--iuw-image-preview-shadow</span><span class="nd">:</span><span class="w"> </span><span class="nt">rgba</span><span class="o">(</span><span class="nt">0</span><span class="o">,</span><span class="w"> </span><span class="nt">0</span><span class="o">,</span><span class="w"> </span><span class="nt">0</span><span class="o">,</span><span class="w"> </span><span class="nt">0</span><span class="nc">.3</span><span class="o">);</span>
-<a id="__codelineno-0-10" name="__codelineno-0-10"></a><a href="#__codelineno-0-10"><span class="linenos" data-linenos="10 "></span></a><span class="w">    </span><span class="nt">--iuw-add-image-background</span><span class="nd">:</span><span class="w"> </span><span class="nn">#EFEFEF</span><span class="o">;</span>
-<a id="__codelineno-0-11" name="__codelineno-0-11"></a><a href="#__codelineno-0-11"><span class="linenos" data-linenos="11 "></span></a><span class="w">    </span><span class="nt">--iuw-add-image-color</span><span class="nd">:</span><span class="w"> </span><span class="nn">#AAA</span><span class="o">;</span>
-<a id="__codelineno-0-12" name="__codelineno-0-12"></a><a href="#__codelineno-0-12"><span class="linenos" data-linenos="12 "></span></a><span class="p">}</span>
-</code></pre></div>
-<p><strong>Observation</strong>: To see better the variables name, check the css file at the GitHub repository: <a href="https://github.com/inventare/django-image-uploader-widget/blob/main/image_uploader_widget/static/image_uploader_widget/css/image-uploader-widget.css">here</a>.</p>
+<h1 id="adr-0006-why-enforce-light-theme-by-class">ADR 0006: Why enforce light theme by class?</h1>
+<table>
+<thead>
+<tr>
+<th class="adr-emoji" style="text-align: center;"><img alt="📅" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/1f4c5.svg" title=":date:" /></th>
+<th class="adr-text" style="text-align: left;">September 2024.</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="adr-emoji" style="text-align: center;"><img alt="✍" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/270d.svg" title=":writing_hand:" /></td>
+<td class="adr-text" style="text-align: left;"><a href="https://github.com/EduardoJM">Eduardo Oliveira</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="context">Context</h2>
+<p>The theme toggle, for django-admin, was added in <a href="https://docs.djangoproject.com/en/4.2/releases/4.2/#django-contrib-admin">django 4.2</a>. On the versions before this, when the dark theme is available for the admin, the <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme">prefers-color-scheme</a> is used to use dark theme. On this package, we used both <code>prefers-color-scheme</code> and theme toggle support for determine the colors.</p>
+<h2 id="decision-drivers">Decision Drivers</h2>
+<ul>
+<li>We need a way to force light theme on the widget to use without django-admin in full light appearance.</li>
+</ul>
+<h2 id="decision">Decision</h2>
+<p>To force light theme, we decided to add a class <code>.iuw-light</code> that force the theme variables to light and a <code>.iuw-dark</code> to force the theme variables to dark.</p>
 
 
 
@@ -1311,10 +1473,10 @@
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.top", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.07f07601.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.top", "search.suggest", "search.highlight"], "search": "../../../assets/javascripts/workers/search.07f07601.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.56dfad97.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.56dfad97.min.js"></script>
       
     
   <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});

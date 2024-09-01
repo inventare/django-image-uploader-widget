@@ -17,6 +17,10 @@
          <lastmod>2024-09-01</lastmod>
     </url>
     <url>
+         <loc>https://inventare.github.io/django-image-uploader-widget/array_field/04-force-color-scheme/</loc>
+         <lastmod>2024-09-01</lastmod>
+    </url>
+    <url>
          <loc>https://inventare.github.io/django-image-uploader-widget/development/tests/</loc>
          <lastmod>2024-09-01</lastmod>
     </url>
@@ -42,6 +46,10 @@
     </url>
     <url>
          <loc>https://inventare.github.io/django-image-uploader-widget/development/architecture-decision-records/0005-why-event-bubbling-widget/</loc>
+         <lastmod>2024-09-01</lastmod>
+    </url>
+    <url>
+         <loc>https://inventare.github.io/django-image-uploader-widget/development/architecture-decision-records/0006-why-enforce-light-theme-by-class/</loc>
          <lastmod>2024-09-01</lastmod>
     </url>
     <url>
@@ -93,7 +101,11 @@
          <lastmod>2024-09-01</lastmod>
     </url>
     <url>
-         <loc>https://inventare.github.io/django-image-uploader-widget/widget/07-custom-colors/</loc>
+         <loc>https://inventare.github.io/django-image-uploader-widget/widget/07-force-color-scheme/</loc>
+         <lastmod>2024-09-01</lastmod>
+    </url>
+    <url>
+         <loc>https://inventare.github.io/django-image-uploader-widget/widget/08-custom-colors/</loc>
          <lastmod>2024-09-01</lastmod>
     </url>
     <url>
