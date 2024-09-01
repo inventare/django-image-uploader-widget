@@ -110,7 +110,6 @@ class HTMXWidgetOptionalTestCase(test_case.IUWTestCase):
         self.assertIsNotNone(preview_button)
         self.assertIsNotNone(delete_button)
 
-    @tag("currently")
     def test_delete_saved_image(self):
         self.goto_change_page()
         self.load_widget()
