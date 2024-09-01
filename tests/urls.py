@@ -19,6 +19,8 @@ urlpatterns = (
             views.render_array_field_required,
         ),
         path("test-htmx/", views.render_base),
+        path("test-htmx-light/", views.render_base_light),
+        path("test-htmx-dark/", views.render_base_dark),
         path("", lambda _: redirect(reverse("admin:index"))),
     ]
     + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -84,13 +84,22 @@ def render_array_field_required(request, pk=None):
     return render(request, template, context=context)
 
 
-def render_base(request):
+def render_base(request, extra_context=None):
+    if not extra_context:
+        extra_context = {}
     destination = request.GET.get("destination")
     form = TestRequiredForm()
     form2 = TestWithArrayFieldForm()
     context = {
         "destination": destination,
         "media": form.media + form2.media,
+        **extra_context,
     }
     template = "test_htmx.html"
     return render(request, template, context=context)
+
+def render_base_light(request):
+    return render_base(request, extra_context={ 'theme': 'iuw-light' })
+
+def render_base_dark(request):
+    return render_base(request, extra_context={ 'theme': 'iuw-dark' })
