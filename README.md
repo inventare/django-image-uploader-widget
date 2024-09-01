@@ -6,7 +6,7 @@
 
 <p align="center">
     <img alt="Supported Python Versions" src="https://img.shields.io/badge/Python-3.8%20%7C%203.9%20%7C%203.10%20%7C%203.11%20%7C%203.12-blue" />
-    <img alt="Supported Django Versions" src="https://img.shields.io/badge/Django-3.2%20|%204.0%20|%204.1%20|%204.2%20|%205.0-blue" />
+    <img alt="Supported Django Versions" src="https://img.shields.io/badge/Django-4.2%20|%205.0%20|%205.1-blue" />
     <img alt="PyPI - Version" src="https://img.shields.io/pypi/v/django-image-uploader-widget" />
     <img alt="GitHub License" src="https://img.shields.io/github/license/inventare/django-image-uploader-widget" />
     <img alt="PyPI - Downloads" src="https://img.shields.io/pypi/dm/django-image-uploader-widget" />
@@ -20,7 +20,8 @@
 ## Requirements
 
 - Python 3.8+
-- Django 3.2+
+- Django 4.2+
+- Django 3.2,4.0,4.1 (uses `django-image-uploader-widget<=0.7.1`)
 
 ## Features
 
@@ -33,17 +34,6 @@
 - [x] Support upload by dropping file.
 - [x] Out of box HTMX support.
 
-## Future Roadmap
-
-| Intented Version  | Description                                                | Expected date |
-| ----------------- | ---------------------------------------------------------- | ------------- |
-| 0.6.0             | Support for Drag and Drop for reordering on mobile phones. [#153](https://github.com/inventare/django-image-uploader-widget/issues/153) | August, 2024  |
-| 0.7.0             | Add support for the htmx swap initialization. [#177](https://github.com/inventare/django-image-uploader-widget/issues/177)              | August, 2024  |
-| 0.7.X             | Write test-cases for side-cases [#151](https://github.com/inventare/django-image-uploader-widget/issues/151)              | August, 2024  |
-| 0.7.X             | Review the documentation of the package. [#171](https://github.com/inventare/django-image-uploader-widget/issues/171)              | September, 2024  |
-| 0.7.X             | Grant light/dark theme support on Django 3.2 and Django 4.2+. [#113](https://github.com/inventare/django-image-uploader-widget/issues/113)              | September, 2024  |
-| 1.0.0             | Drop support for Django 3.2 (no more supported by Django team). [#152](https://github.com/inventare/django-image-uploader-widget/issues/152)              | October, 2024  |
-
 ## Installation
 
 Install from PyPI:
@@ -51,6 +41,14 @@ Install from PyPI:
 ```bash
 pip install django-image-uploader-widget
 ```
+
+>
+> On the `1.0.0` release of this package we droped the support for `Django 3.2`, `Django 4.0` and `Django 4.1`. We, currently, maintain the support for `Django 4.2` (LTS), `Django 5.0` and `Django 5.1`. Then, if you are using `Django 3.2`, `4.0` or `4.1`, installs `0.7.1` version:
+>
+> ```bash
+> pip install django-image-uploader-widget==0.7.1
+> ```
+>
 
 Add `image_uploader_widget` to `INSTALLED_APPS`:
 

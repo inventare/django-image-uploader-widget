@@ -66,6 +66,14 @@ To install the widget, is possible to use the same instructions of the [Getting 
 pip install django-image-uploader-widget
 ```
 
+!!! warning "Version Information"
+
+    On the `1.0.0` release of this package we droped the support for `Django 3.2`, `Django 4.0` and `Django 4.1`. We, currently, maintain the support for `Django 4.2` (LTS), `Django 5.0` and `Django 5.1`. Then, if you are using `Django 3.2`, `4.0` or `4.1`, installs `0.7.1` version:
+
+    ```bash
+    pip install django-image-uploader-widget==0.7.1
+    ```
+
 then, add it to the `INSTALLED_APPS` on the `settings.py`, in the case of this example: `core/settings.py` file. To understand better the Applications, see the django documentation: [Applications](https://docs.djangoproject.com/en/3.2/ref/applications/).
 
 ```python
@@ -102,7 +110,7 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
-    
+
     class Meta:
         verbose_name = 'Product'
         verbose_name_plural = 'Products'
@@ -117,7 +125,7 @@ class ProductImage(models.Model):
 
     def __str__(self):
         return str(self.image)
-    
+
     class Meta:
         verbose_name = 'Product Image'
         verbose_name_plural = 'Product Images'
