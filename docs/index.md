@@ -17,7 +17,7 @@ The **django-image-uploader-widget** is a set of **django** widget and **django-
 - Support reordering inside **django-admin** custom inline for multiple uploads.
 - Support `ArrayField` for `PostgreSQL` database.
 - Support upload by dropping file.
-- Out of box HTML support.
+- Out of box HTMX support.
 
 ## Requirements
 
