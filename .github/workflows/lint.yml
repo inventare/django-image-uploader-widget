@@ -4,6 +4,9 @@ on:
   pull_request:
     branches:
       - main
+    paths:
+      - image_uploader_widget/**
+      - tests/**
 
 jobs:
   lint:
