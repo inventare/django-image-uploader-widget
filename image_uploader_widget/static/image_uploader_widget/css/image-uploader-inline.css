@@ -442,6 +442,10 @@ html[data-theme="dark"] {
   height: auto;
   fill: var(--iuw-modal-closebutton-color);
 }
+
+.iuw-inline-admin-formset {
+  flex: 1;
+}
 @media (max-width: 768px) {
   #iuw-modal-element .iuw-modal-image-preview .iuw-modal-close {
     transform: none;
