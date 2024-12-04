@@ -134,8 +134,13 @@ document.addEventListener('DOMContentLoaded', function(){
         return;
     }
 
-    const fileInput = root.querySelector('input[type="file"]');
+    for (const file of evt.dataTransfer.files) {
+      if (!file.type.startsWith('image/')) {
+        return;
+      }
+    }
 
+    const fileInput = root.querySelector('input[type="file"]');
     fileInput.files = evt.dataTransfer.files;
     changeImagePreview(root, fileInput);
   });

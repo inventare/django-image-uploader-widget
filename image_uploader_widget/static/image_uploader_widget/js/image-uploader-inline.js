@@ -142,6 +142,9 @@ function handleAddNewImage(root, tempFileInput, inputFile = null) {
   if (!file) {
       return;
   }
+  if (!file.type.startsWith('image/')) {
+    return;
+  }
   const row = cloneFromEmptyTemplate(root);
   const img = document.createElement('img');
   img.src = URL.createObjectURL(file);
