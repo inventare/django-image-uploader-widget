@@ -15,7 +15,7 @@ class ReorderTestHelper(ImageMockMixin):
     form_selector = 'form[enctype="multipart/form-data"]'
     drop_label_selector = ".iuw-drop-label"
 
-    get_images_to_validate: Callable[[], list[str]] = None
+    get_images_to_validate: Callable[[], List[str]] = None
 
     @property
     def root(self):
@@ -41,7 +41,7 @@ class ReorderTestHelper(ImageMockMixin):
         self,
         page: Page,
         root_selector: str,
-        get_images_to_validate: Callable[[], list[str]],
+        get_images_to_validate: Callable[[], List[str]],
     ):
         """Creates a new instance of ReorderTestHelper.
 
