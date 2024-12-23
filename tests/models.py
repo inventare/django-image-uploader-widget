@@ -82,7 +82,7 @@ class OrderedInlineItem(models.Model):
     parent = models.ForeignKey(
         OrderedInline, related_name="items", on_delete=models.CASCADE
     )
-    image = models.ImageField("Image")
+    image = models.ImageField("Image", upload_to="admin_test")
     order = models.PositiveIntegerField("Order", default=1)
 
 

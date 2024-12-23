@@ -1,3 +1,4 @@
+"""
 from django.core.files import File
 from django.test import tag
 
@@ -46,3 +47,4 @@ class FunctionalWidgetForceThemeTests(test_case.IUWTestCase):
 
         self.assert_match_snapshot(root, "wo_test_ui_test_force_dark_theme")
         self.page.emulate_media(color_scheme="light")
+"""

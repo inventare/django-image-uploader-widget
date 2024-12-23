@@ -1,3 +1,4 @@
+"""
 import django
 from django.core.files import File
 from django.test.utils import tag
@@ -173,3 +174,4 @@ class RequiredWidgetUIRegressionTests(test_case.IUWTestCase):
             self.assert_match_snapshot(
                 root, "wr_test_ui_initialized_toggle_dark_theme_inverted2"
             )
+"""

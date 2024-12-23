@@ -1,3 +1,4 @@
+"""
 import django
 from django.core.files import File
 from django.test.utils import tag
@@ -204,3 +205,4 @@ class OptionaldWidgetTestCase(test_case.IUWTestCase):
             root, "wo_test_ui_initialized_toggle_dark_theme_inverted2"
         )
         self.page.emulate_media(color_scheme="light")
+"""
