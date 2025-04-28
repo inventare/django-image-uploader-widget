@@ -30,7 +30,7 @@ classifiers = [
 
 [project.optional-dependencies]
 dev = ["black", "isort", "pre-commit", "poethepoet"]
-test = ["playwright", "tiny-match-snapshot==0.0.2"]
+test = ["playwright==1.48.0", "tiny-match-snapshot==0.0.2"]
 docs = ["mkdocs", "mkdocs-material", "mkdocs-glightbox", "mkdocs-awesome-pages-plugin"]
 
 [project.urls]
