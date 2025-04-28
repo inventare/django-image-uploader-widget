@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTMX</title>
+  {{ media }}
+</head>
+<body  hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+  <div class="{% if theme %}{{ theme }}{% endif %}">
+
+  <button
+    hx-get="{% if destination %}{{ destination }}{% else %}/htmx/required/{% endif %}"
+    hx-target="this"
+    hx-swap="outerHTML"
+    hx-trigger="click"
+    type="button"
+    class="btn-load"
+  >
+    Load
+  </button>
+
+  </div>
+
+  <script src="https://unpkg.com/htmx.org@1.9.12"></script>
+</body>
+</html>
