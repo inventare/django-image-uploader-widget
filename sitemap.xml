@@ -2,118 +2,118 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://inventare.github.io/django-image-uploader-widget/</loc>
-         <lastmod>2024-12-04</lastmod>
+         <lastmod>2025-04-28</lastmod>
     </url>
     <url>
          <loc>https://inventare.github.io/django-image-uploader-widget/array_field/01-tutorial/</loc>
-         <lastmod>2024-12-04</lastmod>
+         <lastmod>2025-04-28</lastmod>
     </url>
     <url>
          <loc>https://inventare.github.io/django-image-uploader-widget/array_field/02-prevent-raw-change/</loc>
-         <lastmod>2024-12-04</lastmod>
+         <lastmod>2025-04-28</lastmod>
     </url>
     <url>
          <loc>https://inventare.github.io/django-image-uploader-widget/array_field/03-htmx/</loc>
-         <lastmod>2024-12-04</lastmod>
+         <lastmod>2025-04-28</lastmod>
     </url>
     <url>
          <loc>https://inventare.github.io/django-image-uploader-widget/array_field/04-force-color-scheme/</loc>
-         <lastmod>2024-12-04</lastmod>
+         <lastmod>2025-04-28</lastmod>
     </url>
     <url>
          <loc>https://inventare.github.io/django-image-uploader-widget/development/tests/</loc>
-         <lastmod>2024-12-04</lastmod>
+         <lastmod>2025-04-28</lastmod>
     </url>
     <url>
          <loc>https://inventare.github.io/django-image-uploader-widget/development/architecture-decision-records/0000-why-jquery/</loc>
-         <lastmod>2024-12-04</lastmod>
+         <lastmod>2025-04-28</lastmod>
     </url>
     <url>
          <loc>https://inventare.github.io/django-image-uploader-widget/development/architecture-decision-records/0001-why-functional-tests/</loc>
-         <lastmod>2024-12-04</lastmod>
+         <lastmod>2025-04-28</lastmod>
     </url>
     <url>
          <loc>https://inventare.github.io/django-image-uploader-widget/development/architecture-decision-records/0002-why-ui-regression-tests/</loc>
-         <lastmod>2024-12-04</lastmod>
+         <lastmod>2025-04-28</lastmod>
     </url>
     <url>
          <loc>https://inventare.github.io/django-image-uploader-widget/development/architecture-decision-records/0003-why-playwright/</loc>
-         <lastmod>2024-12-04</lastmod>
+         <lastmod>2025-04-28</lastmod>
     </url>
     <url>
          <loc>https://inventare.github.io/django-image-uploader-widget/development/architecture-decision-records/0004-why-mkdocs/</loc>
-         <lastmod>2024-12-04</lastmod>
+         <lastmod>2025-04-28</lastmod>
     </url>
     <url>
          <loc>https://inventare.github.io/django-image-uploader-widget/development/architecture-decision-records/0005-why-event-bubbling-widget/</loc>
-         <lastmod>2024-12-04</lastmod>
+         <lastmod>2025-04-28</lastmod>
     </url>
     <url>
          <loc>https://inventare.github.io/django-image-uploader-widget/development/architecture-decision-records/0006-why-enforce-light-theme-by-class/</loc>
-         <lastmod>2024-12-04</lastmod>
+         <lastmod>2025-04-28</lastmod>
     </url>
     <url>
          <loc>https://inventare.github.io/django-image-uploader-widget/htmx/01-widget/</loc>
-         <lastmod>2024-12-04</lastmod>
+         <lastmod>2025-04-28</lastmod>
     </url>
     <url>
          <loc>https://inventare.github.io/django-image-uploader-widget/htmx/02-array_field/</loc>
-         <lastmod>2024-12-04</lastmod>
+         <lastmod>2025-04-28</lastmod>
     </url>
     <url>
          <loc>https://inventare.github.io/django-image-uploader-widget/inline_admin/01-tutorial/</loc>
-         <lastmod>2024-12-04</lastmod>
+         <lastmod>2025-04-28</lastmod>
     </url>
     <url>
          <loc>https://inventare.github.io/django-image-uploader-widget/inline_admin/02-ordered/</loc>
-         <lastmod>2024-12-04</lastmod>
+         <lastmod>2025-04-28</lastmod>
     </url>
     <url>
          <loc>https://inventare.github.io/django-image-uploader-widget/inline_admin/03-accept/</loc>
-         <lastmod>2024-12-04</lastmod>
+         <lastmod>2025-04-28</lastmod>
     </url>
     <url>
          <loc>https://inventare.github.io/django-image-uploader-widget/inline_admin/04-custom-text-and-icons/</loc>
-         <lastmod>2024-12-04</lastmod>
+         <lastmod>2025-04-28</lastmod>
     </url>
     <url>
          <loc>https://inventare.github.io/django-image-uploader-widget/inline_admin/05-custom-colors/</loc>
-         <lastmod>2024-12-04</lastmod>
+         <lastmod>2025-04-28</lastmod>
     </url>
     <url>
          <loc>https://inventare.github.io/django-image-uploader-widget/widget/01-resumed/</loc>
-         <lastmod>2024-12-04</lastmod>
+         <lastmod>2025-04-28</lastmod>
     </url>
     <url>
          <loc>https://inventare.github.io/django-image-uploader-widget/widget/02-tutorial/</loc>
-         <lastmod>2024-12-04</lastmod>
+         <lastmod>2025-04-28</lastmod>
     </url>
     <url>
          <loc>https://inventare.github.io/django-image-uploader-widget/widget/04-accept/</loc>
-         <lastmod>2024-12-04</lastmod>
+         <lastmod>2025-04-28</lastmod>
     </url>
     <url>
          <loc>https://inventare.github.io/django-image-uploader-widget/widget/05-htmx/</loc>
-         <lastmod>2024-12-04</lastmod>
+         <lastmod>2025-04-28</lastmod>
     </url>
     <url>
          <loc>https://inventare.github.io/django-image-uploader-widget/widget/06-custom-text-and-icons/</loc>
-         <lastmod>2024-12-04</lastmod>
+         <lastmod>2025-04-28</lastmod>
     </url>
     <url>
          <loc>https://inventare.github.io/django-image-uploader-widget/widget/07-force-color-scheme/</loc>
-         <lastmod>2024-12-04</lastmod>
+         <lastmod>2025-04-28</lastmod>
     </url>
     <url>
          <loc>https://inventare.github.io/django-image-uploader-widget/widget/08-custom-colors/</loc>
-         <lastmod>2024-12-04</lastmod>
+         <lastmod>2025-04-28</lastmod>
     </url>
     <url>
          <loc>https://inventare.github.io/django-image-uploader-widget/widget/specific-cases/01-crispy-forms/</loc>
-         <lastmod>2024-12-04</lastmod>
+         <lastmod>2025-04-28</lastmod>
     </url>
     <url>
          <loc>https://inventare.github.io/django-image-uploader-widget/widget/specific-cases/03-multiple-instances-of-same-form/</loc>
-         <lastmod>2024-12-04</lastmod>
+         <lastmod>2025-04-28</lastmod>
     </url>
 </urlset>
