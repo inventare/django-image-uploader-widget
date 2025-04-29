@@ -28,3 +28,19 @@ class WidgetInlinePO:
     def click_on_preview_delete(self, preview: Locator):
         button = self.page_elements.get_delete_button(preview)
         button.click()
+
+    def click_on_preview_expand(self, preview: Locator):
+        button = self.page_elements.get_expand_button(preview)
+        button.click()
+
+    def is_empty_marker_visible(self):
+        return self.page_elements.empty_marker.is_visible()
+
+    def click_on_empty_marker(self):
+        self.page_elements.empty_marker.click()
+
+    def is_add_button_visible(self):
+        return self.page_elements.add_image_button.is_visible()
+
+    def click_on_add_button(self):
+        self.page_elements.add_image_button.click()
