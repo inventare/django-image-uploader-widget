@@ -1,7 +1,7 @@
 from django.test import tag
 from tests.utils.test_case import TestCase
 from tests.app.widget import models
-from tests.pom.widget_common import WidgetCommonPO
+from tests.pom.component import WidgetPO
 
 @tag('new')
 class WidgetOptionalInsideStakcedTestCase(TestCase):
@@ -19,15 +19,14 @@ class WidgetOptionalInsideStakcedTestCase(TestCase):
         self.assertEqual(len(inlines), 2)
 
         for inline in inlines:
-            po = WidgetCommonPO(inline)
+            po = WidgetPO(inline)
             self.assertTrue(po.is_input_empty())
 
-            po.send_image_to_input("image1.png")
-            previews = po.get_visible_previews()
-            preview = previews[0]
-
-            self.assertEqual(len(previews), 1)
-            self.assertTrue(po.is_preview_valid(preview, required=False))
+            po.execute_select_image("image1.png")
+            thumbs = po.get_visible_thumbnails()
+            thumb = thumbs[0]
+            self.assertEqual(len(thumbs), 1)
+            self.assertTrue(thumb.is_valid(required=False))
 
         self.admin_po.change_form.submit_form()
 

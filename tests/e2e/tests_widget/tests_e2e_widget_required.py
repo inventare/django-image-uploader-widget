@@ -13,15 +13,15 @@ class WidgetRequiredTestCase(BaseWidgetTestCase):
     def test_upload_file(self):
         self.goto_add_page()
 
-        self.assertEqual(len(self.widget_po.get_visible_previews()), 0)
+        self.assertEqual(len(self.widget_po.get_visible_thumbnails()), 0)
         self.assertTrue(self.widget_po.is_input_empty())
 
-        self.widget_po.send_image_to_input("image1.png")
+        self.widget_po.execute_select_image("image1.png")
 
-        previews = self.widget_po.get_visible_previews()
-        preview = previews[0]
-        self.assertEqual(len(previews), 1)
-        self.assertTrue(self.widget_po.is_preview_valid(preview, required=True))
+        thumbs = self.widget_po.get_visible_thumbnails()
+        thumb = thumbs[0]
+        self.assertEqual(len(thumbs), 1)
+        self.assertTrue(thumb.is_valid(required=True))
 
         self.admin_po.change_form.submit_form()
 
@@ -31,9 +31,6 @@ class WidgetRequiredTestCase(BaseWidgetTestCase):
         self.assertIsNotNone(item.image)
 
     def test_initialized_widget(self):
-        """
-        should widget correctly initialized when open the page to edit.
-        """
         item = models.Required()
         with open(get_mock_image("image1.png"), "rb") as f:
             item.image.save("image.png", File(f), False)
@@ -41,13 +38,11 @@ class WidgetRequiredTestCase(BaseWidgetTestCase):
 
         self.admin_po.navigations.goto_change_url(item)
 
-        root = self.widget_po.page_elements.root
-        previews = self.widget_po.get_visible_previews()
-        preview = previews[0]
-        self.assertEqual(len(previews), 1)
-        self.assertTrue(self.widget_po.is_preview_valid(preview, required=True))
-        self.assertEqual(root.get_attribute("data-raw"), item.image.url)
         self.assertFalse(self.widget_po.is_empty_marker_visible())
+        thumbs = self.widget_po.get_visible_thumbnails()
+        self.assertEqual(len(thumbs), 1)
 
-        img = preview.query_selector("img")
-        self.assertTrue(item.image.url in img.get_attribute("src"))
+        thumb = thumbs[0]
+        self.assertTrue(thumb.is_valid(required=True))
+        self.assertEqual(self.widget_po.data_raw, item.image.url)
+        self.assertTrue(item.image.url in thumb.src)
