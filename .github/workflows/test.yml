@@ -62,7 +62,7 @@ jobs:
       run: python -m playwright install --with-deps
 
     - name: Run Tests
-      run: python manage.py test --tag e2e
+      run: python manage.py test
       env:
         DATABASE_USE_POSTGRES: 1
         POSTGRES_PORT: 5432
