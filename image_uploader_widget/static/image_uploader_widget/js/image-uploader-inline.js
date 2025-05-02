@@ -308,7 +308,7 @@ document.addEventListener('dragend', function(evt) {
   const root = window.draggingEditor;
   if (root.classList.contains('dragging')) { return; }
 
-  root.remove('drop-zone');
+  root.classList.remove('drop-zone');
 });
 
 document.addEventListener('drop', function(evt) {
