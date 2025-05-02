@@ -1,5 +1,6 @@
 from playwright.sync_api import Locator
 
+
 class ThumbnailPE:
     def __init__(self, thumb: Locator):
         self.thumb = thumb

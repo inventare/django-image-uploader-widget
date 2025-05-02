@@ -1,5 +1,7 @@
 from typing import Union
-from playwright.sync_api import Page, Locator
+
+from playwright.sync_api import Locator, Page
+
 
 class WidgetPE:
     def __init__(self, page: Union[Page, Locator]):
@@ -11,4 +13,4 @@ class WidgetPE:
         self.checkbox = self.root.locator("input[type=checkbox]")
 
     def get_thumbnails(self):
-        return self.root.locator('.iuw-image-preview').all()
+        return self.root.locator(".iuw-image-preview").all()

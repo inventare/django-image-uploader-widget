@@ -1,5 +1,6 @@
 from playwright.sync_api import Page
 
+
 class _AssertInputFileClicked:
     def __init__(
         self,
@@ -27,9 +28,8 @@ class _AssertInputFileClicked:
         result = str(self.page.evaluate_handle("window.result"))
         assert result == "true"
 
+
 def assert_input_file_clicked(
-    page: Page,
-    input_selector=".form-row.field-image input[type=file]",
-    index=0
+    page: Page, input_selector=".form-row.field-image input[type=file]", index=0
 ):
     return _AssertInputFileClicked(page, input_selector, index)

@@ -1,11 +1,14 @@
-from django.test import tag
 from django.core.files import File
-from tests.utils.assert_input_file_clicked import assert_input_file_clicked
+from django.test import tag
+
 from tests.app.widget import models
+from tests.utils.assert_input_file_clicked import assert_input_file_clicked
 from tests.utils.images import get_mock_image
+
 from .base import BaseWidgetTestCase
 
-@tag('new')
+
+@tag("new")
 class WidgetRequiredTestCase(BaseWidgetTestCase):
     def goto_add_page(self):
         self.admin_po.navigations.goto_add_url(models.Required)

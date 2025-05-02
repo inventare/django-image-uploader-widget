@@ -1,10 +1,13 @@
 import uuid
-from django.test import tag
+
 from django.core.files import File
-from tests.utils.images import get_mock_image
+from django.test import tag
+
 from tests.app.array_field import models
-from tests.e2e.inline_base import InlineBaseTestCase
 from tests.e2e.base import BaseReorderTests
+from tests.e2e.inline_base import InlineBaseTestCase
+from tests.utils.images import get_mock_image
+
 
 @tag("new")
 class ArrayFieldTestCase(BaseReorderTests, InlineBaseTestCase):

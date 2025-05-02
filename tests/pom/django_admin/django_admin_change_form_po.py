@@ -1,5 +1,7 @@
 from playwright.sync_api import Page
+
 from .django_admin_change_form_pe import DjangoAdminChangeFormPE
+
 
 class DjangoAdminChangeFormPO:
     def __init__(self, page: Page):

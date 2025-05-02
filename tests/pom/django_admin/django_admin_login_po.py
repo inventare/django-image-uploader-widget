@@ -1,5 +1,7 @@
 from playwright.sync_api import Page
+
 from .django_admin_login_pe import DjangoAdminLoginPE
+
 
 class DjangoAdminLoginPO:
     def __init__(self, page: Page):

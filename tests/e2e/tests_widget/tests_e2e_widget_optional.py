@@ -1,10 +1,13 @@
-from django.test import tag
 from django.core.files import File
+from django.test import tag
+
 from tests.app.widget import models
 from tests.utils.images import get_mock_image
+
 from .base import BaseWidgetTestCase
 
-@tag('new')
+
+@tag("new")
 class WidgetOptionalTestCase(BaseWidgetTestCase):
     def goto_add_page(self):
         self.admin_po.navigations.goto_add_url(models.NonRequired)

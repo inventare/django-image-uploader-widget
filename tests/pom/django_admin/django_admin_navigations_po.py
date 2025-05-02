@@ -1,6 +1,7 @@
-from playwright.sync_api import Page
 from django.db import models
 from django.urls import reverse
+from playwright.sync_api import Page
+
 
 class DjangoAdminNavigationsPO:
     def __init__(self, page: Page, live_server_url: str):
@@ -28,11 +29,11 @@ class DjangoAdminNavigationsPO:
     def get_change_url(self, entity):
         opts = entity._meta
         info = opts.app_label, opts.model_name
-        url = reverse("admin:%s_%s_change" % info, kwargs={ 'object_id': entity.pk })
+        url = reverse("admin:%s_%s_change" % info, kwargs={"object_id": entity.pk})
         return self._get_url(url)
 
     def get_login_url(self):
-        return self._get_url(reverse('admin:login'))
+        return self._get_url(reverse("admin:login"))
 
     def goto_add_url(self, entity):
         url = self.get_add_url(entity)

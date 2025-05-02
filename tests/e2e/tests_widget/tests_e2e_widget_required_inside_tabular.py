@@ -1,9 +1,11 @@
 from django.test import tag
-from tests.utils.test_case import TestCase
+
 from tests.app.widget import models
 from tests.pom.component import WidgetPO
+from tests.utils.test_case import TestCase
 
-@tag('new')
+
+@tag("new")
 class WidgetRequiredInsideTabularTestCase(TestCase):
     def test_build_new_widget(self):
         self.admin_po.navigations.goto_add_url(models.RequiredTabularInline)

@@ -1,7 +1,10 @@
-from django.test import tag
 from typing import List
-from tests.pom.django_admin import DjangoAdminPO
+
+from django.test import tag
+
 from tests.pom.component import InlinePO
+from tests.pom.django_admin import DjangoAdminPO
+
 
 class BaseReorderTests:
     inline_po: InlinePO

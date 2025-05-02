@@ -1,5 +1,7 @@
 from typing import Union
-from playwright.sync_api import Page, Locator
+
+from playwright.sync_api import Locator, Page
+
 
 class InlinePE:
     def __init__(self, page: Union[Page, Locator]):
@@ -11,4 +13,4 @@ class InlinePE:
         self.drop_label = self.root.locator(".iuw-drop-label")
 
     def get_thumbnails(self):
-        return self.root.locator('.inline-related:not(.empty-form):not(.deleted)').all()
+        return self.root.locator(".inline-related:not(.empty-form):not(.deleted)").all()

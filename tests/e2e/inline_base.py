@@ -1,9 +1,12 @@
 import time
+
 from playwright.sync_api import expect
-from tests.utils.test_case import TestCase
-from tests.utils.assert_input_file_clicked import assert_input_file_clicked
-from tests.pom.component import InlinePO
+
 from tests.e2e.base import BaseDragDropTests, BaseEmptyMarkerTests
+from tests.pom.component import InlinePO
+from tests.utils.assert_input_file_clicked import assert_input_file_clicked
+from tests.utils.test_case import TestCase
+
 
 class InlineBaseTestCase(
     BaseEmptyMarkerTests,
@@ -59,7 +62,9 @@ class InlineBaseTestCase(
         self.assertEqual(len(thumbs), 2)
         self.assertTrue(self.inline_po.is_add_button_visible())
 
-        with assert_input_file_clicked(self.page, self.empty_marker_file_input_selector):
+        with assert_input_file_clicked(
+            self.page, self.empty_marker_file_input_selector
+        ):
             self.inline_po.execute_click_on_add_button()
 
     def test_click_on_expand_button(self):

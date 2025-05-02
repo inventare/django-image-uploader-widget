@@ -1,17 +1,18 @@
 from django.contrib.messages import SUCCESS, add_message
 from django.shortcuts import render
 from django.urls import reverse
+
 from tests.app.array_field.forms import TestWithArrayFieldForm
-from tests.app.widget.models import NonRequired, Required
 from tests.app.array_field.models import TestWithArrayField
+from tests.app.widget.models import NonRequired, Required
+
 from .forms import NonRequiredForm, RequiredForm
+
 
 def widget_required(request, pk=None):
     instance = Required.objects.get(pk=pk) if pk else None
     if request.method == "POST":
-        form = RequiredForm(
-            instance=instance, data=request.POST, files=request.FILES
-        )
+        form = RequiredForm(instance=instance, data=request.POST, files=request.FILES)
         if form.is_valid():
             form.save()
             instance = form.instance
@@ -23,7 +24,7 @@ def widget_required(request, pk=None):
     context = {
         "form": form,
         "instance": instance,
-        "post_url": reverse('required'),
+        "post_url": reverse("required"),
     }
     template = "test_htmx_widget.html"
     return render(request, template, context=context)
@@ -46,7 +47,7 @@ def widget_optional(request, pk=None):
     context = {
         "form": form,
         "instance": instance,
-        "post_url": reverse('optional'),
+        "post_url": reverse("optional"),
     }
     template = "test_htmx_widget.html"
     return render(request, template, context=context)
@@ -69,7 +70,7 @@ def array_field_required(request, pk=None):
     context = {
         "form": form,
         "instance": instance,
-        "post_url": reverse('array'),
+        "post_url": reverse("array"),
     }
     template = "test_htmx_widget.html"
     return render(request, template, context=context)
@@ -92,6 +93,7 @@ def base(request, extra_context=None):
 
 def base_light(request):
     return base(request, extra_context={"theme": "iuw-light"})
+
 
 def base_dark(request):
     return base(request, extra_context={"theme": "iuw-dark"})

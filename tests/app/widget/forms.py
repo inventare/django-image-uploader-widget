@@ -1,6 +1,9 @@
 from django import forms
+
 from image_uploader_widget.widgets import ImageUploaderWidget
+
 from .models import Custom
+
 
 class TestForm(forms.ModelForm):
     class Meta:
@@ -8,6 +11,7 @@ class TestForm(forms.ModelForm):
             "image": ImageUploaderWidget(),
         }
         fields = "__all__"
+
 
 class TestCustomForm(forms.ModelForm):
     class Meta:
@@ -21,4 +25,3 @@ class TestCustomForm(forms.ModelForm):
             ),
         }
         fields = "__all__"
-

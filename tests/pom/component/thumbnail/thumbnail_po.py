@@ -1,12 +1,16 @@
 from typing import Union
+
 from playwright.sync_api import Locator
+
 from tests.utils.images import get_mock_image
+
 from .thumbnail_pe import ThumbnailPE
+
 
 class ThumbnailPO:
     @property
     def src(self):
-        return self.page_elements.image.get_attribute('src')
+        return self.page_elements.image.get_attribute("src")
 
     def __init__(self, locator: Locator):
         self.locator = locator

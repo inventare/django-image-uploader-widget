@@ -1,10 +1,12 @@
-from django.test import tag
 from django.core.files import File
-from tests.utils.test_case import TestCase
+from django.test import tag
+
 from tests.app.inline import models
 from tests.e2e.base import BaseReorderTests
 from tests.pom.component import InlinePO
 from tests.utils.images import get_mock_image
+from tests.utils.test_case import TestCase
+
 
 @tag("new")
 class OrderedInlineEditorTestCase(BaseReorderTests, TestCase):

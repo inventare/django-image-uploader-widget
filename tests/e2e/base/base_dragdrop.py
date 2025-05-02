@@ -1,4 +1,3 @@
-
 class BaseDragDropTests:
     """
     A base class with common drop label test cases.
@@ -6,9 +5,9 @@ class BaseDragDropTests:
 
     @property
     def page_object(self):
-        if hasattr(self, 'widget_po'):
+        if hasattr(self, "widget_po"):
             return self.widget_po
-        if hasattr(self, 'inline_po'):
+        if hasattr(self, "inline_po"):
             return self.inline_po
 
     def test_drop_label_with_leave(self):

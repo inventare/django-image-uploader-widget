@@ -1,9 +1,12 @@
 import uuid
-from playwright.sync_api import Page
+
 from django.contrib.auth import get_user_model
-from .django_admin_navigations_po import DjangoAdminNavigationsPO
-from .django_admin_login_po import DjangoAdminLoginPO
+from playwright.sync_api import Page
+
 from .django_admin_change_form_po import DjangoAdminChangeFormPO
+from .django_admin_login_po import DjangoAdminLoginPO
+from .django_admin_navigations_po import DjangoAdminNavigationsPO
+
 
 class DjangoAdminPO:
     """
@@ -28,4 +31,5 @@ class DjangoAdminPO:
         self.navigations.goto_admin_login()
         self.login.execute_login(username, password)
 
-__all__ = ['DjangoAdminPO']
+
+__all__ = ["DjangoAdminPO"]

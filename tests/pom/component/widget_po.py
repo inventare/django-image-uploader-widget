@@ -1,10 +1,14 @@
 from typing import Union
-from playwright.sync_api import Page, Locator
-from tests.utils.images import get_mock_image
+
+from playwright.sync_api import Locator, Page
+
 from tests.pom.component.preview_modal import PreviewModalPO
-from .widget_pe import WidgetPE
-from .widget_drag_po import WidgetDragPO
+from tests.utils.images import get_mock_image
+
 from .thumbnail import ThumbnailPO
+from .widget_drag_po import WidgetDragPO
+from .widget_pe import WidgetPE
+
 
 class WidgetPO(WidgetDragPO):
     @property

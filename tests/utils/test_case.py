@@ -1,8 +1,11 @@
 import os
-from playwright.sync_api import sync_playwright
+
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from match_snapshot import MatchSnapshot
+from playwright.sync_api import sync_playwright
+
 from tests.pom.django_admin import DjangoAdminPO
+
 
 class TestCase(MatchSnapshot, StaticLiveServerTestCase):
     @classmethod

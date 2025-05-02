@@ -1,6 +1,9 @@
-from playwright.sync_api import Page, Locator
+from playwright.sync_api import Locator, Page
+
 from tests.pom.component.thumbnail import ThumbnailPO
+
 from .preview_modal_pe import PreviewModalPE
+
 
 class PreviewModalPO:
     def __init__(self, page: Page):

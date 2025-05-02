@@ -1,4 +1,5 @@
-from playwright.sync_api import Page, Locator
+from playwright.sync_api import Locator, Page
+
 
 class PreviewModalPE:
     def __init__(self, page: Page):
@@ -22,7 +23,7 @@ class PreviewModalPE:
         return preview_modal
 
     def get_image(self, modal: Locator):
-        return modal.locator('img')
+        return modal.locator("img")
 
     def get_close_button(self, modal: Locator):
-        return modal.locator('.iuw-modal-close')
+        return modal.locator(".iuw-modal-close")
