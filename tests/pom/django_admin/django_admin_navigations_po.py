@@ -45,3 +45,7 @@ class DjangoAdminNavigationsPO:
 
     def goto_admin_login(self):
         self.page.goto(self.get_login_url())
+
+    def goto(self, url):
+        url = self._get_url(url)
+        return self.page.goto(url)

@@ -9,7 +9,7 @@ urlpatterns = [
     path("optional/<pk>/", views.widget_optional),
     path("array_field/", views.array_field_required, name="array"),
     path("array_field/<pk>/", views.array_field_required),
-    path("base/", views.base),
-    path("base/light/", views.base_light),
-    path("base/dark/", views.base_dark),
+    path("base/", views.base, name="htmx-base"),
+    path("base/light/", views.base_light, name="htmx-light"),
+    path("base/dark/", views.base_dark, name="htmx-dark"),
 ]
