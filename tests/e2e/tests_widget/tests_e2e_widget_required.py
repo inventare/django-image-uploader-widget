@@ -2,14 +2,14 @@ from django.core.files import File
 from django.test import tag
 
 from tests.app.widget import models
-from tests.utils.assert_input_file_clicked import assert_input_file_clicked
 from tests.utils.images import get_mock_image
+from tests.utils.test_case import TestCase
 
 from .base import BaseWidgetTestCase
 
 
 @tag("new")
-class WidgetRequiredTestCase(BaseWidgetTestCase):
+class WidgetRequiredTestCase(BaseWidgetTestCase, TestCase):
     def goto_add_page(self):
         self.admin_po.navigations.goto_add_url(models.Required)
 

@@ -5,14 +5,9 @@ from playwright.sync_api import expect
 from tests.e2e.base import BaseDragDropTests, BaseEmptyMarkerTests
 from tests.pom.component import WidgetPO
 from tests.utils.assert_input_file_clicked import assert_input_file_clicked
-from tests.utils.test_case import TestCase
 
 
-class BaseWidgetTestCase(
-    BaseEmptyMarkerTests,
-    BaseDragDropTests,
-    TestCase,
-):
+class BaseWidgetTestCase(BaseEmptyMarkerTests, BaseDragDropTests):
     """
     Common tests for widget (optional and required).
     """

@@ -7,10 +7,11 @@ from tests.app.array_field import models
 from tests.e2e.base import BaseReorderTests
 from tests.e2e.inline_base import InlineBaseTestCase
 from tests.utils.images import get_mock_image
+from tests.utils.test_case import TestCase
 
 
 @tag("new")
-class ArrayFieldTestCase(BaseReorderTests, InlineBaseTestCase):
+class ArrayFieldTestCase(BaseReorderTests, InlineBaseTestCase, TestCase):
     def goto_add_page(self):
         self.admin_po.navigations.goto_add_url(models.TestWithArrayField)
 

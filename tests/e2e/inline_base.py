@@ -5,14 +5,9 @@ from playwright.sync_api import expect
 from tests.e2e.base import BaseDragDropTests, BaseEmptyMarkerTests
 from tests.pom.component import InlinePO
 from tests.utils.assert_input_file_clicked import assert_input_file_clicked
-from tests.utils.test_case import TestCase
 
 
-class InlineBaseTestCase(
-    BaseEmptyMarkerTests,
-    BaseDragDropTests,
-    TestCase,
-):
+class InlineBaseTestCase(BaseEmptyMarkerTests, BaseDragDropTests):
     empty_marker_file_input_selector = ".temp_file"
 
     def setUp(self):
