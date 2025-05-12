@@ -5,7 +5,6 @@ from tests.pom.component import WidgetPO
 from tests.utils.test_case import TestCase
 
 
-@tag("new")
 class WidgetRequiredInsideTabularTestCase(TestCase):
     def test_build_new_widget(self):
         self.admin_po.navigations.goto_add_url(models.RequiredTabularInline)

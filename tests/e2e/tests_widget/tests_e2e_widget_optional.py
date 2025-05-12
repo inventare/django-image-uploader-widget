@@ -8,7 +8,6 @@ from tests.utils.test_case import TestCase
 from .base import BaseWidgetTestCase
 
 
-@tag("new")
 class WidgetOptionalTestCase(BaseWidgetTestCase, TestCase):
     def goto_add_page(self):
         self.admin_po.navigations.goto_add_url(models.NonRequired)

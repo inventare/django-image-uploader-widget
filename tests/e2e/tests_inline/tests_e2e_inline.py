@@ -7,7 +7,6 @@ from tests.utils.images import get_mock_image
 from tests.utils.test_case import TestCase
 
 
-@tag("new")
 class InlineEditorTestCase(InlineBaseTestCase, TestCase):
     def goto_add_page(self):
         self.admin_po.navigations.goto_add_url(models.Inline)

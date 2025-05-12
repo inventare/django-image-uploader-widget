@@ -33,6 +33,13 @@ class ThumbnailPO:
         if not required:
             delete_button = self.page_elements.delete.element_handle()
             conditions += [delete_button != None]
+        else:
+            found = True
+            try:
+                element_handle = self.page_elements.delete.element_handle(timeout=1)
+            except Exception:
+                found = False
+            conditions += [not found]
 
         return all(conditions)
 

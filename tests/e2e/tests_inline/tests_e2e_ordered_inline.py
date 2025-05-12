@@ -8,7 +8,6 @@ from tests.utils.images import get_mock_image
 from tests.utils.test_case import TestCase
 
 
-@tag("new")
 class OrderedInlineEditorTestCase(BaseReorderTests, TestCase):
     def setUp(self):
         super().setUp()
