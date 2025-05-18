@@ -18,7 +18,9 @@ class HTMXOptionalWidgetTests(BaseDragDropTests, HTMXTestCase):
         self.widget_po = WidgetPO(self.page)
 
     def goto_page(self):
-        url = f"{reverse("htmx-base")}?destination={reverse("optional")}"
+        base = reverse("htmx-base")
+        destination = reverse("optional")
+        url = f"{base}?destination={destination}"
         self.admin_po.navigations.goto(url)
 
     def goto_add_page(self):
