@@ -127,11 +127,13 @@ class UIInlineAdminTests(TestCase):
         self.goto_change_page()
         self.page.set_viewport_size({"width": 800, "height": 800})
 
+        add_button = self.page.query_selector(".iuw-add-image-btn")
+        add_button.hover()
+        self.admin_po.change_form.page_elements.change_form_submit.hover()
         time.sleep(0.5)
 
         self.assertTrue(self.has_scrollbars())
 
-        add_button = self.page.query_selector(".iuw-add-image-btn")
         self.assert_match_snapshot(add_button, "in_test_add_button_on_small_screen")
 
     def test_ui_initialized_toggle_dark_theme(self):

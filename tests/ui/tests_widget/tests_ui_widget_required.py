@@ -38,6 +38,8 @@ class UIWidgetRequiredTests(TestCase):
             image_id = f"{image_id}_dark"
 
         self.goto_add_page()
+        self.widget_po.page_elements.empty_marker.hover()
+        self.admin_po.change_form.page_elements.change_form_submit.hover()
         time.sleep(0.5)
         root = self.widget_po.page_elements.root
         self.assert_match_snapshot(root, image_id)
