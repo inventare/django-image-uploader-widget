@@ -35,8 +35,14 @@ class InlinePO(WidgetDragPO):
     def execute_click_on_add_button(self):
         self.page_elements.add_image_button.click()
 
+    def execute_hover_on_add_button(self):
+        self.page_elements.add_image_button.hover()
+
     def is_empty_marker_visible(self):
         return self.page_elements.empty_marker.is_visible()
 
     def execute_click_on_empty_marker(self):
         self.page_elements.empty_marker.click()
+
+    def execute_hover_on_empty_marker(self):
+        self.page_elements.empty_marker.hover()

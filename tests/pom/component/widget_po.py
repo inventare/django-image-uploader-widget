@@ -26,6 +26,9 @@ class WidgetPO(WidgetDragPO):
     def execute_click_on_empty_marker(self):
         self.page_elements.empty_marker.click()
 
+    def execute_hover_on_empty_marker(self):
+        self.page_elements.empty_marker.hover()
+
     def get_visible_thumbnails(self):
         thumbs = self.page_elements.get_thumbnails()
         thumbs = list(filter(lambda item: item.is_visible(), thumbs))

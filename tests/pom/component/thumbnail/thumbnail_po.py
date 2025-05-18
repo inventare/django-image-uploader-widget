@@ -25,6 +25,15 @@ class ThumbnailPO:
     def execute_click_on_delete(self):
         self.page_elements.delete.click()
 
+    def execute_hover(self):
+        self.page_elements.thumb.hover()
+
+    def execute_hover_on_preview(self):
+        self.page_elements.preview.hover()
+
+    def execute_hover_on_delete(self):
+        self.page_elements.delete.hover()
+
     def is_valid(self, *, required=False):
         img = self.page_elements.image.element_handle()
         preview_button = self.page_elements.preview.element_handle()
