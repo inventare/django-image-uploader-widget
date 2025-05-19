@@ -56,7 +56,3 @@ nav:
     - ... | flat | htmx/*.md
   - Inline Admin:
     - ... | flat | inline_admin/*.md
-  - Development:
-    - ... | flat | development/*.md
-    - Architecture Decision Records:
-      - ... | flat | development/architecture-decision-records/*.md
