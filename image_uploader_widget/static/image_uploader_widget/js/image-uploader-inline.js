@@ -138,49 +138,27 @@ function cloneFromEmptyTemplate(root) {
 }
 
 function handleAddNewImage(root, tempFileInput, inputFile = null) {
-  file = inputFile ||(tempFileInput.files || [null])[0];
-  if (!file) {
-      return;
-  }
-  if (!file.type.startsWith('image/')) {
+  files = inputFile ? [inputFile] : (tempFileInput.files || []);
+  if (!files.length) {
     return;
   }
-  const row = cloneFromEmptyTemplate(root);
-  const img = document.createElement('img');
-  img.src = URL.createObjectURL(file);
-  row.appendChild(img);
-  const rowFileInput = row.querySelector('input[type=file]');
-  const parent = rowFileInput.parentElement;
+  for (const file of files) {
+    if (!file.type.startsWith('image/')) {
+      continue;
+    }
+    const row = cloneFromEmptyTemplate(root);
+    const img = document.createElement('img');
+    img.src = URL.createObjectURL(file);
+    row.appendChild(img);
+    const rowFileInput = row.querySelector('input[type=file]');
+    // const parent = rowFileInput.parentElement;
 
-  if (!tempFileInput) {
     const dataTransferList = new DataTransfer();
     dataTransferList.items.add(file);
     rowFileInput.files = dataTransferList.files;
-
-    updateAllIndexes(root);
-    return;
   }
 
-  const className = rowFileInput.className;
-  const name = rowFileInput.getAttribute('name');
-  parent.removeChild(rowFileInput);
-
-  clonedInput = tempFileInput.cloneNode(true)
-  clonedInput.className = className;
-  clonedInput.setAttribute('name', name || '');
-
-  //
-  // TODO: Safari not clone files inside the input.
-  //
-  //
-  const dataTransferList = new DataTransfer();
-  dataTransferList.items.add(file);
-  clonedInput.files = dataTransferList.files;
-
   tempFileInput.value = null
-
-  parent.appendChild(clonedInput);
-
   updateAllIndexes(root);
 }
 
