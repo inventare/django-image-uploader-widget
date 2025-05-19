@@ -43,6 +43,19 @@ class InlineBaseTestCase(BaseEmptyMarkerTests, BaseDragDropTests):
         thumbs = self.inline_po.get_visible_thumbnails()
         self.assertEqual(len(thumbs), 2)
 
+    def test_choose_multiple_images(self):
+        self.goto_add_page()
+
+        images = ["image1.png", "image2.png", "image3.png"]
+        self.inline_po.execute_select_multiple_images(images)
+
+        thumbs = self.inline_po.get_visible_thumbnails()
+        self.assertEqual(len(thumbs), 3)
+
+        self.inline_po.execute_select_image("image1.png")
+        thumbs = self.inline_po.get_visible_thumbnails()
+        self.assertEqual(len(thumbs), 4)
+
     def test_initial_state(self):
         self.goto_add_page()
         time.sleep(0.3)

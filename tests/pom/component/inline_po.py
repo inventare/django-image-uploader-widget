@@ -29,6 +29,10 @@ class InlinePO(WidgetDragPO):
         image = get_mock_image(image)
         self.page_elements.temp_file_input.set_input_files(image)
 
+    def execute_select_multiple_images(self, images):
+        images = [get_mock_image(img) for img in images]
+        self.page_elements.temp_file_input.set_input_files(images)
+
     def is_add_button_visible(self):
         return self.page_elements.add_image_button.is_visible()
 

@@ -55,6 +55,31 @@ class InlineEditorTestCase(InlineBaseTestCase, TestCase):
         for item in items:
             self.assertIsNotNone(item.image)
 
+    def test_choose_multiple_files_and_save(self):
+        self.assertEqual(len(models.InlineItem.objects.all()), 0)
+        self.goto_add_page()
+
+        thumbs = self.inline_po.get_visible_thumbnails()
+        self.assertEqual(len(thumbs), 0)
+
+        self.inline_po.execute_select_multiple_images(["image1.png", "image2.png"])
+        thumbs = self.inline_po.get_visible_thumbnails()
+        self.assertEqual(len(thumbs), 2)
+
+        self.inline_po.execute_select_multiple_images(["image2.png", "image3.png"])
+        thumbs = self.inline_po.get_visible_thumbnails()
+        self.assertEqual(len(thumbs), 4)
+
+        for thumb in thumbs:
+            self.assertTrue(thumb.is_valid(required=False))
+
+        self.admin_po.change_form.submit_form()
+
+        items = models.InlineItem.objects.all()
+        self.assertEqual(len(items), 4)
+        for item in items:
+            self.assertIsNotNone(item.image)
+
     def test_remove_non_saved_itens(self):
         self.assertEqual(len(models.InlineItem.objects.all()), 0)
         self.goto_add_page()
