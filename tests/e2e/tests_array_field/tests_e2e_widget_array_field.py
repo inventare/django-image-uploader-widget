@@ -73,7 +73,7 @@ class ArrayFieldTestCase(BaseReorderTests, InlineBaseTestCase, TestCase):
         thumbs = self.inline_po.get_visible_thumbnails()
         self.assertEqual(len(thumbs), 2)
 
-        self.inline_po.execute_select_image(["image2.png", "image3.png"])
+        self.inline_po.execute_select_multiple_images(["image2.png", "image3.png"])
         thumbs = self.inline_po.get_visible_thumbnails()
         self.assertEqual(len(thumbs), 4)
 
