@@ -62,6 +62,32 @@ class ArrayFieldTestCase(BaseReorderTests, InlineBaseTestCase, TestCase):
         for url in item.images:
             self.assertIsNotNone(url)
 
+    def test_choose_multiple_files_and_save(self):
+        self.assertEqual(len(models.TestWithArrayField.objects.all()), 0)
+        self.goto_add_page()
+
+        thumbs = self.inline_po.get_visible_thumbnails()
+        self.assertEqual(len(thumbs), 0)
+
+        self.inline_po.execute_select_multiple_images(["image1.png", "image2.png"])
+        thumbs = self.inline_po.get_visible_thumbnails()
+        self.assertEqual(len(thumbs), 2)
+
+        self.inline_po.execute_select_image(["image2.png", "image3.png"])
+        thumbs = self.inline_po.get_visible_thumbnails()
+        self.assertEqual(len(thumbs), 4)
+
+        for thumb in thumbs:
+            self.assertTrue(thumb.is_valid(required=False))
+
+        self.admin_po.change_form.submit_form()
+
+        item = models.TestWithArrayField.objects.first()
+        self.assertIsNotNone(item)
+        self.assertEqual(len(item.images), 4)
+        for url in item.images:
+            self.assertIsNotNone(url)
+
     def test_remove_unsaved_image(self):
         self.assertEqual(len(models.TestWithArrayField.objects.all()), 0)
         self.goto_add_page()
