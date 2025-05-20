@@ -2,9 +2,9 @@ from django.contrib.messages import SUCCESS, add_message
 from django.shortcuts import render
 from django.urls import reverse
 
-from tests.app.array_field.forms import TestWithArrayFieldForm
-from tests.app.array_field.models import TestWithArrayField
-from tests.app.widget.models import NonRequired, Required
+from demo.array_field.forms import TestWithArrayFieldForm
+from demo.array_field.models import TestWithArrayField
+from demo.widget.models import NonRequired, Required
 
 from .forms import NonRequiredForm, RequiredForm
 

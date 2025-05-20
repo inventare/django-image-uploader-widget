@@ -1,5 +1,5 @@
-from tests.app.widget.forms import TestForm
-from tests.app.widget.models import NonRequired, Required
+from demo.widget.forms import TestForm
+from demo.widget.models import NonRequired, Required
 
 
 class RequiredForm(TestForm):
