@@ -14,7 +14,7 @@
     <input type="hidden" name="{{ inline_admin_formset.formset.prefix }}-TOTAL_FORMS" value="0" id="id_{{ inline_admin_formset.formset.prefix }}-TOTAL_FORMS" />
     <input type="hidden" name="{{ inline_admin_formset.formset.prefix }}-INITIAL_FORMS" value="0" id="id_{{ inline_admin_formset.formset.prefix }}-INITIAL_FORMS" />
     <input type="hidden" name="{{ inline_admin_formset.formset.prefix }}-MIN_NUM_FORMS" value="0" id="id_{{ inline_admin_formset.formset.prefix }}-MIN_NUM_FORMS" />
-    <input type="hidden" name="{{ inline_admin_formset.formset.prefix }}-MAX_NUM_FORMS" value="1000" id="id_{{ inline_admin_formset.formset.prefix }}-MAX_NUM_FORMS" />
+    <input type="hidden" name="{{ inline_admin_formset.formset.prefix }}-MAX_NUM_FORMS" value="{{ max_images }}" id="id_{{ inline_admin_formset.formset.prefix }}-MAX_NUM_FORMS" />
 
     <div class="previews">
       {% for item in widget.subwidgets %}
