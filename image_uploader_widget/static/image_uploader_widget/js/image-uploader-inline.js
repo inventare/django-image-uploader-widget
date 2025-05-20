@@ -154,7 +154,6 @@ function handleAddNewImage(root, tempFileInput, inputFile = null) {
     img.src = URL.createObjectURL(file);
     row.appendChild(img);
     const rowFileInput = row.querySelector('input[type=file]');
-    // const parent = rowFileInput.parentElement;
 
     const dataTransferList = new DataTransfer();
     dataTransferList.items.add(file);
@@ -167,7 +166,6 @@ function handleAddNewImage(root, tempFileInput, inputFile = null) {
     return;
   }
   tempFileInput.value = null
-  // updateAllIndexes(root);
 }
 
 document.addEventListener('change', function(evt) {
