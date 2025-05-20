@@ -146,6 +146,9 @@ function handleAddNewImage(root, tempFileInput, inputFile = null) {
     if (!file.type.startsWith('image/')) {
       continue;
     }
+    if (!root.querySelector('.iuw-add-image-btn').classList.contains('visible-by-number')) {
+      break;
+    };
     const row = cloneFromEmptyTemplate(root);
     const img = document.createElement('img');
     img.src = URL.createObjectURL(file);
@@ -156,12 +159,15 @@ function handleAddNewImage(root, tempFileInput, inputFile = null) {
     const dataTransferList = new DataTransfer();
     dataTransferList.items.add(file);
     rowFileInput.files = dataTransferList.files;
+
+    updateAllIndexes(root);
   }
 
-  if (tempFileInput) {
-    tempFileInput.value = null
+  if (!tempFileInput) {
+    return;
   }
-  updateAllIndexes(root);
+  tempFileInput.value = null
+  // updateAllIndexes(root);
 }
 
 document.addEventListener('change', function(evt) {
