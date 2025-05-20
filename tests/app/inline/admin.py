@@ -7,6 +7,7 @@ from . import models
 
 class InlineEditor(ImageUploaderInline):
     model = models.InlineItem
+    max_num = 2
 
 
 @admin.register(models.Inline)

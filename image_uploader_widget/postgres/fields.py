@@ -21,11 +21,13 @@ class ImageListField(ArrayField):
         max_length: int = 150,
         storage: Optional[Storage] = None,
         upload_to: str = "",
+        max_images=1000,
         **kwargs,
     ):
         self.max_length = max_length or 150
         self.storage = storage or default_storage
         self.upload_to = upload_to or ""
+        self.max_images = max_images
         kwargs["base_field"] = ImageField(
             max_length=self.max_length, upload_to=upload_to
         )
@@ -91,5 +93,6 @@ class ImageListField(ArrayField):
             **{
                 "form_class": ImageListFormField,
                 **kwargs,
+                "max_images": self.max_images,
             }
         )

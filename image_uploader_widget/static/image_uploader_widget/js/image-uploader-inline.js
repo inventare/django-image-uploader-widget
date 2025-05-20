@@ -158,7 +158,9 @@ function handleAddNewImage(root, tempFileInput, inputFile = null) {
     rowFileInput.files = dataTransferList.files;
   }
 
-  tempFileInput.value = null
+  if (tempFileInput) {
+    tempFileInput.value = null
+  }
   updateAllIndexes(root);
 }
 

@@ -27,8 +27,15 @@ class ImageUploaderArrayWidget(SplitArrayWidget):
         return self.drop_icon
 
     def __init__(
-        self, drop_text="", empty_text="", empty_icon="", drop_icon="", **kwargs
+        self,
+        max_images=1000,
+        drop_text="",
+        empty_text="",
+        empty_icon="",
+        drop_icon="",
+        **kwargs,
     ):
+        self.max_images = max_images
         self.drop_text = drop_text
         self.empty_text = empty_text
         self.empty_icon = empty_icon
@@ -73,6 +80,7 @@ class ImageUploaderArrayWidget(SplitArrayWidget):
                     "prefix": context["widget"]["name"],
                 },
             },
+            "max_images": self.max_images,
             "custom": {
                 "drop_text": self.get_drop_text(),
                 "empty_text": self.get_empty_text(),

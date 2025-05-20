@@ -13,13 +13,13 @@ class ImageListFormField(forms.Field):
         "item_invalid": _("Item %(name)s in the array did not validate:"),
     }
 
-    def __init__(self, **kwargs):
+    def __init__(self, max_images=1000, **kwargs):
         kwargs.pop("base_field")
         self.max_length = kwargs.pop("max_length") or 150
 
         self.required = False
         self.base_field = forms.ImageField(max_length=self.max_length)
-        widget = ImageUploaderArrayWidget()
+        widget = ImageUploaderArrayWidget(max_images=max_images)
         kwargs.setdefault("widget", widget)
         super().__init__(**kwargs)
 
